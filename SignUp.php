@@ -1,6 +1,8 @@
 <?php
    include('config.php');
    session_start();
+
+   echo "Outside";
    
    if($_SERVER["REQUEST_METHOD"] == "POST") 
    {
@@ -9,21 +11,15 @@
       $mypassword = mysqli_real_escape_string($conn,$_POST['password']);
       $mytype = mysqli_real_escape_string($conn,$_POST['type']);
 
-      $sql = "INSERT INTO User(username,password,type) VALUES ('myusername','mypassword','')"
-
-      
+      $sql = "INSERT INTO User(username,password,type) VALUES ('$myusername','$mypassword','$mytype');";
 
 
+      echo "We are here";
 
-
-
-
+      mysqli_query($conn,$sql);
    }
    
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,8 +106,16 @@
                       <div class="input-group">
                         
                         <input class="form-control" placeholder="Favorite Team" name="favoriteTeam" type="text" autofocus>
+                      </div>
                     </div>
-                    </div>
+                   <div class="form-group">
+                       <select name = "type">
+                        <option value="Player">Player</option>
+                        <option value="Coach">Coach</option>
+                        <option value="Fan">Fan</option>
+                        <option value="Director">Director</option>
+                       </select>  
+                     </div>
                     <div class="form-group">
                       <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up">
                     </div>
