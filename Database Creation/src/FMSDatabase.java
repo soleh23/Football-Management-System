@@ -451,6 +451,67 @@ public class FMSDatabase {
 		}
 		System.out.println("Tuples into Director table inserted");
 
+		//creating coach table
+		try{
+			System.out.println("Creating Coach Table");
+			statement = connection.createStatement();
+			String user = "CREATE TABLE Coach " +
+					"(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+					" username VARCHAR(25) NOT NULL, " +
+					" password VARCHAR(25) NOT NULL, " +
+					" name VARCHAR(20) NOT NULL, " +
+					" surname VARCHAR(20) NOT NULL, " +
+					" age INT NOT NULL, " +
+					" salary INT NOT NULL, " +
+					" nationality VARCHAR(15) NOT NULL, " +
+					" birthdate DATE NOT NULL, " +
+					" AgentID int NOT NULL," +
+					" ClubID int NOT NULL," +
+					" FOREIGN KEY (ClubID) REFERENCES Club(ID)," +
+					" FOREIGN KEY (AgentID) REFERENCES Agent(ID),"+
+					" UNIQUE (username))" +
+					" ENGINE InnoDB";
+
+			statement.executeUpdate(user);
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		System.out.println("Coach Table Created");
+
+		// insert tuples into agent
+		try{
+			System.out.println("Inserting tuples into Coach table");
+			String sql;
+			sql = "INSERT INTO Coach " +
+					"(username, password, name, surname, age, salary, nationality, birthdate,AgentID,ClubID)" +
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?, ? );";
+			String[][] tuples = new String[][]{{"coachmehmet", "iyibayramlar", "Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10","1","1"}};
+
+			for (int i = 0; i < tuples.length; i++)
+			{
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, tuples[i][0]);
+				preparedStatement.setString(2, tuples[i][1]);
+				preparedStatement.setString(3, tuples[i][2]);
+				preparedStatement.setString(4, tuples[i][3]);
+				preparedStatement.setString(5, tuples[i][4]);
+				preparedStatement.setString(6, tuples[i][5]);
+				preparedStatement.setString(7, tuples[i][6]);
+				preparedStatement.setString(8, tuples[i][7]);
+				preparedStatement.setString(9, tuples[i][8]);
+				preparedStatement.setString(10, tuples[i][9]);
+
+				preparedStatement.executeUpdate();
+			}
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		System.out.println("Tuples into Coach table inserted");
+
+
+
 
 
 	}
