@@ -5,6 +5,20 @@
 * {
     box-sizing: border-box;
 }
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 
 body {
     font-family: Arial;
@@ -54,24 +68,13 @@ body {
 
 /* Right column */
 .rightcolumn {
-    float: left;
+    float: right;
     width: 75%;
     background-color: #f1f1f1;
     padding-left: 20px;
 }
-.rightcolumn2 {
-    float: right;
-    width: 35%;
-    background-color: #f1f1f1;
-    padding-left: 20px;
-}
 
-/* Fake image */
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
+
 
 /* Add a card effect for articles */
 .card {
@@ -129,8 +132,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+  float: none;
+  width: 100%;
 }
 
 
@@ -167,50 +170,33 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="row">
-  
+  <div class ="rightcolumn">
+  <h2>Countries</h2>
+         <li><a href="#">Super Lig</a></li>
+         <li><a href="#">Spor Toto</a></li>  
+</div>
+ 
   <div class="leftcolumn">
-	<!--<div class="card">
+  <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-    	 <ul id="sideBarStyle">
-    	   <li><a class="active" href="CountriesPage.html">Countries</a></li>
-    	   <li><a href="#">Leagues</a></li>
-    	   <li><a href="#">Clubs</a></li>
-    	   <li><a href="TransferNewsPage.html">Transfer News</a></li>
+       <ul id="sideBarStyle">
+         <li><a class="active" href="#">Countries</a></li>
+         <li><a href="#">Leagues</a></li>
+         <li><a href="#">Clubs</a></li>
+         <li><a href="#">Transfer News</a></li>
          <li><a href="#">Matches</a></li>
-         <li><a href="#">Subscriptions</a></li>
-         <li><a href="playersPage.html">Players</a></li>
-    	 </ul>
+         <li><a href="#">Players</a></li>
+       </ul>
 
 
   </div>
 
 
-  <div class="rightcolumn">
-    
-    <div class="card">
-
-      <h2>Favorite Team</h2>
-      <div class="rightcolumn2">
-        <p>Coach:<br>Stadium:<br>City:<br>Leagues:</p>
-      </div>
-      <div class="fakeimg" style="height:200px; width: 350px">Image</div>
-      <div class="rightcolumn2">
-        <p>Recent Matches:</p>
-      </div>
-      <div class="inf" style="height:200px; width: 350px">
-
-      <p>Some text..</p>
-      <p>Players: <br> Player1</p>
-
-    </div>
-  </div>
-
-</div>
 
  
 
