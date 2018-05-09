@@ -26,9 +26,12 @@ public class FMSDatabase {
 		Statement dropStatement;
 		PreparedStatement preparedStatement;
 		Statement statement;
-		
+
+		deletingTables();
+
+
 		/* Creating Agent Table */ /**********************************************************************************************/
-		
+
 		try
 		{
 			System.out.println("Dropping Agent Table");
@@ -75,7 +78,7 @@ public class FMSDatabase {
 			sql = "INSERT INTO Agent " +
 					"(username, password, name, surname, age, salary, nationality, birthdate)" +
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-			String[][] tuples = new String[][]{{"agentmehmet", "iyibayramlar", "Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10"}};
+			String[][] tuples = new String[][]{{"amehmet", "iyibayramlar", "Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10"}};
 
 			for (int i = 0; i < tuples.length; i++){
 				preparedStatement = connection.prepareStatement(sql);
@@ -95,11 +98,11 @@ public class FMSDatabase {
 		}
 		System.out.println("Tuples into Agent table inserted");
 
-		
-		
+
+
 		/*Creating Player Table *****************************************************************************************************/
-		
-		
+
+
 		try{
 			System.out.println("Dropping Player Table");
 			dropStatement = connection.createStatement();
@@ -113,7 +116,7 @@ public class FMSDatabase {
 
 
 		// creating tables
-		
+
 
 		// creating customer table
 		try{ 								// BUT IT DOES NOT HAVE ANY DEPENDECY WITH AGENT YET. JUST TRYING
@@ -142,7 +145,7 @@ public class FMSDatabase {
 
 
 		// Updating Tables
-		
+
 
 		// insert tuples into customer
 		try{
@@ -235,8 +238,8 @@ public class FMSDatabase {
 			System.out.println(e);
 		}
 		System.out.println("Tuples into League table inserted");
-		
-		
+
+
 		/* Club Table Creation */ /* ***************************************************************************************************/
 		try{
 			System.out.println("Dropping Club Table");
@@ -285,19 +288,19 @@ public class FMSDatabase {
 					"(name, transfer_budget, annual_wage_budget, city, establishment_date,value,stadium )" +
 					"VALUES (?, ?, ?, ?, ? , ?, ? );";
 			String[][] tuples = new String[][]{{"Real Madrid", "1000000", "50000","Madrid", "1902-03-06", "10000000", "Santiago Bernabéu"},
-												{"Real Madridd", "10000000", "500000","MMadrid", "1902-03-06", "10000000", "Santiago Bernabéu"}};
+				{"Real Madridd", "10000000", "500000","MMadrid", "1902-03-06", "10000000", "Santiago Bernabéu"}};
 
-			for (int i = 0; i < tuples.length; i++){
-				preparedStatement = connection.prepareStatement(sql);
-				preparedStatement.setString(1, tuples[i][0]);
-				preparedStatement.setString(2, tuples[i][1]);
-				preparedStatement.setString(3, tuples[i][2]);
-				preparedStatement.setString(4, tuples[i][3]);
-				preparedStatement.setString(5, tuples[i][4]);
-				preparedStatement.setString(6, tuples[i][5]);
-				preparedStatement.setString(7, tuples[i][6]);
-				preparedStatement.executeUpdate();
-			}
+				for (int i = 0; i < tuples.length; i++){
+					preparedStatement = connection.prepareStatement(sql);
+					preparedStatement.setString(1, tuples[i][0]);
+					preparedStatement.setString(2, tuples[i][1]);
+					preparedStatement.setString(3, tuples[i][2]);
+					preparedStatement.setString(4, tuples[i][3]);
+					preparedStatement.setString(5, tuples[i][4]);
+					preparedStatement.setString(6, tuples[i][5]);
+					preparedStatement.setString(7, tuples[i][6]);
+					preparedStatement.executeUpdate();
+				}
 		}
 		catch (Exception e){
 			System.out.println(e);
@@ -373,8 +376,8 @@ public class FMSDatabase {
 			System.out.println(e);
 		}
 		System.out.println("Tuples into Game table inserted");
-		
-		
+
+
 		/* Director Table Creation */ /* ***************************************************************************************************/
 
 		try{
@@ -447,8 +450,121 @@ public class FMSDatabase {
 			System.out.println(e);
 		}
 		System.out.println("Tuples into Director table inserted");
-		
 
+
+
+	}
+	public static void deletingTables ()
+	{
+		String url = "jdbc:mysql://dijkstra.ug.bcc.bilkent.edu.tr/mehmet_turanboy";
+		String username = "mehmet.turanboy";
+		String password = "1ky0yl0r";
+
+		System.out.println("Connecting to database...");
+
+		// connecting to database
+		Connection connection;
+		try {
+			connection = DriverManager.getConnection(url, username, password);
+			System.out.println("Database connected!");
+		}
+		catch (SQLException e) {
+			throw new IllegalStateException("Cannot connect the database!", e);
+		}
+
+		Statement dropStatement;
+		PreparedStatement preparedStatement;
+		Statement statement;
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Player";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Coach";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Director";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Game";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE League";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Agent";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+
+		try
+		{
+			System.out.println("Dropping Tables");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Club";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+
+		catch (Exception e){
+			System.out.println(e);
+		}
+
+
+
+		System.out.println("Player Table Dropped");
 	}
 
 }
