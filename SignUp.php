@@ -11,12 +11,16 @@
       $mypassword = mysqli_real_escape_string($conn,$_POST['password']);
       $mytype = mysqli_real_escape_string($conn,$_POST['type']);
 
+<<<<<<< Updated upstream
       $sql = "INSERT INTO User(username,password,type) VALUES ('$myusername','$mypassword','$mytype');";
 
 
       echo "We are here";
 
       mysqli_query($conn,$sql);
+=======
+      $sql = "INSERT INTO User(username,password,type) VALUES ('myusername','mypassword','')"
+>>>>>>> Stashed changes
    }
    
 ?>
