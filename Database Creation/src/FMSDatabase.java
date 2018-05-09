@@ -162,7 +162,75 @@ public class FMSDatabase {
 	System.out.println("Tuples into League table inserted");
 
 
-}
+	/* Club Table Creation */ /* ***************************************************************************************************/
+		try{
+			System.out.println("Dropping Club Table");
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Club";
+			dropStatement.executeUpdate(dropCustomer);
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		System.out.println("Club Table Dropped");
+
+		// creating tables
+		//Statement statement;
+
+		// creating club table
+
+		try{
+			System.out.println("Creating Club Table");
+			statement = connection.createStatement();
+			String user = "CREATE TABLE Club " +
+					"(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+					" name VARCHAR(20) NOT NULL, " +
+					" transfer_budget int NOT NULL, " +
+					" annual_wage_budget int NOT NULL, " +
+					" city VARCHAR(20) NOT NULL, " +
+					" establishment_date DATE NOT NULL," +
+					" value INT NOT NULL," +
+					" stadium VARCHAR(20) NOT NULL )" +
+					" ENGINE InnoDB";
+			statement.executeUpdate(user);
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		System.out.println("Club Table Created");
+
+		// Updating Tables
+		//PreparedStatement preparedStatement;
+
+		// insert tuples into club
+		try{
+			System.out.println("Inserting tuples into Club table");
+			String sql;
+			sql = "INSERT INTO Club " +
+					"(name, transfer_budget, annual_wage_budget, city, establishment_date,value,stadium )" +
+					"VALUES (?, ?, ?, ?, ? , ?, ? );";
+			String[][] tuples = new String[][]{{"Real Madrid", "1000000", "50000","Madrid", "1902-03-06", "10000000", "Santiago Bernabéu"}};
+
+			for (int i = 0; i < tuples.length; i++){
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, tuples[i][0]);
+				preparedStatement.setString(2, tuples[i][1]);
+				preparedStatement.setString(3, tuples[i][2]);
+				preparedStatement.setString(4, tuples[i][3]);
+				preparedStatement.setString(5, tuples[i][4]);
+				preparedStatement.setString(6, tuples[i][5]);
+				preparedStatement.setString(7, tuples[i][6]);
+				preparedStatement.executeUpdate();
+			}
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		System.out.println("Tuples into club table inserted");
+
+
+
+	}
 
 }
 
