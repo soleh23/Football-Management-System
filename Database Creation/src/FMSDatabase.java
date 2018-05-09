@@ -24,85 +24,6 @@ public class FMSDatabase {
 
 		// dropping existing tables
 		Statement dropStatement;
-/*
- * CREATE TABLE User(
-ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-25
-username varchar(25) NOT NULL,
-password varchar(25) NOT NULL,
-type int NOT NULL,
-UNIQUE (username)
-);*/
-		// dropping User table
-		/*try{
-			System.out.println("Dropping User Table");
-			dropStatement = connection.createStatement();
-			String dropCustomer = "DROP TABLE User";
-			dropStatement.executeUpdate(dropCustomer);
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		System.out.println("User Table Dropped");
-
-
-		// creating tables
-		Statement statement;
-
-		// creating customer table
-		try{
-			System.out.println("Creating User Table");
-			statement = connection.createStatement();
-			String user = "CREATE TABLE User " +
-					"(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
-					" username VARCHAR(25) NOT NULL, " +
-					" password VARCHAR(25) NOT NULL, " +
-					" type VARCHAR(10) NOT NULL, " +
-					" UNIQUE (username)) " +
-					" ENGINE InnoDB";
-			statement.executeUpdate(user);
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		System.out.println("User Table Created");
-
-
-		// Updating Tables
-		PreparedStatement preparedStatement;
-
-		// insert tuples into customer
-		try{
-			System.out.println("Inserting tuples into User table");
-			String sql;
-			sql = "INSERT INTO User " +
-					"(username, password, type)" +
-					"VALUES (?, ?, ?);";
-			String[][] tuples = new String[][]{{"kobramehmet", "iyibayramlar", "admin"},
-												{"cssdemir", "css", "director"},
-												{"shamil", "bootstrap", "coach"},
-												{"soleh", "soleh98", "fan"},
-												{"selena", "gomez", "player"},
-												{"elon", "musk", "guest"},
-												{"john", "john", "agent"}};
-
-			for (int i = 0; i < tuples.length; i++){
-				preparedStatement = connection.prepareStatement(sql);
-				preparedStatement.setString(1, tuples[i][0]);
-				preparedStatement.setString(2, tuples[i][1]);
-				preparedStatement.setString(3, tuples[i][2]);
-				preparedStatement.executeUpdate();
-			}
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		System.out.println("Tuples into User table inserted");
-
-	}
-	*/
-
-
 
 	try{
 		System.out.println("Dropping Player Table");
@@ -155,7 +76,7 @@ UNIQUE (username)
 		sql = "INSERT INTO Player " +
 				"(username, password, type, name, surname, age, salary, nationality, birthdate)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-		String[][] tuples = new String[][]{{"kobramehmet", "iyibayramlar", "admin","Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10"}};
+		String[][] tuples = new String[][]{{"kobramehmet", "iyibayramlar", "Player","Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10"}};
 
 		for (int i = 0; i < tuples.length; i++){
 			preparedStatement = connection.prepareStatement(sql);
@@ -175,6 +96,71 @@ UNIQUE (username)
 		System.out.println(e);
 	}
 	System.out.println("Tuples into Player table inserted");
+	
+/* League Table Creation */ /* ***************************************************************************************************/
+	
+	try{
+		System.out.println("Dropping League Table");
+		dropStatement = connection.createStatement();
+		String dropCustomer = "DROP TABLE League";
+		dropStatement.executeUpdate(dropCustomer);
+	}
+	catch (Exception e){
+		System.out.println(e);
+	}
+	System.out.println("League Table Dropped");
+
+
+	// creating tables
+	//Statement statement;
+
+	// creating customer table
+	try{ 
+		System.out.println("Creating League Table");
+		statement = connection.createStatement();
+		String user = "CREATE TABLE League " +
+				"(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+				" champion VARCHAR(50) NOT NULL, " +
+				" name VARCHAR(20) NOT NULL, " +
+				" start_date DATE NOT NULL, " +
+				" end_date DATE NOT NULL, " +
+				" countryName VARCHAR(20) NOT NULL)" +
+				" ENGINE InnoDB";
+		statement.executeUpdate(user);
+	}
+	catch (Exception e){
+		System.out.println(e);
+	}
+	System.out.println("League Table Created");
+
+
+	// Updating Tables
+	//PreparedStatement preparedStatement;
+
+	// insert tuples into customer
+	try{
+		System.out.println("Inserting tuples into League table");
+		String sql;
+		sql = "INSERT INTO League " +
+				"(champion, name, start_date, end_date, countryName)" +
+				"VALUES (?, ?, ?, ?, ?);";
+		String[][] tuples = new String[][]{{"Madrid", "La Liga", "2001-11-11","2002-11-11", "Spain"}};
+
+		for (int i = 0; i < tuples.length; i++){
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, tuples[i][0]);
+			preparedStatement.setString(2, tuples[i][1]);
+			preparedStatement.setString(3, tuples[i][2]);
+			preparedStatement.setString(4, tuples[i][3]);
+			preparedStatement.setString(5, tuples[i][4]);
+			preparedStatement.executeUpdate();
+		}
+	}
+	catch (Exception e){
+		System.out.println(e);
+	}
+	System.out.println("Tuples into League table inserted");
+
 
 }
 
