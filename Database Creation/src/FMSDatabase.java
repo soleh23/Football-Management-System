@@ -48,15 +48,13 @@ public class FMSDatabase {
 					"(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
 					" username VARCHAR(25) NOT NULL, " +
 					" password VARCHAR(25) NOT NULL, " +
-					" type VARCHAR(10) NOT NULL, " +
 					" name VARCHAR(20) NOT NULL, " +
 					" surname VARCHAR(20) NOT NULL, " +
 					" age INT NOT NULL, " +
 					" salary INT NOT NULL, " +
 					" nationality VARCHAR(15) NOT NULL, " +
 					" birthdate DATE NOT NULL, " +
-					" UNIQUE (username), " +
-					" FOREIGN KEY(ID) REFERENCES User(Id))" +
+					" UNIQUE (username))" +
 					" ENGINE InnoDB";
 			statement.executeUpdate(user);
 		}
@@ -74,9 +72,9 @@ public class FMSDatabase {
 			System.out.println("Inserting tuples into Player table");
 			String sql;
 			sql = "INSERT INTO Player " +
-					"(username, password, type, name, surname, age, salary, nationality, birthdate)" +
-					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-			String[][] tuples = new String[][]{{"kobramehmet", "iyibayramlar", "Player","Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10"}};
+					"(username, password, name, surname, age, salary, nationality, birthdate)" +
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			String[][] tuples = new String[][]{{"kobramehmet", "iyibayramlar", "Pakize", "Yildirim", "18", "100","Kurt", "2000-10-10"}};
 
 			for (int i = 0; i < tuples.length; i++){
 				preparedStatement = connection.prepareStatement(sql);
@@ -88,7 +86,6 @@ public class FMSDatabase {
 				preparedStatement.setString(6, tuples[i][5]);
 				preparedStatement.setString(7, tuples[i][6]);
 				preparedStatement.setString(8, tuples[i][7]);
-				preparedStatement.setString(9, tuples[i][8]);
 				preparedStatement.executeUpdate();
 			}
 		}
