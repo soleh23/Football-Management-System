@@ -6,6 +6,14 @@
     box-sizing: border-box;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+table,th,td {
+    border: 1px solid black;
+}
+
 body {
     font-family: Arial;
     padding: 10px;
@@ -49,21 +57,40 @@ body {
 /* Left column */
 .leftcolumn {   
     float: left;
-    width: 25%;
+    width: 15%;
+}
+
+.clubinfo{
+   float:right;
+   width: 50%;
+}
+
+.matches 
+{
+   padding-right: 30px;
 }
 
 /* Right column */
 .rightcolumn {
     float: left;
-    width: 75%;
+    width: 50%;
     background-color: #f1f1f1;
     padding-left: 20px;
+}
+
+.rightcolumn2 
+{
+    float: left;
+    padding-left: 50px;
+    width: 25%;
+    background-color: #f1f1f1;
+
 }
 
 /* Fake image */
 .fakeimg {
     background-color: #aaa;
-    width: 100%;
+    width: 60%;
     padding: 20px;
 }
 
@@ -72,6 +99,11 @@ body {
     background-color: white;
     padding: 20px;
     margin-top: 20px;
+}
+
+.scoreBlank 
+{
+   padding:20px;
 }
 
 /* Clear floats after the columns */
@@ -149,53 +181,120 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
   <h1>Football Management System</h1>
 </div>
 
-<div class="topnav">
-  <a href="#">Home       </a>
-  <a href="#">Settings</a>
+  <div class="topnav">
+    <a href="#">Home       </a>
+    <a href="#">Settings</a>
 
 
-  <a href="#" style="float:right">Search</a>
+    <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
-
-</div>
-
-<div class="row">
-  <div class="leftcolumn">
-	<!--<div class="card">
-      <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-    </div>-->
-    
-
-    	 <ul id="sideBarStyle">
-    	   <li><a class="active" href="#">Countries</a></li>
-    	   <li><a href="#">Leagues</a></li>
-    	   <li><a href="#">Clubs</a></li>
-    	   <li><a href="#">Transfer News</a></li>
-         <li><a href="#">Matches</a></li>
-         <li><a href="#">Subscriptions</a></li>
-         <li><a href="#">Players</a></li>
-    	 </ul>
+    <input type ="text" placeholder="Search..." style ="float:right">
 
   </div>
 
 
-  <div class="leftcolumn">
-    <div class="inf" style="height:200px; width: 350px">inf</div>
-  <div class="rightcolumn">
-    <div class="card">
-      <h2>Favorite Team</h2>
-      <div class="fakeimg" style="height:200px; width: 350px">Image</div>
+  <div>
+
+  <div class="row">
+    <div class="leftcolumn">
+  	<!--<div class="card">
+        <h2>About Me</h2>
+        <div class="fakeimg" style="height:100px;">Image</div>
+        <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+      </div>-->
       
-      <p>Some text..</p>
-      <p>Players: <br> Player1</p>
-    </div>
-  </div>
-</div>
 
- 
+      	 <ul id="sideBarStyle">
+      	   <li><a class="active" href="#">Countries</a></li>
+      	   <li><a href="#">Leagues</a></li>
+      	   <li><a href="#">Clubs</a></li>
+      	   <li><a href="#">Transfer News</a></li>
+           <li><a href="#">Matches</a></li>
+           <li><a href="#">Subscriptions</a></li>
+           <li><a href="#">Players</a></li>
+      	 </ul>
+
+    </div>
+
+
+
+    
+  
+    <div class="rightcolumn">
+             <div class="card">
+                <h2>Favorite Team</h2>
+                   <div class = "clubinfo">
+                         <ul>
+                              <li style="padding-bottom: 6px"> Director: </li>
+
+                              <li style="padding-bottom: 6px"> Coach:    </li>
+
+                              <li> Stadium:    </li>
+
+                         </ul>
+                   </div>
+                 <div class="fakeimg" style="height:200px; width: 350px">Image</div>
+
+              
+                 <div class = "players">
+                      <ul>
+                          <li>  Players </li>
+
+                     </ul>
+                 </div>
+
+                
+
+             </div>
+
+    </div>
+
+     <div class="rightcolumn2">
+
+                <div>
+                     <h2> Recent Matches </h2>
+
+                </div>
+
+                <div class="matches">
+
+                    <table>
+                        <thead> 
+                             <tr>    
+                                  <th style="padding-left: 3px; padding-right:3px">  Home Team    </th>
+                                  <th class ="scoreBlank">               </th>
+                                  <th style="padding-left: 3px; padding-right:3px">  Away Team    </th>
+                             </tr>
+
+                        </thead>
+
+                        <tbody>  
+
+                                 <tr> 
+                                     <td style="padding-left: 4px" > Real Madrid </td>
+                                     <td class="scoreBlank"> 1 : 1  </td>
+                                     <td style="padding-left: 4px" > Barcelona   </td>
+                                 </tr>
+
+
+                                 <tr>       </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+     </div>
+          
+
+      
+        
+  </div>
+
+   
+
+ </div>
 
 </body>
 </html>
