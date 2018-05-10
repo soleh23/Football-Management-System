@@ -155,8 +155,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+    float: none;
+    width: 100%;
 }
 
 
@@ -194,9 +194,9 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="row">
   
-  <h2>Contract Extension</h2>
+  <h2>Clubs</h2>
 <div class="btn-group">
-  <a href="ContractExtensionPage.html" target="_self">
+    <a href="ContractExtensionPage.html" target="_self">
       <button>Contract Situations</button>
     </a>
 
@@ -204,24 +204,28 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
         <button >Extend Contracts</button>
     </a>
 </div>
-<table>
-<tr>
-  <th>Name</th>
-    <th>New Expiration Date</th>
-    <th>Status</th>
+        <strong>  Player     </strong>
+            <select>
+                 <option value="player0">Hasan Ali Kaldirim</option>
+                 <option value="plyer1">Oguz Han</option>
+            </select>
 
-  <tr>
-    <td>Neymar</td>
-    <td>2.2.2022</td>
-    <td> ok </td>
-  </tr>
-  <tr>
-    <td>Oguzhan</td>
-    <td>10.1.2021</td>
-    <td>no</td>
-  </tr>
-  
-</table>
+            
+            
+
+
+    <div class="form-group">
+        <div class="input-group">
+           <strong> End Date:     </strong>
+           <form action="/action_page.php">
+           <input type="date" name="date">           
+         </form>
+        </div>
+    </div>
+
+    <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Done">
+    </div>
   
 </div>
 </body>
