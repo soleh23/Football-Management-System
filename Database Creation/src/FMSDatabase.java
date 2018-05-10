@@ -24,15 +24,7 @@ public class FMSDatabase {
 
 		// dropping existing tables
 		Statement dropStatement;
-/*
- * CREATE TABLE User(
-ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-25
-username varchar(25) NOT NULL,
-password varchar(25) NOT NULL,
-type int NOT NULL,
-UNIQUE (username)
-);*/
+
 		// dropping User table
 		try{
 			System.out.println("Dropping User Table");
