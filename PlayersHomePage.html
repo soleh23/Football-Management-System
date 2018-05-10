@@ -5,20 +5,6 @@
 * {
     box-sizing: border-box;
 }
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
 
 body {
     font-family: Arial;
@@ -68,13 +54,24 @@ body {
 
 /* Right column */
 .rightcolumn {
-    float: right;
+    float: left;
     width: 75%;
     background-color: #f1f1f1;
     padding-left: 20px;
 }
+.rightcolumn2 {
+    float: right;
+    width: 35%;
+    background-color: #f1f1f1;
+    padding-left: 20px;
+}
 
-
+/* Fake image */
+.fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+}
 
 /* Add a card effect for articles */
 .card {
@@ -170,30 +167,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="row">
-  <div class ="rightcolumn">
-  <h2>Clubs</h2>
-
-<table>
-<tr>
-  <th>Name</th>
-    <th>City</th>
-    <th>Value</th>
-</tr>
-  <tr>
-    <td>Real Madrid</td>
-    <td>Madrid</td>
-    <td>800000000$</td>
-  </tr>
-  <tr>
-    <td>Galatasaray</td>
-    <td>Istanbul</td>
-    <td>200000000$</td>
-  </tr>
   
-</table>
-  
-</div>
- 
   <div class="leftcolumn">
 	<!--<div class="card">
       <h2>About Me</h2>
@@ -203,18 +177,41 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
     	 <ul id="sideBarStyle">
+        <ul id="sideBarStyle">
          <li><a class="active" href="#">Countries</a></li>
          <li><a href="CountriesLeaguePage.html">League</a></li>
          <li><a href="ClubsPage.html">Clubs</a></li>
          <li><a href="TransferNewsPage.html">Transfer News</a></li>
          <li><a href="GuestPage.html">Matches</a></li>
          <li><a href="playersPage.html">Players</a></li>
-       </ul>
+         <li><a href="TransferNewsPage.html">Transfers</a></li>
+         <li><a href="#">Train</a></li>
+         <li><a href="#">Players Transfer</a></li>
+         <li><a href="#">My Transfers</a></li>
+    	 </ul>
 
 
   </div>
 
 
+  <div class="rightcolumn">
+    
+    <div class="card">
+
+      <h2>Favorite Team</h2>
+      <div class="rightcolumn2">
+        <p>Name:<br>Surname:<br>Club :<br>City :<br>Salaray:<br> Salary :<br>Price :<br> </p>
+      </div>
+      <div class="fakeimg" style="height:200px; width: 350px">Image</div>
+      <div class="inf" style="height:200px; width: 350px">
+
+      <p>Info:</p>
+      <p>Players: <br> Player1</p>
+
+    </div>
+  </div>
+
+</div>
 
  
 

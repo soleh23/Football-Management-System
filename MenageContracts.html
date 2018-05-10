@@ -119,7 +119,30 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
    color: white;
 
 }
+.btn-group button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
 
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #7e4e41;
+}
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
@@ -169,54 +192,52 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 </div>
 
-<div class="row">
-  <div class ="rightcolumn">
-  <h2>Clubs</h2>
+	<select>
+            <option value="Player">Player </option>
+           
+    </select>
 
-<table>
-<tr>
-  <th>Name</th>
-    <th>City</th>
-    <th>Value</th>
-</tr>
-  <tr>
-    <td>Real Madrid</td>
-    <td>Madrid</td>
-    <td>800000000$</td>
-  </tr>
-  <tr>
-    <td>Galatasaray</td>
-    <td>Istanbul</td>
-    <td>200000000$</td>
-  </tr>
-  
-</table>
+    <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+    <input class="form-control" placeholder="Name" name="Name" type="text" autofocus>
+    </div>
+    </div>
+
+    <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+    <input class="form-control" placeholder="Sirname" name="Sirname" type="text" autofocus>
+    </div>
+    </div>
+
+    <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+    <input class="form-control" placeholder="Start Date" name="StartDate" type="text" autofocus>
+    </div>
+    </div>
+
+    <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+    <input class="form-control" placeholder="End Date" name="EndDate" type="text" autofocus>
+    </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Make Offer">
+    </div>
+
   
 </div>
- 
-  <div class="leftcolumn">
-	<!--<div class="card">
-      <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-    </div>-->
-    
-
-    	 <ul id="sideBarStyle">
-         <li><a class="active" href="#">Countries</a></li>
-         <li><a href="CountriesLeaguePage.html">League</a></li>
-         <li><a href="ClubsPage.html">Clubs</a></li>
-         <li><a href="TransferNewsPage.html">Transfer News</a></li>
-         <li><a href="GuestPage.html">Matches</a></li>
-         <li><a href="playersPage.html">Players</a></li>
-       </ul>
-
-
-  </div>
-
-
-
- 
-
 </body>
 </html>

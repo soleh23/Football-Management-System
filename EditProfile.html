@@ -1,30 +1,3 @@
-<?php
-   include('config.php');
-   session_start();
-
-   echo "Outside";
-   
-   if($_SERVER["REQUEST_METHOD"] == "POST") 
-   {
-
-      $myusername = mysqli_real_escape_string($conn,$_POST['username']);
-      $mypassword = mysqli_real_escape_string($conn,$_POST['password']);
-      $mytype = mysqli_real_escape_string($conn,$_POST['type']);
-
-<<<<<<< Updated upstream
-      $sql = "INSERT INTO User(username,password,type) VALUES ('$myusername','$mypassword','$mytype');";
-
-
-      echo "We are here";
-
-      mysqli_query($conn,$sql);
-=======
-      $sql = "INSERT INTO User(username,password,type) VALUES ('myusername','mypassword','')"
->>>>>>> Stashed changes
-   }
-   
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +36,7 @@
       <div class="col-sm-6 col-md-4 col-md-offset-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>  Sign up </strong>
+            <strong>  Edit Profile Page </strong>
           </div>
           <div class="panel-body">
             <form role="form" action="#" method="POST">
@@ -78,7 +51,7 @@
                         <span class="input-group-addon">
                           <i class="glyphicon glyphicon-user"></i>
                         </span> 
-                        <input class="form-control" placeholder="Name" name="name" type="text" autofocus>
+                        <input class="form-control" placeholder="Name" name="Name" type="text" autofocus>
                         
                       </div>
                     </div>
@@ -87,7 +60,7 @@
                         <span class="input-group-addon">
                           <i class="glyphicon glyphicon-user"></i>
                         </span> 
-                        <input class="form-control" placeholder="Surname" name="surname" type="text" autofocus>
+                        <input class="form-control" placeholder="Surname" name="Sirname" type="text" autofocus>
                     </div>
                     </div>
                     <div class="form-group">
@@ -95,7 +68,7 @@
                         <span class="input-group-addon">
                           <i class="glyphicon glyphicon-user"></i>
                         </span> 
-                        <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                        <input class="form-control" placeholder="Username" name="Username" type="text" autofocus>
                     </div>
                     </div>
                     <div class="form-group">
@@ -109,19 +82,19 @@
                     <div class="form-group">
                       <div class="input-group">
                         
-                        <input class="form-control" placeholder="Favorite Team" name="favoriteTeam" type="text" autofocus>
-                      </div>
+                        <input class="form-control" placeholder="Favorite Team" name="FavoriteTeam" type="text" autofocus>
                     </div>
-                   <div class="form-group">
-                       <select name = "type">
-                        <option value="Player">Player</option>
-                        <option value="Coach">Coach</option>
-                        <option value="Fan">Fan</option>
-                        <option value="Director">Director</option>
-                       </select>  
-                     </div>
+                    </div>
+                    <select>
+                     <option value="Player">Player</option>
+                     <option value="Coach">Coach</option>
+                     <option value="Fan">Fan</option>
+                     <option value="Director">Director</option>
+                     <option value="Agent">Agent</option>
+                    </select>
                     <div class="form-group">
-                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up">
+                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Save">
+                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Cancel">
                     </div>
                   </div>
                 </div>
