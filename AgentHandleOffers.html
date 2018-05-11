@@ -132,8 +132,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+  float: none;
+  width: 100%;
 }
 
 
@@ -170,45 +170,54 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="row">
   <div class ="rightcolumn">
-  <h2>League Table</h2>
+
+  <h2>Contract Extension</h2>
   
+<div class="btn-group">
+    <a href="AgentPage.html" target="_self">
+      <button>Handle Condtracts</button>
+    </a>
+
+    <a href="AgentHandleOffers.html" target="_self">
+        <button >Handle Offers</button>
+    </a>
+</div>
 
 <table>
 <tr>
-    <th>Rank</th>
-    <th>Team</th>
-    <th>Point</th>
-    <th>Played Mathches</th>
-    <th>Average</th>
+    <th>Name</th>
+    <th>From Club</th>
+    <th>To Club</th>
+    <th>Decision</th>
 </tr>
   <tr>
-    <td>1</td>
-    <td>Real Madrid</td>
-    <td>44</td>
-    <td>20</td>
-    <td>40</td>
+    <td>Hasan Ali</td>
+    <td>Fenerbahce</td>
+    <td>Liverpool</td>
+    <td><div class="btn-group">
+    <a>
+      <button>Yes</button>
+    </a>
+
+    <a>
+        <button >No</button>
+    </a>
+</div></td>
+    
   </tr>
-  <tr>
-    <td>2</td>
-    <td>Galatasaray</td>
-    <td>43</td>
-    <td>20</td>
-    <td>60</td>
-  </tr>
-  
 </table>
   
 </div>
  
   <div class="leftcolumn">
-	<!--<div class="card">
+  <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-    	 <ul id="sideBarStyle">
+       <ul id="sideBarStyle">
          <li><a class="active" href="CountriesPage.html">Countries</a></li>
          <li><a href="CountriesLeaguePage.html">League</a></li>
          <li><a href="ClubsPage.html">Clubs</a></li>
