@@ -367,8 +367,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="Admin'sMainPage.html">Home </a>
-  <a href="EditProfile.html">Settings</a>
+  <a href="AdminCreateLeague.php">Home </a>
+  
 
 
   <a href="#" style="float:right">Search</a>
