@@ -123,7 +123,8 @@ public class FMSDatabase {
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			String[][] tuples = new String[][]{{"cr7", "cr7", "Cristiano", "Ronaldo", "33", "80000000", "Portugal", "Forward", "1985-10-10", "1"},
 											{"messi", "messi", "Lionel", "Messi", "30", "79000000", "Argentina", "Forward", "1987-10-10", "2"},
-											{"grizman", "grizman", "Antuan", "Grizman", "27", "1000000", "France", "Forward", "1990-08-10", "1"}};
+											{"grizman", "grizman", "Antuan", "Grizman", "27", "1000000", "France", "Forward", "1990-08-10", "1"},
+											{"ramos", "ramos", "Sergio", "Ramos", "32", "5000000", "Spain", "Defender", "1986-08-10", "1"}};
 
 			for (int i = 0; i < tuples.length; i++){
 				preparedStatement = connection.prepareStatement(sql);
@@ -670,7 +671,8 @@ public class FMSDatabase {
 							"VALUES (?, ?, ?, ?);";
 					String[][] tuples = new String[][]{{"1", "1", "2009-09-01", null},
 														{"2", "2", "2000-09-01", null},
-														{"3", "3", "2005-10-07", null}};
+														{"3", "3", "2005-10-07", null},
+														{"1", "4", "2003-10-07", null},};
 
 					for (int i = 0; i < tuples.length; i++)
 					{
@@ -761,7 +763,8 @@ public class FMSDatabase {
 							"(playerID, directorID, agentID, bonus, expirationDate, status)" +
 							"VALUES (?, ?, ?, ?, ?, ?);";
 					String[][] tuples = new String[][]{{"1", "1", "1", "50000", "2023-10-20", "1"},
-														{"2", "2", "2", "45000", "2025-12-23", "1"}};
+														{"2", "2", "2", "45000", "2025-12-23", "1"},
+														{"4", "1", "1", "48000", "2021-12-23", "0"}};
 
 					for (int i = 0; i < tuples.length; i++)
 					{
