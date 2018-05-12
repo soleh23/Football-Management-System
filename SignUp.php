@@ -25,6 +25,10 @@
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			$favoriteteam = $_POST['favoriteteam'];
+			
+			$usernameValidQuery = "SELECT username FROM Fan WHERE Fan.username = '".$username."'";
+			$usernameValid = mysqli_query($connection, $usernameValidQuery);
+			
 			$favTeamQuery = "SELECT Club.ID FROM Club WHERE Club.name = '".$favoriteteam."'";
 			$favTeamID = mysqli_query($connection, $favTeamQuery);
 			if (mysqli_num_rows($favTeamID) == 0){
@@ -32,10 +36,23 @@
 				<script>alert("Please choose a valid club");</script>
 				<?php
 			}
+			else if (mysqli_num_rows($usernameValid) > 0){
+				?>
+				<script>alert("The username is taken");</script>
+				<?php
+			}
 			else{
 				$favTeamID = $favTeamID->fetch_object();
 				$updateFanQuery = "INSERT INTO Fan(username, password, name, surname, favTeamID) VALUES ('".$username."', '".$password."', '".$name."', '".$surname."', '".$favTeamID->ID."')";
 				mysqli_query($connection, $updateFanQuery);
+				
+				$fanIDQuery = "SELECT ID FROM Fan WHERE username = '".$username."'";
+				mysqli_query($connection, $updateFanQuery);
+				
+				$fanID = mysqli_query($connection, $fanIDQuery)->fetch_object();
+				$updateSubscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID->ID."', '".$favTeamID->ID."')";
+				mysqli_query($connection, $updateSubscribeQuery);
+				
 				?>
 				<script>alert("Sign UP Successful");</script>
 				<?php
