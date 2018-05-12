@@ -20,6 +20,13 @@
 		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
 		$players = mysqli_query($connection, $playersQuery);
 	}
+        
+        else if ($_SESSION['type'] == 'guest'){
+		$homeLink = "Matches.php";
+		
+		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID";
+		$players = mysqli_query($connection, $playersQuery);
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -230,8 +237,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan')?>
-				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+         <?php 
+          if ($_SESSION['type'] == 'fan'){?>
+         <li><a href="Subscriptions.php">Subscriptions</a></li>
+         <?php
+	}
+         ?>
+         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
 		 </ul>
 
 

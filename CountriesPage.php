@@ -20,6 +20,16 @@
 		$countriesQuery = "SELECT DISTINCT League.countryName as name FROM League, League_Club WHERE League.ID = League_Club.leagueID AND League_Club.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
 		$countries = mysqli_query($connection, $countriesQuery);
 	}
+        
+        else if ($_SESSION['type'] == 'guest'){
+		$homeLink = "Matches.php";
+		
+		$fanID = $_SESSION['id'];
+		$favTeamID = $_SESSION['favTeamID'];
+		
+		$countriesQuery = "SELECT DISTINCT name FROM Country";
+		$countries = mysqli_query($connection, $countriesQuery);
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -220,8 +230,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
          <li><a href="TransferNewsPage.php">Transfer News</a></li>
          <li><a href="Matches.php">Matches</a></li>
          <li><a href="playersPage.php">Players</a></li>
-			<?php if ($_SESSION['type'] == 'fan')?>
-				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+         <?php 
+          if ($_SESSION['type'] == 'fan'){?>
+         <li><a href="Subscriptions.php">Subscriptions</a></li>
+         <?php
+	}
+         ?>
+         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
        </ul>
 
 

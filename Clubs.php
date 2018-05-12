@@ -30,6 +30,13 @@
 		$clubsQuery = "SELECT * FROM Club";
 		$clubs = mysqli_query($connection, $clubsQuery);
 	}
+        
+        else if ($_SESSION['type'] == 'guest'){
+		$homeLink = "Matches.php"; // ???
+		
+		$clubsQuery = "SELECT * FROM Club";
+		$clubs = mysqli_query($connection, $clubsQuery);
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -213,7 +220,9 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     <th>Value</th>
 	<th></th>
 </tr>
-  <?php while ($row = mysqli_fetch_assoc($clubs)){ ?>
+  <?php 
+  if ($_SESSION['type'] != 'guest')
+      while ($row = mysqli_fetch_assoc($clubs)){ ?>
 			<tr>
 				<td><?php echo $row['name'] ?></td>
 				<td><?php echo $row['city']; ?></td>
@@ -243,6 +252,39 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				</td>
 			</tr>
 		<?php } ?>
+
+<?php 
+ if ($_SESSION['type'] == 'guest')
+      while ($row = mysqli_fetch_assoc($clubs)){ ?>
+			<tr>
+				<td><?php echo $row['name'] ?></td>
+				<td><?php echo $row['city']; ?></td>
+				<td><?php echo $row['value']; ?>$</td>
+				<td>
+					<?php
+						//$curTeamID = $row['ID'];
+						//$curTeamName = "subscribe".$curTeamID;
+						$curTeamQuery = "SELECT * FROM Clubs";
+						$curTeam = mysqli_query($connection, $curTeamQuery);
+						/*if (mysqli_num_rows($curTeam) == 0){ ?>
+							<form action = "#" method = "POST">
+								<input type = "hidden" name = "id" value = "<?=$curTeamID?>">
+								<input type = "submit" value = "Subscribe" name = "subscribe"/>
+							</form>
+						<?php }*/
+						/*else if ($curTeamID != $favTeamID){ ?>
+							<form action = "#" method = "POST">
+								<input type = "hidden" name = "id" value = "<?=$curTeamID?>">
+								<input type = "submit" value = "Subscribed" name = "subscribed"/>
+							</form>
+						<?php }*/
+						/*else { ?>
+							<input type = "submit" value = "Favorite Team" name = "favoriteteam" disabled/>
+						<?php }*/
+					?>
+				</td>
+			</tr>
+		<?php } ?>
 </table>
   
 </div>
@@ -262,8 +304,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan')?>
-				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+         <?php 
+          if ($_SESSION['type'] == 'fan'){?>
+         <li><a href="Subscriptions.php">Subscriptions</a></li>
+         <?php
+	}
+         ?>
+         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
 		 </ul>
 
 

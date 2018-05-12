@@ -5,13 +5,24 @@
 	$myPassword = "1ky0yl0r";
 	$myDB = "mehmet_turanboy";
 	$connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
+        
 	if ($_SESSION['loggedIn'] != true){
 		header("Location: login.php");
 		exit();
 	}
-	$fanID = $_SESSION['id'];
-	$clubsQuery = "SELECT DISTINCT Club.name as name FROM Subscribe, Club WHERE Subscribe.fanID = '".$fanID."' AND Subscribe.clubID = Club.ID";
-	$clubs = mysqli_query($connection, $clubsQuery);
+        
+        $homeLink = "#";
+	if ($_SESSION['type'] == 'fan'){
+		$homeLink = "FanHomePage.php";
+	
+                $fanID = $_SESSION['id'];
+                $clubsQuery = "SELECT DISTINCT Club.name as name FROM Subscribe, Club WHERE Subscribe.fanID = '".$fanID."' AND Subscribe.clubID = Club.ID";
+                $clubs = mysqli_query($connection, $clubsQuery);
+	}
+        
+
+        
+        
 ?>
 <!DOCTYPE html>
 <html>
@@ -214,7 +225,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
          <li><a href="TransferNewsPage.php">Transfer News</a></li>
          <li><a href="Matches.php">Matches</a></li>
          <li><a href="playersPage.php">Players</a></li>
+         <?php 
+          if ($_SESSION['type'] == 'fan'){?>
          <li><a href="Subscriptions.php">Subscriptions</a></li>
+         <?php
+	}
+         ?>
+         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
     	 </ul>
   </div>
   <div class="rightcolumn">

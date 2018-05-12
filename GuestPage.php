@@ -1,37 +1,14 @@
 <?php
-	session_start();
-	$host = "dijkstra.ug.bcc.bilkent.edu.tr";
-	$myUser = "mehmet.turanboy";
-	$myPassword = "1ky0yl0r";
-	$myDB = "mehmet_turanboy";
-	$connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
-	if ($_SESSION['loggedIn'] != true){
-		header("Location: login.php");
-		exit();
-	}
-	
-	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
-		$homeLink = "FanHomePage.php"; 
-		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
-		
-		$leaguesQuery = "SELECT DISTINCT name FROM League, League_Club WHERE League_Club.leagueID = League.ID AND League_Club.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
-		$leagues = mysqli_query($connection, $leaguesQuery);
-	}
-        
-        else if ($_SESSION['type'] == 'guest'){ // ?????
-		$homeLink = "Matches.php";
-		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
-		
-		$leaguesQuery = "SELECT DISTINCT name FROM League";
-		$leagues = mysqli_query($connection, $leaguesQuery);
-	}
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 ?>
-<!DOCTYPE html>
+
 <html>
 <head>
 <style>
@@ -192,8 +169,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href=<?php echo $homeLink; ?> >Home</a>
-  <a href="EditProfile.php">Settings</a>
+  <a href="#">Home </a>
+  <a href="EditProfile.html" style="float:middle">Sign up</a>
 
   <a href="#" style="float:right">Search</a>
 
@@ -203,14 +180,27 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="row">
   <div class ="rightcolumn">
-  <h2>Leagues</h2>
+  <h2>Recent Matches</h2>
 
 <table>
-<?php while ($row = mysqli_fetch_assoc($leagues)){ ?>
-			<tr>
-				<td><?php echo $row['name']; ?></td>
-			</tr>
-		<?php } ?>
+<tr>
+    <th>Host Team</th>
+    <th>Host Team's Score</th>
+    <th>Host Team's Score</th>
+    <th>Guest Team</th>
+</tr>
+  <tr>
+    <td>Real Madrid</td>
+    <td>1</td>
+    <td>0</td>
+    <td>PSG</td>
+  </tr>
+  <tr>
+    <td>Galatasaray</td>
+    <td>4</td>
+    <td>0</td>
+    <td>Barcelona</td>
+  </tr>
   
 </table>
   
@@ -218,28 +208,20 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
  
   <div class="leftcolumn">
 	<!--<div class="card">
-      <h2>About Me</h2><li><a href="playersPage.php">Players</a></li>
+      <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
-		 <li><a href="Clubs.php">Clubs</a></li>
-		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
-		 <li><a href="Matches.php">Matches</a></li>
-                 <li><a href="playersPage.php">Players</a></li>
-		 
-         <?php 
-          if ($_SESSION['type'] == 'fan'){?>
-         <li><a href="Subscriptions.php">Subscriptions</a></li>
-         <?php
-	}
-         ?>
-         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
-		 </ul>
+    	 <ul id="sideBarStyle">
+         <li><a class="active" href="CountriesPage.html">Countries</a></li>
+         <li><a href="CountriesLeaguePage.html">League</a></li>
+         <li><a href="ClubsPage.html">Clubs</a></li>
+         <li><a href="TransferNewsPage.html">Transfer News</a></li>
+         <li><a href="GuestPage.html">Matches</a></li>
+         <li><a href="playersPage.html">Players</a></li>
+       </ul>
 
 
   </div>
@@ -250,3 +232,5 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 </body>
 </html>
+
+

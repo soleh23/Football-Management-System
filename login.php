@@ -95,6 +95,13 @@
 	else if (isset($_POST['signup'])){
 		header("Location: SignUp.php");
 	}
+        
+        else if (isset($_POST['guest'])){
+		header("Location: Matches.php");
+                $_SESSION['loggedIn'] = true;
+                $_SESSION['type'] = "guest";
+	}
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -172,13 +179,14 @@
               </fieldset>
             </form>
           </div>
-          <div class="panel-footer ">
-             <a href="#" onClick=""> Forgot your password? </a>
-          </div>
-          <div class="panel-footer ">
-             <a href="#" onClick=""> Continue as a guesst. </a>
-          </div>
-                </div>
+         <form role="form" action="#" method="POST">
+            <div class="form-group">
+                <>      
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Forgot Password" name="forgotP">
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Countinue As a guest" name="guest">
+            </div>
+         </form>
+         </div>
       </div>
     </div>
   </div>

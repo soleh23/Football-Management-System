@@ -51,6 +51,39 @@
 			$elementsNo = $elementsNo + 1;
 		}
 	}
+        
+	else if ($_SESSION['type'] == 'guest'){
+		$homeLink = "Matches.php"; // ????????????????????????
+		
+		$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game";
+		$clubs = mysqli_query($connection, $clubsQuery);
+		
+		$homeTeams = array();
+		$homeScores = array();
+		$awayTeams = array();
+		$awayScores = array();
+		$elementsNo = 0;
+                
+		while ($row = mysqli_fetch_assoc($clubs)){ 
+			$curHomeNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID1']."'";
+			$curHomeName = mysqli_query($connection, $curHomeNameQuery)->fetch_object();
+			array_push($homeTeams, $curHomeName->name);
+			
+			$curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+			$curHomeGoals = mysqli_query($connection, $curHomeGoalsQuery)->fetch_object();
+			array_push($homeScores, $curHomeGoals->goals);
+			
+			$curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+			$curAwayGoals = mysqli_query($connection, $curAwayGoalsQuery)->fetch_object();
+			array_push($awayScores, $curAwayGoals->goals);
+			
+			$curAwayNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID2']."'";
+			$curAwayName = mysqli_query($connection, $curAwayNameQuery)->fetch_object();
+			array_push($awayTeams, $curAwayName->name);
+			
+			$elementsNo = $elementsNo + 1;
+		}
+	}
 
 ?>
 <!DOCTYPE html>
@@ -264,8 +297,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan')?>
-				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+         <?php 
+          if ($_SESSION['type'] == 'fan'){?>
+         <li><a href="Subscriptions.php">Subscriptions</a></li>
+         <?php
+	}
+         ?>
+         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
 		 </ul>
 
 
