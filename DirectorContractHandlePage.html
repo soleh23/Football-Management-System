@@ -5,6 +5,20 @@
 * {
     box-sizing: border-box;
 }
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 
 body {
     font-family: Arial;
@@ -54,24 +68,13 @@ body {
 
 /* Right column */
 .rightcolumn {
-    float: left;
+    float: right;
     width: 75%;
     background-color: #f1f1f1;
     padding-left: 20px;
 }
-.rightcolumn2 {
-    float: right;
-    width: 55%;
-    background-color: #f1f1f1;
-    padding-left: 20px;
-}
 
-/* Fake image */
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
+
 
 /* Add a card effect for articles */
 .card {
@@ -116,7 +119,30 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
    color: white;
 
 }
+.btn-group button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
 
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #7e4e41;
+}
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
@@ -129,8 +155,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+    float: none;
+    width: 100%;
 }
 
 
@@ -156,8 +182,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="#">Home </a>
-  <a href="EditProfile.html">Settings</a>
+    <a href="Admin'sMainPage.html">Home </a>
+    <a href="EditProfile.html">Settings</a>
 
 
   <a href="#" style="float:right">Search</a>
@@ -167,16 +193,15 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="row">
-  
-  <div class="leftcolumn">
-	<!--<div class="card">
+    <div class="leftcolumn">
+    <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-    	 <ul id="sideBarStyle">
+         <ul id="sideBarStyle">
         <ul id="sideBarStyle">
          <li><a class="active" href="CountriesPage.html">Countries</a></li>
          <li><a href="CountriesLeaguePage.html">League</a></li>
@@ -187,54 +212,43 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
          <li><a href="TransferRequest.html">Transfer</a></li>
          <li><a href="DirectorContractHandlePage.html">Menage Contracts</a></li>
          
-    	 </ul>
+         </ul>
 
 
   </div>
-
-
   <div class="rightcolumn">
-    
-    <div class="card">
+  
+  <h2>Contract Information Table</h2>
 
-      <h2>Favorite Team</h2>
-      <div class="rightcolumn2">
-        <p>Coach:<br>Stadium:<br>City:<br>Leagues:</p>
-      </div>
-      <div class="fakeimg" style="height:200px; width: 350px">Image</div>
-      <div class="rightcolumn2">
-        <p>Recent Matches:</p>
-        <table>
-           <thead> 
-              <tr>    
-                  <th style="padding-left: 3px; padding-right:3px">  Home Team    </th>
-                  <th class ="scoreBlank">               </th>
-                  <th style="padding-left: 3px; padding-right:3px">  Away Team    </th>
-              </tr>
-           </thead>
+ <h2>Request Contract Extension</h2>
+<div class="btn-group">
+    <a href="DirectorExtendContract.html" target="_self">
+        <button >Extend Contracts</button>
+    </a>
 
-      <tbody>  
-
-               <tr> 
-                   <td style="padding-left: 4px" > Real Madrid </td>
-                  <td class="scoreBlank"> 1 : 1  </td>
-                   <td style="padding-left: 4px" > Barcelona   </td>
-                  </tr>
-      <tr>       </tr>
-                        </tbody>
-                    </table>
-      </div>
-      <div class="inf" style="height:200px; width: 350px">
-
-      <p>Info: </p>
-      <p>Budget: <br> Annual Wage Budget:<br>Transfer Budget:</p>
-
-    </div>
-  </div>
-
+  
 </div>
+        
+<table>
+<tr>
+  <th>Name</th>
+    <th>Suraname</th>
+    <th>Status</th>
+</tr>
+  <tr>
+    <td>Hasan Ali</td>
+    <td>Kaldirim</td>
+    <td>Accepted</td>
+  </tr>
+  
+  
+</table>
+            
+            
 
- 
 
+    
+  </div>
+</div>
 </body>
 </html>
