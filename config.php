@@ -1,8 +1,8 @@
 <?php
 $hostname='dijkstra.ug.bcc.bilkent.edu.tr';
-$username='demir.topaktas';
-$password='1cbvndb';
-$dbname='demir_topaktas';
+$username='mehmet.turanboy';
+$password='1ky0yl0r';
+$dbname='mehmet_turanboy';
 
 // create connection
 $conn = mysqli_connect($hostname, $username, $password, $dbname);
