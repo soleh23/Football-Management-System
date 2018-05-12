@@ -218,6 +218,29 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
                         
                       </div>
                     </div>
+
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="glyphicon glyphicon-user"></i>
+                        </span>
+                         <strong>  Surname:     </strong>
+                        <input class="form-control" placeholder="Surname" name="Surname" type="text" autofocus>
+                        
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="glyphicon glyphicon-user"></i>
+                        </span>
+                         <strong>  Age:     </strong>
+                        <input class="form-control" placeholder="Name" name="name" type="text" autofocus>
+                        
+                      </div>
+                    </div>
+
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon">
@@ -232,8 +255,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
                         <span class="input-group-addon">
                           <i class="glyphicon glyphicon-user"></i>
                         </span> 
-                        <strong>  Annual Wage Budget:     </strong>
-                        <input class="form-control" placeholder="Annual Wage Budget" name="annualwagebudget" type="text" autofocus>
+                        <strong>  Sallary:     </strong>
+                        <input class="form-control" placeholder="Sallary" name="Sallary" type="text" autofocus>
                     </div>
                     </div>
                     <endtime class="form-group">
@@ -245,14 +268,31 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
                         <input class="form-control" placeholder="Password" name="password" type="text" value="">
                       </div>
                     </div>
+
+                    <strong>  Nationality:     </strong>
+                    <select name = "Nationality" >
+                         <option value="Azeri">Azeri</option>
+                         <option value="Turk">Turk</option>
+                         <option value="Tacik">Tacik</option>
+                    </select>
                     
                     <strong>  Type:     </strong>
-                    <select>
-                         <option value="Player">Coach</option>
-                         <option value="Coach">Director</option>
+                    <select name="Type">
+                         <option value="Coach">Coach</option>
+                         <option value="Director">Director</option>
                          <option value="Player">Player</option>
-                         <option value="Player">Agent</option>
+                         <option value="Agent">Agent</option>
                     </select>
+
+
+                    <strong>  Position:     </strong>
+                    <select name="Position">
+                         <option value="Goalkeeper">Goalkeeper</option>
+                         <option value="Defance">Defance</option>
+                         <option value="Middlefieldplayer">Middle Field Player</option>
+                         <option value="Striker">Striker</option>
+                    </select>
+
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon">
@@ -270,6 +310,37 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
                         </span> 
                         <strong>  Agent:     </strong>
                         <input class="form-control" placeholder="Agent" name="agent" type="text" autofocus>
+                    </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <div class="input-group">
+                        <strong> Birth Date:     </strong>
+                        <form action="/action_page.php">
+                        <input type="date" name="BirthDate">           
+                     </form>
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="glyphicon glyphicon-user"></i>
+                        </span> 
+                        <strong>  Agent id:     </strong>
+                        <input class="form-control" placeholder="Agent id" name="agent_id" type="text" autofocus>
+                    </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="glyphicon glyphicon-user"></i>
+                        </span> 
+                        <strong>  Club id:     </strong>
+                        <input class="form-control" placeholder="Club id" name="club_id" type="text" autofocus>
                     </div>
                     </div>
                     
@@ -297,7 +368,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
     	 <ul id="sideBarStyle">
-        <li><a class="active" href="CountriesPage.html">Countries</a></li>
+         <li><a class="active" href="CountriesPage.html">Countries</a></li>
          <li><a href="LeagueTablePage.html">League</a></li>
          <li><a href="ClubsPage.html">Clubs</a></li>
          <li><a href="TransferNewsPage.html">Transfer News</a></li>
