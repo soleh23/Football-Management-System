@@ -780,91 +780,6 @@ public class FMSDatabase {
 				}
 				System.out.println("Tuples into Contract table inserted");
 				
-				//creating League_Sponsor table
-				try{
-					System.out.println("Creating League_Sponsor Table");
-					statement = connection.createStatement();
-					String user = "CREATE TABLE League_Sponsor " +
-							"(leagueID INT NOT NULL, " +
-							" sponsorName VARCHAR(30) NOT NULL, " +
-							" FOREIGN KEY (leagueID) REFERENCES League(ID)," +
-							" PRIMARY KEY (leagueID, sponsorName))" +
-							" ENGINE InnoDB";
-
-					statement.executeUpdate(user);
-				}
-				catch (Exception e){
-					System.out.println(e);
-				}
-				System.out.println("League_Sponsor Table Created");
-
-				// insert tuples into League_Sponsor
-				try{
-					System.out.println("Inserting tuples into League_Sponsor table");
-					String sql;
-					sql = "INSERT INTO League_Sponsor " +
-							"(leagueID, sponsorName)" +
-							"VALUES (?, ?);";
-					String[][] tuples = new String[][]{{"1", "Lays"},
-														{"1", "Adiddas"},
-														{"2", "Wolkswagen"},
-														{"3", "Nike"},
-														{"3", "Lays"}};
-
-					for (int i = 0; i < tuples.length; i++)
-					{
-						preparedStatement = connection.prepareStatement(sql);
-						preparedStatement.setString(1, tuples[i][0]);
-						preparedStatement.setString(2, tuples[i][1]);
-						preparedStatement.executeUpdate();
-					}
-				}
-				catch (Exception e){
-					System.out.println(e);
-				}
-				System.out.println("Tuples into League_Sponsor table inserted");
-				
-				//creating Club_Sponsor table
-				try{
-					System.out.println("Creating Club_Sponsor Table");
-					statement = connection.createStatement();
-					String user = "CREATE TABLE Club_Sponsor " +
-							"(clubID INT NOT NULL, " +
-							" sponsorName VARCHAR(30) NOT NULL, " +
-							" FOREIGN KEY (clubID) REFERENCES Club(ID)," +
-							" PRIMARY KEY (clubID, sponsorName))" +
-							" ENGINE InnoDB";
-
-					statement.executeUpdate(user);
-				}
-				catch (Exception e){
-					System.out.println(e);
-				}
-				System.out.println("Club_Sponsor Table Created");
-
-				// insert tuples into Club_Sponsor
-				try{
-					System.out.println("Inserting tuples into Club_Sponsor table");
-					String sql;
-					sql = "INSERT INTO Club_Sponsor " +
-							"(clubID, sponsorName)" +
-							"VALUES (?, ?);";
-					String[][] tuples = new String[][]{{"1", "Adiddas"},
-														{"2", "Nike"}};
-
-					for (int i = 0; i < tuples.length; i++)
-					{
-						preparedStatement = connection.prepareStatement(sql);
-						preparedStatement.setString(1, tuples[i][0]);
-						preparedStatement.setString(2, tuples[i][1]);
-						preparedStatement.executeUpdate();
-					}
-				}
-				catch (Exception e){
-					System.out.println(e);
-				}
-				System.out.println("Tuples into Club_Sponsor table inserted");
-				
 				//creating Admin table
 				try{
 					System.out.println("Creating Admin Table");
@@ -973,28 +888,6 @@ public class FMSDatabase {
 			String dropCustomer = "DROP TABLE Admin";
 			dropStatement.executeUpdate(dropCustomer);
 			System.out.println("Admin Table Dropped");
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		
-		try
-		{
-			dropStatement = connection.createStatement();
-			String dropCustomer = "DROP TABLE Club_Sponsor";
-			dropStatement.executeUpdate(dropCustomer);
-			System.out.println("Club_Sponsor Table Dropped");
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		
-		try
-		{
-			dropStatement = connection.createStatement();
-			String dropCustomer = "DROP TABLE League_Sponsor";
-			dropStatement.executeUpdate(dropCustomer);
-			System.out.println("League_Sponsor Table Dropped");
 		}
 		catch (Exception e){
 			System.out.println(e);
