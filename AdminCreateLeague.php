@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
    include('config.php');
    session_start();
@@ -50,16 +51,26 @@
    }
 ?>
 
+=======
+<?php?>
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
 <!DOCTYPE html>
 <html>
 <head>
 <style>
+<<<<<<< HEAD
 * 
 {
     box-sizing: border-box;
 }
 .btn-group button 
 {
+=======
+* {
+    box-sizing: border-box;
+}
+.btn-group button {
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
     background-color: #4CAF50; /* Green background */
     border: 1px solid green; /* Green border */
     color: white; /* White text */
@@ -68,6 +79,7 @@
     float: left; /* Float the buttons side by side */
 }
 
+<<<<<<< HEAD
 .btn-group .button1 
 {
   background-color: #008CBA;
@@ -75,6 +87,9 @@
 
 .btn-group button:not(:last-child) 
 {
+=======
+.btn-group button:not(:last-child) {
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
     border-right: none; /* Prevent double borders */
 }
 
@@ -246,6 +261,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="btn-group">
+<<<<<<< HEAD
               <a href="AdminCreateLeague.php" target="_self">
               <button class ="button1">Create League</button>
               </a>
@@ -256,6 +272,18 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
               <button>Create Account</button>
               </a>
               <a href="AdminCreateGame.php" target="_self">
+=======
+              <a href="AdminCreateLeague.html" target="_self">
+              <button>Create League</button>
+              </a>
+              <a href="AdminCreateClub.html" target="_self">
+              <button>Create Club</button>
+              </a>
+              <a href="AdminCreateAccount.html" target="_self">
+              <button>Create Account</button>
+              </a>
+              <a href="AdminCreateGame.html" target="_self">
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
               <button>Create Game</button>
               </a>
           </div>
@@ -282,18 +310,29 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
                     <div class="form-group">
                       <div class="input-group">
                         <strong>  Start Date:     </strong>
+<<<<<<< HEAD
                         <input type="date" name="start_date">           
+=======
+                        <form action="/action_page.php">
+                        <input type="date" name="startdate">           
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
                      </form>
                     </div>
                     </div>
                     <div class="form-group">
                       <div class="input-group">
                         <strong> End Date:</strong>
+<<<<<<< HEAD
                         <input type="date" name="end_date">           
+=======
+                        <form action="/action_page.php">
+                        <input type="date" name="enddate">           
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
                      </form>
                     </div>
                     </div>
                     
+<<<<<<< HEAD
                     <select name ="country">
                         <?php 
 
@@ -304,6 +343,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
                         ?>
                     
+=======
+                    <select>
+                     <option value="Player">Azerbeycan</option>
+                     <option value="Coach">Tukey</option>
+                     <option value="Fan">Tacikistan</option>
+>>>>>>> 93f066f07a3d7fee65a6a69410072ababe7630b4
                     </select>
                     <div class="form-group">
                       <input type="submit" class="btn btn-lg btn-primary btn-block" value="Done">

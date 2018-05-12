@@ -10,10 +10,10 @@
 	$fanID = $_SESSION['id'];
 	
 	if (isset($_POST['cancel'])){
-		header("Location: login.php");
+		header("Location: FanHomePage.php");
 	}
 	
-	if (isset($_POST['signup'])){
+	if (isset($_POST['save'])){
 		if (empty($_POST['name']) || empty ($_POST['surname']) || empty ($_POST['username']) || empty ($_POST['password']) || empty ($_POST['favoriteteam'])){
 			?>
 			<script>alert("Please fill out all the fields");</script>
@@ -25,10 +25,6 @@
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			$favoriteteam = $_POST['favoriteteam'];
-			
-			$usernameValidQuery = "SELECT username FROM Fan WHERE Fan.username = '".$username."'";
-			$usernameValid = mysqli_query($connection, $usernameValidQuery);
-			
 			$favTeamQuery = "SELECT Club.ID FROM Club WHERE Club.name = '".$favoriteteam."'";
 			$favTeamID = mysqli_query($connection, $favTeamQuery);
 			if (mysqli_num_rows($favTeamID) == 0){
@@ -36,25 +32,12 @@
 				<script>alert("Please choose a valid club");</script>
 				<?php
 			}
-			else if (mysqli_num_rows($usernameValid) > 0){
-				?>
-				<script>alert("The username is taken");</script>
-				<?php
-			}
 			else{
 				$favTeamID = $favTeamID->fetch_object();
-				$updateFanQuery = "INSERT INTO Fan(username, password, name, surname, favTeamID) VALUES ('".$username."', '".$password."', '".$name."', '".$surname."', '".$favTeamID->ID."')";
+				$updateFanQuery = "UPDATE Fan SET username = '".$username."', password = '".$password."', name = '".$name."', surname = '".$surname."', favTeamID = '".$favTeamID->ID."' WHERE ID = '".$fanID."'";
 				mysqli_query($connection, $updateFanQuery);
-				
-				$fanIDQuery = "SELECT ID FROM Fan WHERE username = '".$username."'";
-				mysqli_query($connection, $updateFanQuery);
-				
-				$fanID = mysqli_query($connection, $fanIDQuery)->fetch_object();
-				$updateSubscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID->ID."', '".$favTeamID->ID."')";
-				mysqli_query($connection, $updateSubscribeQuery);
-				
 				?>
-				<script>alert("Sign UP Successful");</script>
+				<script>alert("Update Successful");</script>
 				<?php
 				header("Location: login.php");
 			}
@@ -99,7 +82,7 @@
       <div class="col-sm-6 col-md-4 col-md-offset-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>  Sign up as Fan</strong>
+            <strong>  Edit Profile Page </strong>
           </div>
           <div class="panel-body">
             <form role="form" action="#" method="POST">
@@ -149,8 +132,8 @@
                     </div>
                     </div>
                     <div class="form-group">
-                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up" name="signup" >
-					  <input type="submit" class="btn btn-lg btn-primary btn-block" value="Cancel" name = "cancel">
+                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Save" name = "save">
+                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Cancel" name = "cancel">
                     </div>
                   </div>
                 </div>

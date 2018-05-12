@@ -122,7 +122,8 @@ public class FMSDatabase {
 					"(username, password, name, surname, age, salary, nationality, position, birthdate, agent_ID)" +
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			String[][] tuples = new String[][]{{"cr7", "cr7", "Cristiano", "Ronaldo", "33", "80000000", "Portugal", "Forward", "1985-10-10", "1"},
-											{"messi", "messi", "Lionel", "Messi", "30", "79000000", "Argentina", "Forward", "1987-10-10", "2"}};
+											{"messi", "messi", "Lionel", "Messi", "30", "79000000", "Argentina", "Forward", "1987-10-10", "2"},
+											{"grizman", "grizman", "Antuan", "Grizman", "27", "1000000", "France", "Forward", "1990-08-10", "1"}};
 
 			for (int i = 0; i < tuples.length; i++){
 				preparedStatement = connection.prepareStatement(sql);
@@ -151,7 +152,6 @@ public class FMSDatabase {
 			statement = connection.createStatement();
 			String user = "CREATE TABLE League " +
 					"(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
-					" champion VARCHAR(50) NOT NULL, " +
 					" name VARCHAR(30) NOT NULL, " +
 					" start_date DATE NOT NULL, " +
 					" end_date DATE NOT NULL, " +
@@ -169,11 +169,11 @@ public class FMSDatabase {
 			System.out.println("Inserting tuples into League table");
 			String sql;
 			sql = "INSERT INTO League " +
-					"(champion, name, start_date, end_date, countryName)" +
-					"VALUES (?, ?, ?, ?, ?);";
-			String[][] tuples = new String[][]{{"Real Madrid", "La Liga", "2001-11-11","2002-11-11", "Spain"},
-												{"Bayern Munich", "Bundesliga", "2001-11-11","2002-11-11", "Germany"},
-												{"Manchester United", "Enlish Premier League", "2001-11-11","2002-11-11", "England"}};
+					"(name, start_date, end_date, countryName)" +
+					"VALUES (?, ?, ?, ?);";
+			String[][] tuples = new String[][]{{"La Liga", "2001-11-11","2002-11-11", "Spain"},
+												{"Bundesliga", "2001-11-11","2002-11-11", "Germany"},
+												{"English Premier League", "2001-11-11","2002-11-11", "England"}};
 
 			for (int i = 0; i < tuples.length; i++){
 				preparedStatement = connection.prepareStatement(sql);
@@ -181,7 +181,6 @@ public class FMSDatabase {
 				preparedStatement.setString(2, tuples[i][1]);
 				preparedStatement.setString(3, tuples[i][2]);
 				preparedStatement.setString(4, tuples[i][3]);
-				preparedStatement.setString(5, tuples[i][4]);
 				preparedStatement.executeUpdate();
 			}
 		}
@@ -221,7 +220,8 @@ public class FMSDatabase {
 					"(name, transfer_budget, annual_wage_budget, city, establishment_date,value,stadium )" +
 					"VALUES (?, ?, ?, ?, ? , ?, ? );";
 			String[][] tuples = new String[][]{{"Real Madrid", "1000000", "500000", "Madrid", "1902-03-06", "10000000", "Santiago Bernabeu"},
-											{"Barcelona", "30000000", "553000","Barcelona", "1912-12-06", "15000000", "Santiago Bernabeu"}};
+											{"Barcelona", "30000000", "553000","Barcelona", "1912-12-06", "15000000", "Camp Nou"},
+											{"Atletico Madrid", "500000", "13000","Madrid", "1945-12-06", "12000000", "Some unknown Stadium"}};
 
 				for (int i = 0; i < tuples.length; i++){
 					preparedStatement = connection.prepareStatement(sql);
@@ -272,7 +272,8 @@ public class FMSDatabase {
 			sql = "INSERT INTO Game " +
 					"(start_time, end_time, stadium, game_date, home_teamID, away_teamID)" +
 					"VALUES (?, ?, ?, ?, ?, ?);";
-			String[][] tuples = new String[][]{{"20:00", "21:45", "Santiago Bernabeu", "2001-11-11", "1", "2"}};
+			String[][] tuples = new String[][]{{"20:00", "21:45", "Santiago Bernabeu", "2001-11-11", "1", "2"},
+												{"20:00", "21:45", "Camp Nou", "2001-11-19", "2", "3"}};
 
 			for (int i = 0; i < tuples.length; i++){
 				preparedStatement = connection.prepareStatement(sql);
@@ -381,7 +382,9 @@ public class FMSDatabase {
 			sql = "INSERT INTO Coach " +
 					"(username, password, name, surname, age, salary, nationality, birthdate,AgentID,ClubID)" +
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?, ? );";
-			String[][] tuples = new String[][]{{"zineddin", "zineddin", "Zineddin", "Zidan", "50", "120000","France", "1968-10-10","1","1"}};
+			String[][] tuples = new String[][]{{"zineddin", "zineddin", "Zineddin", "Zidan", "50", "120000","France", "1968-10-10","1","1"}, 
+												{"barcacoach", "barcacoach", "Barcelona", "Couchinho", "50", "120000","Spain", "1968-10-10","1","2"},
+												{"atleticocoach", "atleticocoach", "Atletico", "Couchinho", "50", "120000","Bangladesh", "1968-10-10","1","3"}};
 
 			for (int i = 0; i < tuples.length; i++)
 			{
@@ -533,7 +536,9 @@ public class FMSDatabase {
 							"VALUES (?, ?, ?, ?, ?);";
 					String[][] tuples = new String[][]{{"15", "0", "0", "1", "1"}, 
 														{"76", "0", "0", "1", "1"}, 
-														{"90", "0", "0", "1", "1"}};
+														{"90", "0", "0", "1", "1"},
+														{"33", "0", "0", "2", "2"},
+														{"65", "0", "0", "2", "3"}};
 
 					for (int i = 0; i < tuples.length; i++)
 					{
@@ -577,7 +582,8 @@ public class FMSDatabase {
 					sql = "INSERT INTO League_Club " +
 							"(leagueID, clubID)" +
 							"VALUES (?, ?);";
-					String[][] tuples = new String[][]{{"1", "2"}, 
+					String[][] tuples = new String[][]{{"1", "3"},
+														{"1", "2"}, 
 														{"1", "1"}};
 
 					for (int i = 0; i < tuples.length; i++)
@@ -663,7 +669,8 @@ public class FMSDatabase {
 							"(clubID, playerID, startDate, endDate)" +
 							"VALUES (?, ?, ?, ?);";
 					String[][] tuples = new String[][]{{"1", "1", "2009-09-01", null},
-														{"2", "2", "2000-09-01", null}};
+														{"2", "2", "2000-09-01", null},
+														{"3", "3", "2005-10-07", null}};
 
 					for (int i = 0; i < tuples.length; i++)
 					{
@@ -773,15 +780,14 @@ public class FMSDatabase {
 				}
 				System.out.println("Tuples into Contract table inserted");
 				
-				//creating League_Sponsor table
+				//creating Admin table
 				try{
-					System.out.println("Creating League_Sponsor Table");
+					System.out.println("Creating Admin Table");
 					statement = connection.createStatement();
-					String user = "CREATE TABLE League_Sponsor " +
-							"(leagueID INT NOT NULL, " +
-							" sponsorName VARCHAR(30) NOT NULL, " +
-							" FOREIGN KEY (leagueID) REFERENCES League(ID)," +
-							" PRIMARY KEY (leagueID, sponsorName))" +
+					String user = "CREATE TABLE Admin " +
+							"(username VARCHAR(20) NOT NULL, " +
+							" password VARCHAR(20) NOT NULL, " +
+							" PRIMARY KEY (username))" +
 							" ENGINE InnoDB";
 
 					statement.executeUpdate(user);
@@ -789,20 +795,16 @@ public class FMSDatabase {
 				catch (Exception e){
 					System.out.println(e);
 				}
-				System.out.println("League_Sponsor Table Created");
+				System.out.println("Admin Table Created");
 
-				// insert tuples into League_Sponsor
+				// insert tuples into Admin
 				try{
-					System.out.println("Inserting tuples into League_Sponsor table");
+					System.out.println("Inserting tuples into Admin table");
 					String sql;
-					sql = "INSERT INTO League_Sponsor " +
-							"(leagueID, sponsorName)" +
+					sql = "INSERT INTO Admin " +
+							"(username, password)" +
 							"VALUES (?, ?);";
-					String[][] tuples = new String[][]{{"1", "Lays"},
-														{"1", "Adiddas"},
-														{"2", "Wolkswagen"},
-														{"3", "Nike"},
-														{"3", "Lays"}};
+					String[][] tuples = new String[][]{{"admin", "admin"}};
 
 					for (int i = 0; i < tuples.length; i++)
 					{
@@ -815,17 +817,15 @@ public class FMSDatabase {
 				catch (Exception e){
 					System.out.println(e);
 				}
-				System.out.println("Tuples into League_Sponsor table inserted");
+				System.out.println("Tuples into Admin table inserted");
 				
-				//creating Club_Sponsor table
+				//creating Country table
 				try{
-					System.out.println("Creating Club_Sponsor Table");
+					System.out.println("Creating Country Table");
 					statement = connection.createStatement();
-					String user = "CREATE TABLE Club_Sponsor " +
-							"(clubID INT NOT NULL, " +
-							" sponsorName VARCHAR(30) NOT NULL, " +
-							" FOREIGN KEY (clubID) REFERENCES Club(ID)," +
-							" PRIMARY KEY (clubID, sponsorName))" +
+					String user = "CREATE TABLE Country " +
+							"(name VARCHAR(30) NOT NULL, " +
+							" PRIMARY KEY (name))" +
 							" ENGINE InnoDB";
 
 					statement.executeUpdate(user);
@@ -833,30 +833,33 @@ public class FMSDatabase {
 				catch (Exception e){
 					System.out.println(e);
 				}
-				System.out.println("Club_Sponsor Table Created");
+				System.out.println("Country Table Created");
 
-				// insert tuples into Club_Sponsor
+				// insert tuples into Country
 				try{
-					System.out.println("Inserting tuples into Club_Sponsor table");
+					System.out.println("Inserting tuples into Country table");
 					String sql;
-					sql = "INSERT INTO Club_Sponsor " +
-							"(clubID, sponsorName)" +
-							"VALUES (?, ?);";
-					String[][] tuples = new String[][]{{"1", "Adiddas"},
-														{"2", "Nike"}};
+					sql = "INSERT INTO Country " +
+							"(name)" +
+							"VALUES (?);";
+					String[][] tuples = new String[][]{{"Spain"},
+														{"Germany"},
+														{"England"},
+														{"Russia"},
+														{"Turkey"},
+														{"Italy"}};
 
 					for (int i = 0; i < tuples.length; i++)
 					{
 						preparedStatement = connection.prepareStatement(sql);
 						preparedStatement.setString(1, tuples[i][0]);
-						preparedStatement.setString(2, tuples[i][1]);
 						preparedStatement.executeUpdate();
 					}
 				}
 				catch (Exception e){
 					System.out.println(e);
 				}
-				System.out.println("Tuples into Club_Sponsor table inserted");
+				System.out.println("Tuples into Country table inserted");
 	}
 	public static void deletingTables ()
 	{
@@ -882,20 +885,9 @@ public class FMSDatabase {
 		try
 		{
 			dropStatement = connection.createStatement();
-			String dropCustomer = "DROP TABLE Club_Sponsor";
+			String dropCustomer = "DROP TABLE Admin";
 			dropStatement.executeUpdate(dropCustomer);
-			System.out.println("Club_Sponsor Table Dropped");
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		
-		try
-		{
-			dropStatement = connection.createStatement();
-			String dropCustomer = "DROP TABLE League_Sponsor";
-			dropStatement.executeUpdate(dropCustomer);
-			System.out.println("League_Sponsor Table Dropped");
+			System.out.println("Admin Table Dropped");
 		}
 		catch (Exception e){
 			System.out.println(e);
@@ -1062,6 +1054,17 @@ public class FMSDatabase {
 			String dropCustomer = "DROP TABLE Club";
 			dropStatement.executeUpdate(dropCustomer);
 			System.out.println("Club Table Dropped");
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		
+		try
+		{
+			dropStatement = connection.createStatement();
+			String dropCustomer = "DROP TABLE Country";
+			dropStatement.executeUpdate(dropCustomer);
+			System.out.println("Country Table Dropped");
 		}
 		catch (Exception e){
 			System.out.println(e);
