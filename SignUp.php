@@ -1,30 +1,49 @@
 <?php
-   include('config.php');
-   session_start();
-
-   echo "Outside";
-   
-   if($_SERVER["REQUEST_METHOD"] == "POST") 
-   {
-
-      $myusername = mysqli_real_escape_string($conn,$_POST['username']);
-      $mypassword = mysqli_real_escape_string($conn,$_POST['password']);
-      $mytype = mysqli_real_escape_string($conn,$_POST['type']);
-
-<<<<<<< Updated upstream
-      $sql = "INSERT INTO User(username,password,type) VALUES ('$myusername','$mypassword','$mytype');";
-
-
-      echo "We are here";
-
-      mysqli_query($conn,$sql);
-=======
-      $sql = "INSERT INTO User(username,password,type) VALUES ('myusername','mypassword','')"
->>>>>>> Stashed changes
-   }
-   
+	session_start();
+	$host = "dijkstra.ug.bcc.bilkent.edu.tr";
+	$myUser = "mehmet.turanboy";
+	$myPassword = "1ky0yl0r";
+	$myDB = "mehmet_turanboy";
+	
+	$connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
+	
+	$fanID = $_SESSION['id'];
+	
+	if (isset($_POST['cancel'])){
+		header("Location: login.php");
+	}
+	
+	if (isset($_POST['signup'])){
+		if (empty($_POST['name']) || empty ($_POST['surname']) || empty ($_POST['username']) || empty ($_POST['password']) || empty ($_POST['favoriteteam'])){
+			?>
+			<script>alert("Please fill out all the fields");</script>
+			<?php
+		}
+		else{
+			$name = $_POST['name'];
+			$surname = $_POST['surname'];
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$favoriteteam = $_POST['favoriteteam'];
+			$favTeamQuery = "SELECT Club.ID FROM Club WHERE Club.name = '".$favoriteteam."'";
+			$favTeamID = mysqli_query($connection, $favTeamQuery);
+			if (mysqli_num_rows($favTeamID) == 0){
+				?>
+				<script>alert("Please choose a valid club");</script>
+				<?php
+			}
+			else{
+				$favTeamID = $favTeamID->fetch_object();
+				$updateFanQuery = "INSERT INTO Fan(username, password, name, surname, favTeamID) VALUES ('".$username."', '".$password."', '".$name."', '".$surname."', '".$favTeamID->ID."')";
+				mysqli_query($connection, $updateFanQuery);
+				?>
+				<script>alert("Sign UP Successful");</script>
+				<?php
+				header("Location: login.php");
+			}
+		}
+	}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +82,7 @@
       <div class="col-sm-6 col-md-4 col-md-offset-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>  Sign up </strong>
+            <strong>  Sign up as Fan</strong>
           </div>
           <div class="panel-body">
             <form role="form" action="#" method="POST">
@@ -109,19 +128,12 @@
                     <div class="form-group">
                       <div class="input-group">
                         
-                        <input class="form-control" placeholder="Favorite Team" name="favoriteTeam" type="text" autofocus>
-                      </div>
+                        <input class="form-control" placeholder="Favorite Team" name="favoriteteam" type="text" autofocus>
                     </div>
-                   <div class="form-group">
-                       <select name = "type">
-                        <option value="Player">Player</option>
-                        <option value="Coach">Coach</option>
-                        <option value="Fan">Fan</option>
-                        <option value="Director">Director</option>
-                       </select>  
-                     </div>
+                    </div>
                     <div class="form-group">
-                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up">
+                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up" name="signup" >
+					  <input type="submit" class="btn btn-lg btn-primary btn-block" value="Cancel" name = "cancel">
                     </div>
                   </div>
                 </div>
