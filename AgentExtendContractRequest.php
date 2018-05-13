@@ -54,7 +54,7 @@
 						<?php
 					}
 					else{
-						$existQuery = "SELECT * FROM Contract WHERE playerID = '".$curPlayerID->ID."' AND agentID = '".$_SESSION['id']."'";
+						$existQuery = "SELECT * FROM Contract WHERE playerID = '".$curPlayerID->ID."' AND agentID = '".$_SESSION['id']."' AND status <> '2'";
 						$exist = mysqli_query($connection, $existQuery);
 						if (mysqli_num_rows($exist) > 0){
 							?>
