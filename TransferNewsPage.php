@@ -434,7 +434,9 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     <th>From Club</th>
     <th>To Club</th>
 	<th>Price</th>
-	<th>Status</th>
+	<?php if ($_SESSION['type'] == 'admin') { ?>
+		<th>Status</th>
+	<?php } ?>
 </tr>
   <?php 
   $cnt = 0;
@@ -444,6 +446,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<td><?php echo $fromTeams[$cnt]; ?></td>
 				<td><?php echo $toTeams[$cnt]; ?></td>
 				<td><?php echo $prices[$cnt]; ?></td>
+				<?php if ($_SESSION['type'] == 'admin'){ ?>
 				<td>
 					<?php 
 					if ($statuses[$cnt] == '3'){
@@ -457,6 +460,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 					}
 					?>
 				</td>
+				<?php } ?>
 			</tr>
 		<?php $cnt = $cnt + 1;} ?>
 </table>

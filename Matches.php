@@ -468,9 +468,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
 
-		 <?php if ($_SESSION['type'] == 'fan') {?>
-				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
-		 <?php } ?>
 		 <?php if ($_SESSION['type'] == 'director') {?>
 				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
 				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
