@@ -30,8 +30,7 @@
 		if ($status == '0'){
 			$status = '1';
 		}
-		else if ($status != '3'){
-			$sold = true;
+		else{
 			$status = '3';
 			$contractDeleteQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."'";
 			mysqli_query($connection, $contractDeleteQuery);
@@ -41,13 +40,10 @@
 			
 			$updatePlaysQuery = "UPDATE Plays SET clubID = '".$newClub->ID."' WHERE playerID = '".$playerID."'";
 			mysqli_query($connection, $updatePlaysQuery);
-			
-			$deleteTransferQuery = "DELETE FROM Transfer_Offer WHERE playerID = '".$playerID."' AND fromDirectorID <> '".$fromDirectorID."'";
-			mysqli_query($connection, $deleteTransferQuery);
 		}
-		$updateQuery = "UPDATE Transfer_Offer SET status = '".$status."' WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."' AND status <> '3'";
+
+		$updateQuery = "UPDATE Transfer_Offer SET status = '".$status."' WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."'";
 		mysqli_query($connection, $updateQuery);
-		
 	}
 	if (isset($_POST['rejectOffer'])){
 		$playerID = $_POST['id1'];

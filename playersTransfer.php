@@ -16,6 +16,13 @@
 		header("Location: login.php");
 		exit();
 	}
+        
+  if(isset($_POST['search'])){
+            $searchtext = $_POST['searchtext'];
+            $_SESSION['searchtext'] = $searchtext;
+            header("Location: Search.php");
+        }
+        
   $homeLink ="#";
 
   if ( $_SESSION['type'] == 'coach')
@@ -65,11 +72,11 @@
   $elementsNo = 0;
   while ($row = mysqli_fetch_assoc($transfers))
   {
-        $fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+        $fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
         $fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
         array_push($fromTeams, $fromTeam->name);
             
-        $toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+        $toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
         $toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
         array_push($toTeams, $toTeam->name);
             
@@ -131,6 +138,18 @@ body {
     background: white;
 }
 
+.searchbutton {
+    background-color: #4CAF50; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 .header h1 {
     font-size: 50px;
 }
@@ -261,9 +280,10 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
   <form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
-  <a href="#" style="float:right">Search</a>
-
-  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
+ <form action = "#" method = "POST">
+        <input type="submit" style="float:right" name="search" value="Search" class = "searchbutton">
+        <input type ="text" name = "searchtext" placeholder="Search..." style ="float:right; width: 260px; height:30px; margin-top:8px; margin-right: 1px">
+  </form>
 
 </div>
 
