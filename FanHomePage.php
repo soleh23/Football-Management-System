@@ -55,6 +55,13 @@
 	
 	$matchesQuery = "SELECT * FROM Game";
 	$matches = mysqli_query($connection, $matchesQuery);
+        
+        
+        if(isset($_POST['search'])){
+            $searchtext = $_POST['searchtext'];
+            $_SESSION['searchtext'] = $searchtext;
+            header("Location: Search.php");
+        }
 
 ?>
 <!DOCTYPE html>
@@ -125,6 +132,18 @@ body {
     padding: 14px 31px;
     text-align: center;
     text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
+.searchbutton {
+    background-color: #4CAF50; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
     display: inline-block;
     font-size: 16px;
 	float: right;
@@ -203,16 +222,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 	width: 100%;
 }
 
-
-/*<li>
-          <section class="box search">
-            <form method="post" action="#">
-              <input type="text" class="text" name="search" placeholder="Search" />
-            </form>
-          </section>
-        </li>*/
-
-
 }
 </style>
 </head>
@@ -230,12 +239,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
   <a href="EditProfile.php">Settings</a>
 
   <form action = "#" method = "POST">
-		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+    <input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
-  <a href="#" style="float:right">Search</a>
-
-  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
-
+  <form action = "#" method = "POST">
+        <input type="submit" style="float:right" name="search" value="Search" class = "searchbutton">
+        <input type ="text" name = "searchtext" placeholder="Search..." style ="float:right; width: 260px; height:30px; margin-top:8px; margin-right: 1px">
+  </form>
+  
 </div>
 
 <div class="row">

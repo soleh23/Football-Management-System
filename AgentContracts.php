@@ -14,6 +14,12 @@
 		header("Location: login.php");
 		exit();
 	}
+        
+        if(isset($_POST['search'])){
+            $searchtext = $_POST['searchtext'];
+            $_SESSION['searchtext'] = $searchtext;
+            header("Location: Search.php");
+        }
 	$curAgentID = $_SESSION['id'];
 	if (isset($_POST['accept'])){
 		$playerID = $_POST['id1'];
@@ -90,6 +96,19 @@ table {
     font-size: 16px;
 	float: right;
 }
+
+.searchbutton {
+    background-color: #4CAF50; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
@@ -153,7 +172,18 @@ body {
     background-color: #f1f1f1;
     padding-left: 20px;
 }
-
+.searchbutton {
+    background-color: #4CAF50; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 
 
 /* Add a card effect for articles */
@@ -267,9 +297,10 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
 
-  <a href="#" style="float:right">Search</a>
-
-  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
+ <form action = "#" method = "POST">
+        <input type="submit" style="float:right" name="search" value="Search" class = "searchbutton">
+        <input type ="text" name = "searchtext" placeholder="Search..." style ="float:right; width: 260px; height:30px; margin-top:8px; margin-right: 1px">
+  </form>
 
 </div>
 

@@ -14,6 +14,13 @@
 		header("Location: login.php");
 		exit();
 	}
+        
+        if(isset($_POST['search'])){
+            $searchtext = $_POST['searchtext'];
+            $_SESSION['searchtext'] = $searchtext;
+            header("Location: Search.php");
+        }
+        
 	$matchesQuery = "SELECT * FROM Player";
 	$matches = mysqli_query($connection, $matchesQuery);
 	
@@ -275,7 +282,18 @@ body {
 .header h1 {
     font-size: 50px;
 }
-
+.searchbutton {
+    background-color: #4CAF50; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 /* Style the top navigation bar */
 .topnav {
     overflow: hidden;
@@ -416,10 +434,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
-
-  <a href="#" style="float:right">Search</a>
-
-  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
+  
+ <form action = "#" method = "POST">
+        <input type="submit" style="float:right" name="search" value="Search" class = "searchbutton">
+        <input type ="text" name = "searchtext" placeholder="Search..." style ="float:right; width: 260px; height:30px; margin-top:8px; margin-right: 1px">
+  </form>
+  
 
 </div>
 
@@ -468,15 +488,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
 
-		 <?php if ($_SESSION['type'] == 'fan') {?>
-				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
-		 <?php } ?>
 		 <?php if ($_SESSION['type'] == 'director') {?>
 				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
 				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
 		 <?php if ($_SESSION['type'] == 'agent') {?>
-				<li><a href="AgentTransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
 				<li><a href="AgentContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
 
