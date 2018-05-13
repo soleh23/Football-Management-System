@@ -320,7 +320,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
 		 <?php if ($_SESSION['type'] == 'agent') {?>
-				<li><a href="AgentTransferOffersPage.php">Manage Transfers</a></li>
+                                <li><a href="AgentTransfers.php">Manage Transfers</a></li>
 				<li><a href="AgentContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
 		 </ul>
