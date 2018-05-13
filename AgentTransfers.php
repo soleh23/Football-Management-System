@@ -304,7 +304,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="DirectorHomePage.php">Home </a>
+  <a href="AgentHomePage.php">Home </a>
 
 	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
