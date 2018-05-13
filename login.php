@@ -182,7 +182,6 @@
           </div>
          <form role="form" action="#" method="POST">
             <div class="form-group">     
-                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Forgot Password" name="forgotP">
                 <input type="submit" class="btn btn-lg btn-primary btn-block" value="Countinue As a guest" name="guest">
             </div>
          </form>
