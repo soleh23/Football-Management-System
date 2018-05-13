@@ -39,7 +39,7 @@
         
         else if ($_SESSION['type'] == 'guest'){
 		$homeLink = "Matches.php"; // ???
-
+        }
 
 	else if ($_SESSION['type'] == 'director'){
 		$homeLink = "DirectorHomePage.php";

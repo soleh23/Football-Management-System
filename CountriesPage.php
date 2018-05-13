@@ -30,13 +30,14 @@
 		
 		$fanID = $_SESSION['id'];
 		$favTeamID = $_SESSION['favTeamID'];
-
+        }
 	else if ($_SESSION['type'] == 'admin'){
 		$homeLink = "AdminCreateLeague.php";
 
 		
 		$countriesQuery = "SELECT DISTINCT name FROM Country";
 		$countries = mysqli_query($connection, $countriesQuery);
+                
 	}
 ?>
 <!DOCTYPE html>

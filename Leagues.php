@@ -30,7 +30,8 @@
 		
 		$fanID = $_SESSION['id'];
 		$favTeamID = $_SESSION['favTeamID'];
-
+        }
+        
 	else if ($_SESSION['type'] == 'admin'){
 		$homeLink = "AdminCreateLeague.php";
 

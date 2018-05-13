@@ -29,7 +29,6 @@
 	$fanID = $_SESSION['id'];
 	$clubsQuery = "SELECT DISTINCT Club.name as name FROM Subscribe, Club WHERE Subscribe.fanID = '".$fanID."' AND Subscribe.clubID = Club.ID";
 	$clubs = mysqli_query($connection, $clubsQuery);
->>>>>>> 896515fb7312ab7632d8330cab83ba09ce1a5676
 ?>
 <!DOCTYPE html>
 <html>

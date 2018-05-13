@@ -25,7 +25,6 @@
 		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
 		$players = mysqli_query($connection, $playersQuery);
 	}
-<<<<<<< HEAD
         
         else if ($_SESSION['type'] == 'guest'){
 		$homeLink = "Matches.php";
@@ -33,7 +32,6 @@
 		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID";
 		$players = mysqli_query($connection, $playersQuery);
 	}
-=======
 
 	else if ($_SESSION['type'] == 'director'){
 		$homeLink = "DirectorHomePage.php";
@@ -72,9 +70,6 @@
 
      $players = mysqli_query($connection, $sql);
   }
-
-  
->>>>>>> 896515fb7312ab7632d8330cab83ba09ce1a5676
 ?>
 <!DOCTYPE html>
 <html>

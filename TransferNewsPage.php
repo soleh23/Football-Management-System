@@ -62,7 +62,7 @@
 		$transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
 							FROM Transfer_Offer, Director
 							WHERE (Transfer_Offer.fromDirectorID = Director.ID OR Transfer_Offer.toDirectorID = Director.ID) AND Transfer_Offer.status = '3' AND Director.club_ID";
-
+        }
 	else if ($_SESSION['type'] == 'director'){
 		$homeLink = "DirectorHomePage.php";
 		
