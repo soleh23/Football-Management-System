@@ -298,15 +298,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-<<<<<<< HEAD
-         <?php 
-          if ($_SESSION['type'] == 'fan'){?>
-         <li><a href="Subscriptions.php">Subscriptions</a></li>
-         <?php
-	}
-         ?>
-         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
-=======
 
 		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
@@ -326,7 +317,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
      
      <?php } ?>
 
->>>>>>> 896515fb7312ab7632d8330cab83ba09ce1a5676
 		 </ul>
 
     

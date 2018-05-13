@@ -62,7 +62,33 @@
 		$transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
 							FROM Transfer_Offer, Director
 							WHERE (Transfer_Offer.fromDirectorID = Director.ID OR Transfer_Offer.toDirectorID = Director.ID) AND Transfer_Offer.status = '3' AND Director.club_ID";
-        }
+       $transfers = mysqli_query($connection, $transfersQuery);
+		
+		$fromTeams = array();
+		$names = array();
+		$toTeams = array();
+		$prices = array();
+		$transferDates = array();
+		$elementsNo = 0;
+		while ($row = mysqli_fetch_assoc($transfers)){
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
+			array_push($fromTeams, $fromTeam->name);
+			
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
+			array_push($toTeams, $toTeam->name);
+			
+			$nameQuery = "SELECT name, surname FROM Player WHERE Player.ID = '".$row['playerID']."'";
+			$name = mysqli_query($connection, $nameQuery)->fetch_object();
+			array_push($names, $name->name." ".$name->surname);
+			
+			array_push($prices, $row['price']);
+			array_push($transferDates, $row['transferDate']);
+			
+			$elementsNo = $elementsNo + 1;
+		} 
+                }
 	else if ($_SESSION['type'] == 'director'){
 		$homeLink = "DirectorHomePage.php";
 		

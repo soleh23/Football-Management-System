@@ -39,6 +39,9 @@
         
         else if ($_SESSION['type'] == 'guest'){
 		$homeLink = "Matches.php"; // ???
+                
+                $clubsQuery = "SELECT * FROM Club";
+		$clubs = mysqli_query($connection, $clubsQuery);
         }
 
 	else if ($_SESSION['type'] == 'director'){
