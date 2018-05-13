@@ -446,7 +446,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="AgentTransferOffersPage.php">Manage Transfers</a></li>
 				<li><a href="AgentContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
-		 </ul>
 
 
      <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) {?>

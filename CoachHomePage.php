@@ -7,6 +7,11 @@ if ($_SESSION['loggedIn'] != true)
     header("Location: login.php");
     exit();
 }
+if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
 $coach_ID = $_SESSION['id'];
 
 
@@ -134,7 +139,17 @@ body {
     float: left;
     width: 25%;
 }
-
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 /* Right column */
 .rightcolumn {
     float: left;
@@ -240,12 +255,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href="CoachHomePage.php">Home </a>
-  <a href="EditProfile.html">Settings</a>
-
-
+      <form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 

@@ -11,7 +11,11 @@
     header("Location: login.php");
     exit();
   }
-
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
   $homeLink ="#";
 
   if ( $_SESSION['type'] == 'coach')
@@ -92,6 +96,17 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+}
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
 }
 td, th {
     border: 1px solid #dddddd;
@@ -243,11 +258,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href=<?php echo $homeLink; ?> >Home</a>
-  <a href="EditProfile.php">Settings</a>
-
+  <form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 

@@ -463,7 +463,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="AgentContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
 		 </ul>
-     <?php } ?>
 
   </div>
 
