@@ -64,7 +64,8 @@ public class FMSDatabase {
 			sql = "INSERT INTO Agent " +
 					"(username, password, name, surname, age, salary, nationality, birthdate)" +
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-			String[][] tuples = new String[][]{{"agent1", "agent1", "Jeorge", "Mendes", "18", "30000","Portugal", "2000-10-10"},
+			String[][] tuples = new String[][]
+				{{"agent1", "agent1", "Jeorge", "Mendes", "18", "30000","Portugal", "2000-10-10"},
 				{"agent2", "agent2", "Sukru", "Alexandro", "18", "20000","Turkey", "2000-12-10"},
 				{"agent3", "agent3", "Mahmut", "Muhammed", "18", "40000","Israil", "2000-11-11"},
 				{"agent4", "agent4", "Mehmet", "Turan", "18", "50000","Misir", "1995-11-11"}};
@@ -323,7 +324,7 @@ public class FMSDatabase {
 				{"22:00", "23:45", "Ankara 19 mayis", "2006-11-18", "6", "5"},
 				{"20:00", "21:45", "Mastelle", "2009-11-19", "8", "9"},
 				{"21:00", "22:45", "Old Trafford", "2018-11-17", "12", "14"},
-				{"20:00", "21:45", "Etihad", "2018-11-11", "13", "15"}
+				{"20:00", "21:45", "Etihad", "2018-11-11", "13", "16"}
 			};
 
 			for (int i = 0; i < tuples.length; i++){
@@ -635,7 +636,7 @@ public class FMSDatabase {
 				{"12", "0", "0", "4", "2"},
 				{"25", "0", "0", "5", "6"},
 				{"27", "0", "0", "6", "6"},
-				{"89", "0", "0", "7", "4"}
+				{"89", "0", "0", "10", "4"}
 			};
 
 			for (int i = 0; i < tuples.length; i++)
@@ -890,7 +891,7 @@ public class FMSDatabase {
 					" FOREIGN KEY (playerID) REFERENCES Player(ID)," +
 					" FOREIGN KEY (directorID) REFERENCES Director(ID), " +
 					" FOREIGN KEY (agentID) REFERENCES Agent(ID), " +
-					" PRIMARY KEY (playerID, agentID))" +
+					" PRIMARY KEY (playerID, expirationDate, bonus))" +
 					" ENGINE InnoDB";
 
 			statement.executeUpdate(user);
