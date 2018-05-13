@@ -29,7 +29,7 @@
 			$contractDeleteQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."'";
 			mysqli_query($connection, $contractDeleteQuery);
 			
-			$newClubQuery = "SELECT Club.ID FROM Director, Club WHERE Director.club_ID = Club.ID AND Director.ID = '".$toDirectorID."'";
+			$newClubQuery = "SELECT Club.ID FROM Director, Club WHERE Director.club_ID = Club.ID AND Director.ID = '".$fromDirectorID."'";
 			$newClub = mysqli_query($connection, $newClubQuery)->fetch_object();
 			
 			$updatePlaysQuery = "UPDATE Plays SET clubID = '".$newClub->ID."' WHERE playerID = '".$playerID."'";
