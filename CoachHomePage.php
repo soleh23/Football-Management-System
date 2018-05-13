@@ -1,4 +1,86 @@
-<?php?>
+<?php
+include('config.php');
+session_start();
+
+if ($_SESSION['loggedIn'] != true)
+{
+    header("Location: login.php");
+    exit();
+}
+$coach_ID = $_SESSION['id'];
+
+
+$coach_username = $_SESSION['username'];
+
+
+//get club ID of coach
+$sql = "SELECT * FROM Coach WHERE  ID = '$coach_ID'";
+$coach = mysqli_query($conn, $sql)->fetch_object();
+
+
+
+//get all coach club details
+
+$sql = "SELECT * FROM Club WHERE ID = '".$coach->ClubID."'";
+
+$club  = mysqli_query($conn, $sql)->fetch_object();
+
+
+$myImage = '<img src="images/'.$club->name.'.png"'.'style="height:200px; width: 280px">';
+
+
+//players
+$playersQuery = "SELECT Player.name, Player.surname FROM Club, Plays, Player WHERE Club.ID = Plays.clubID AND Plays.playerID = Player.ID AND Club.ID = '".$club->ID."'";
+
+$players = mysqli_query($conn, $playersQuery);
+
+//clubs
+$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game WHERE Game.home_teamID = '".$club->ID."' OR Game.away_teamID = '".$club->ID."' ORDER BY Game.game_date ASC";
+$clubs = mysqli_query($conn, $clubsQuery);
+
+
+
+//get home club and away club goals put them in array
+$names = array();
+while ($row = mysqli_fetch_assoc($clubs))
+{ 
+    $curHomeNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID1']."'";
+    $curHomeName = mysqli_query($conn, $curHomeNameQuery)->fetch_object();
+    $curPair = $curHomeName->name;
+    
+    $curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+    $curHomeGoals = mysqli_query($conn, $curHomeGoalsQuery)->fetch_object();
+    $curPair = $curPair." ".$curHomeGoals->goals." -";
+    
+    $curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+    $curAwayGoals = mysqli_query($conn, $curAwayGoalsQuery)->fetch_object();
+    $curPair = $curPair." ".$curAwayGoals->goals;
+    
+    $curAwayNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID2']."'";
+    $curAwayName = mysqli_query($conn, $curAwayNameQuery)->fetch_object();
+    $curPair = $curPair." ".$curAwayName->name;
+    array_push($names, $curPair);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*$clubQuery = "SELECT * FROM Club WHERE ID = '".$teamID."'";
+$club = mysqli_query($connection, $clubQuery)->fetch_object();
+$myImage = '<img src="images/'.$club->name.'"'.'style="height:200px; width: 280px">';*/
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -157,7 +239,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="Admin'sMainPage.html">Home </a>
+  <a href="CoachHomePage.php">Home </a>
   <a href="EditProfile.html">Settings</a>
 
 
@@ -175,21 +257,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
-    
-
     	 <ul id="sideBarStyle">
-         <li><a class="active" href="CountriesPage.html">Countries</a></li>
-         <li><a href="CountriesLeaguePage.html">League</a></li>
-         <li><a href="ClubsPage.html">Clubs</a></li>
-         <li><a href="TransferNewsPage.html">Transfer News</a></li>
-         <li><a href="GuestPage.html">Matches</a></li>
-         <li><a href="playersPage.html">Players</a></li>
-         <li><a href="TransferOfferPage.html">Transfer Page</a></li>
-         <li><a href="#">Train</a></li>
-         <li><a href="#">Players Transfer</a></li>
-         <li><a href="myTransfersPage.html">My Transfers</a></li>
+         <li><a href="Clubs.php">Clubs</a></li>
+         <li><a href="TransferNewsPage.php">Transfer News</a></li>
+         <li><a href="Matches.php">Matches</a></li>
+         <li><a href="playersPage.php">Players</a></li>
+         <li><a href="playersTransfer.php">Players Transfer</a></li>
     	 </ul>
-
 
   </div>
 
@@ -198,18 +272,47 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
     <div class="card">
 
-      <h2>Favorite Team</h2>
+      <h2><?php echo $club->name;?></h2>
+
       <div class="rightcolumn2">
-        <p>Name:<br>Surname:<br>Club :<br>City :<br>Salaray:<br> Salary :<br>Price :<br> </p>
+        <p>Name: <?php echo $coach->name;?>
+        <br>Age : <?php echo $coach->age;?>
+        <br>City : <?php echo $club->city;?>
+        <br>Salary : <?php echo $coach->salary;?>
+        <br>Nationality : <?php echo $coach->nationality;?>
+        <br>Birth date : <?php echo $coach->birthdate;?>
+      </p>
       </div>
-      <div class="fakeimg" style="height:200px; width: 350px">Image</div>
+
+       <div>
+         <?php echo $myImage;?>
+       </div>
+
       <div class="rightcolumn2">
-        <p>Recent Matches:</p>
+        <p> Recent Matches:<br>
+              <?php
+              $cnt = 0;
+              foreach($names as $value){ 
+                echo $value;?> <br> <?php
+                $cnt++;
+                if ($cnt == 5)
+                  break;
+              } 
+              ?>
+        </p>
+
       </div>
       <div class="inf" style="height:200px; width: 350px">
 
-      <p>Info:</p>
-      <p>Players: <br> Player1</p>
+      <p>
+
+        Players: 
+
+        <?php while ($row = mysqli_fetch_assoc($players)){ ?>
+          <br> <?php echo $row['name'].' '.$row['surname']; ?>
+        <?php } ?>
+
+      </p>
 
     </div>
   </div>

@@ -5,6 +5,20 @@
 * {
     box-sizing: border-box;
 }
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 
 body {
     font-family: Arial;
@@ -54,24 +68,13 @@ body {
 
 /* Right column */
 .rightcolumn {
-    float: left;
+    float: right;
     width: 75%;
     background-color: #f1f1f1;
     padding-left: 20px;
 }
-.rightcolumn2 {
-    float: right;
-    width: 55%;
-    background-color: #f1f1f1;
-    padding-left: 20px;
-}
 
-/* Fake image */
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
+
 
 /* Add a card effect for articles */
 .card {
@@ -129,8 +132,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+  float: none;
+  width: 100%;
 }
 
 
@@ -156,9 +159,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="Admin'sMainPage.html">Home </a>
-  <a href="EditProfile.html">Settings</a>
-
+  <a href="#">Home       </a>
+  <a href="#">Settings</a>
 
   <a href="#" style="float:right">Search</a>
 
@@ -167,73 +169,84 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="row">
+  <div class ="rightcolumn">
+
+  <h2>Contract Extension</h2>
+
   
+<div class="form-group">
+<div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+<input class="form-control" placeholder="Name" name="name" type="text" autofocus>
+</div>
+</div>
+
+<div class="form-group">
+<div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+<input class="form-control" placeholder="Surname" name="Surname" type="text" autofocus>
+</div>
+</div>
+
+
+<div class="form-group">
+<div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+<input class="form-control" placeholder="Bonus" name="Bonus" type="text" autofocus>
+</div>
+</div>
+           
+            
+
+
+    <div class="form-group">
+        <div class="input-group">
+           
+           <form action="/action_page.php">
+            <strong> Expirition Date:     </strong>
+           <input type="date" name="date">           
+         </form>
+        </div>
+    </div>
+
+    <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Done">
+    </div>
+
+
+
+
+
+  
+</div>
+ 
   <div class="leftcolumn">
-	<!--<div class="card">
+  <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-    	 <ul id="sideBarStyle">
+       <ul id="sideBarStyle">
          <li><a class="active" href="CountriesPage.html">Countries</a></li>
          <li><a href="CountriesLeaguePage.html">League</a></li>
          <li><a href="ClubsPage.html">Clubs</a></li>
          <li><a href="TransferNewsPage.html">Transfer News</a></li>
          <li><a href="GuestPage.html">Matches</a></li>
          <li><a href="playersPage.html">Players</a></li>
-         <li><a href="TransferOfferPage.html">Transfer Page</a></li>
-         <li><a href="#">Train</a></li>
-         <li><a href="#">Players Transfer</a></li>
-         <li><a href="myTransfersPage.html">My Transfers</a></li>
-    	 </ul>
+       </ul>
 
 
   </div>
 
 
-  <div class="rightcolumn">
-    
-    <div class="card">
-
-      <h2>Favorite Team</h2>
-      <div class="rightcolumn2">
-        <p>Name:<br>Surname:<br>Club :<br>City :<br>Salaray:<br> Salary :<br>Price :<br> </p>
-      </div>
-      <div class="fakeimg" style="height:200px; width: 350px">Image</div>
-      <div class="rightcolumn2">
-        <p>Recent Matches:</p>
-        <table>
-           <thead> 
-              <tr>    
-                  <th style="padding-left: 3px; padding-right:3px">  Home Team    </th>
-                  <th class ="scoreBlank">               </th>
-                  <th style="padding-left: 3px; padding-right:3px">  Away Team    </th>
-              </tr>
-           </thead>
-
-      <tbody>  
-
-               <tr> 
-                   <td style="padding-left: 4px" > Real Madrid </td>
-                  <td class="scoreBlank"> 1 : 1  </td>
-                   <td style="padding-left: 4px" > Barcelona   </td>
-                  </tr>
-      <tr>       </tr>
-
-
-                        </tbody>
-
-                    </table>
-      </div>
-      <div class="inf" style="height:200px; width: 350px">
-
-
-    </div>
-  </div>
-
-</div>
 
  
 

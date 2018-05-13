@@ -15,7 +15,8 @@
 		exit();
 	}
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
+	if ($_SESSION['type'] == 'fan')
+  {
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
@@ -51,6 +52,7 @@
 			$elementsNo = $elementsNo + 1;
 		} 
 	}
+
 	else if ($_SESSION['type'] == 'director'){
 		$homeLink = "DirectorHomePage.php";
 		
@@ -152,6 +154,52 @@
 			$elementsNo = $elementsNo + 1;
 		}
 	}
+
+  else if($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' )
+  {
+      if($_SESSION['type'] == 'coach')
+      {  
+        $homeLink = "CoachHomePage.php";
+      }
+      else
+      {
+        $homeLink = "PlayersHomePage.php";
+      }
+
+      $transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
+              FROM Transfer_Offer WHERE status = '3'";
+
+      $transfers = mysqli_query($connection, $transfersQuery);
+
+      $fromTeams = array();
+      $names = array();
+      $toTeams = array();
+      $prices = array();
+      $transferDates = array();
+      $elementsNo = 0;
+
+      while ($row = mysqli_fetch_assoc($transfers))
+      {
+        $fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+        $fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
+        array_push($fromTeams, $fromTeam->name);
+        
+        $toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+        $toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
+        array_push($toTeams, $toTeam->name);
+        
+        $nameQuery = "SELECT name, surname FROM Player WHERE Player.ID = '".$row['playerID']."'";
+        $name = mysqli_query($connection, $nameQuery)->fetch_object();
+        array_push($names, $name->name." ".$name->surname);
+        
+        array_push($prices, $row['price']);
+        array_push($transferDates, $row['transferDate']);
+        
+        $elementsNo = $elementsNo + 1;
+    } 
+
+  }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -387,14 +435,22 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
+
 		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
 			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
 			 <li><a href="Leagues.php">Leagues</a></li>
 		 <?php } ?>
+
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
+
+     <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player') {?>
+        <li><a href="playersTransfer.php">Players Transfer </a></li>
+     </ul>
+     <?php } ?>
+
 		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
 		 <?php } ?>
@@ -407,7 +463,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="AgentContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
 		 </ul>
-
+     <?php } ?>
 
   </div>
 

@@ -15,7 +15,8 @@
 		exit();
 	}
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
+	if ($_SESSION['type'] == 'fan')
+  {
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
@@ -24,6 +25,7 @@
 		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
 		$players = mysqli_query($connection, $playersQuery);
 	}
+
 	else if ($_SESSION['type'] == 'director'){
 		$homeLink = "DirectorHomePage.php";
 		
@@ -42,6 +44,27 @@
 		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player ORDER BY position, age ASC";
 		$players = mysqli_query($connection, $playersQuery);
 	}
+
+  else if ($_SESSION['type'] == 'coach'  )
+  {
+     $homeLink = "CoachHomePage.php";
+   
+     $sql = "SELECT DISTINCT name, surname, nationality, position, age FROM Player";
+
+     $players = mysqli_query($connection, $sql);
+  }
+  else if ( $_SESSION['type'] == 'player' )
+  {
+     $homeLink = "PlayersHomePage.php";
+
+     $player_id = $_SESSION['id'];
+
+     $sql = "SELECT DISTINCT name, surname, nationality, position, age FROM Player WHERE ID != '$player_id' ";
+
+     $players = mysqli_query($connection, $sql);
+  }
+
+  
 ?>
 <!DOCTYPE html>
 <html>
@@ -260,14 +283,17 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
+
 		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
 			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
 			 <li><a href="Leagues.php">Leagues</a></li>
 		 <?php } ?>
+
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
+
 		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
 		 <?php } ?>
@@ -279,7 +305,16 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
 				<li><a href="AgentContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
+
+
+     <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) { ?>
+        <li><a href="playersTransfer.php"> Players Transfer</a></li>
+     
+     <?php } ?>
+
 		 </ul>
+
+    
 
 
   </div>
