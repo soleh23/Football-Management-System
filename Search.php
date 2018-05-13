@@ -1,91 +1,74 @@
 <?php
-	session_start();
-	$host = "dijkstra.ug.bcc.bilkent.edu.tr";
-	$myUser = "mehmet.turanboy";
-	$myPassword = "1ky0yl0r";
-	$myDB = "mehmet_turanboy";
-	$connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
-	if ($_SESSION['loggedIn'] != true){
-		header("Location: login.php");
-		exit();
-	}
-	if (isset($_POST['logout'])){
-		$_SESSION['loggedIn'] = false;
-		header("Location: login.php");
-		exit();
-	}
-        
-        if(isset($_POST['search'])){
-        $searchtext = $_POST['searchtext'];
-        $_SESSION['searchtext'] = $searchtext;
-        header("Location: Search.php");
+    session_start();
+    $host = "dijkstra.ug.bcc.bilkent.edu.tr";
+    $myUser = "mehmet.turanboy";
+    $myPassword = "1ky0yl0r";
+    $myDB = "mehmet_turanboy";
+    $connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
+    if ($_SESSION['loggedIn'] != true){
+            header("Location: login.php");
+            exit();
+    }
+    if (isset($_POST['logout'])){
+            $_SESSION['loggedIn'] = false;
+            header("Location: login.php");
+            exit();
+    }
+    if(isset($_POST['search'])){
+            $searchtext = $_POST['searchtext'];
+            $_SESSION['searchtext'] = $searchtext;
+            header("Location: Search.php");
         }
-        
-	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan')
-  {
-		$homeLink = "FanHomePage.php";
-		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
-		
-		if (isset($_POST['subscribe'])){
-			$subscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID."', '".$_POST['id']."')";
-			mysqli_query($connection, $subscribeQuery);
-		}
-		
-		if (isset($_POST['subscribed'])){
-			$unsubscribeQuery = "DELETE FROM Subscribe WHERE Subscribe.fanID = '".$fanID."' AND Subscribe.clubID = '".$_POST['id']."'";
-			mysqli_query($connection, $unsubscribeQuery);
-		}
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-
-        
-        else if ($_SESSION['type'] == 'guest'){
-		$homeLink = "Matches.php"; // ???
-                
-                $clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-        }
-
-	else if ($_SESSION['type'] == 'director'){
-		$homeLink = "DirectorHomePage.php";
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-
-	else if ($_SESSION['type'] == 'admin'){
-		$homeLink = "AdminCreateLeague.php";
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-	else if ($_SESSION['type'] == 'agent'){
-		$homeLink = "AgentHomePage.php";
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-
-  else if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' )
-  { 
-     if($_SESSION['type'] == 'coach')
-     {
-        $homeLink = "CoachHomePage.php";
-     }
-     else
-     {
-        $homeLink = "PlayersHomePage.php";
-     }
     
-     $clubsQuery = "SELECT * FROM Club";
-     $clubs = mysqli_query($connection, $clubsQuery);
-  }
+    if ($_SESSION['type'] == 'fan')
+    {
+            $homeLink = "FanHomePage.php";
 
+            $fanID = $_SESSION['id'];
+            $favTeamID = $_SESSION['favTeamID'];
+
+            if (isset($_POST['subscribe'])){
+                    $subscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID."', '".$_POST['id']."')";
+                    mysqli_query($connection, $subscribeQuery);
+            }
+
+            if (isset($_POST['subscribed'])){
+                    $unsubscribeQuery = "DELETE FROM Subscribe WHERE Subscribe.fanID = '".$fanID."' AND Subscribe.clubID = '".$_POST['id']."'";
+                    mysqli_query($connection, $unsubscribeQuery);
+            }       
+    }
+    else if ($_SESSION['type'] == 'admin'){
+		$homeLink = "AdminCreateLeague.php";
+    }
+     else if ($_SESSION['type'] == 'guest'){
+		$homeLink = "Matches.php";
+    }
+     else if ($_SESSION['type'] == 'coach'){
+		$homeLink = "CoachHomePage.php";
+    }
+     else if ($_SESSION['type'] == 'player'){
+		$homeLink = "PlayersHomePage.php";
+    }
+     else if ($_SESSION['type'] == 'agent'){
+		$homeLink = "AgentHomePage.php";
+    }
+     else if ($_SESSION['type'] == 'director'){
+		$homeLink = "DirectorHomePage.php";
+    }
+    
+    
+    $searchtext = $_SESSION['searchtext'];
+    $clubsQuery = "SELECT * FROM Club WHERE name LIKE '%$searchtext%'";
+    $clubs = mysqli_query($connection, $clubsQuery);
+
+
+    $playersQuery = "SELECT * FROM Player WHERE name LIKE '%$searchtext%' OR surname LIKE '%$searchtext%' ";
+    $players = mysqli_query($connection, $playersQuery);
+
+
+    $coachesQuery = "SELECT * FROM Coach WHERE name LIKE '%$searchtext%' OR surname LIKE '%$searchtext%'";
+    $coaches = mysqli_query($connection, $coachesQuery); 
+    
 ?>
 <!DOCTYPE html>
 <html>
@@ -98,6 +81,18 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+}
+.searchbutton {
+    background-color: #4CAF50; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 20px;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
 }
 td, th {
     border: 1px solid #dddddd;
@@ -140,19 +135,6 @@ body {
 .topnav {
     overflow: hidden;
     background-color: #333;
-}
-
-.searchbutton {
-    background-color: #4CAF50; /* Red */
-    border: none;
-    color: white;
-    padding: 14px 31px;
-    text-align: center;
-    text-decoration: none;
-    margin-right: 20px;
-    display: inline-block;
-    font-size: 16px;
-	float: right;
 }
 
 /* Style the topnav links */
@@ -279,17 +261,21 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
-  
-<form action = "#" method = "POST">
+
+  <form action = "#" method = "POST">
         <input type="submit" style="float:right" name="search" value="Search" class = "searchbutton">
         <input type ="text" name = "searchtext" placeholder="Search..." style ="float:right; width: 260px; height:30px; margin-top:8px; margin-right: 1px">
   </form>
-
 </div>
 
 <div class="row">
   <div class ="rightcolumn">
-  <h2>Clubs</h2>
+      <?php
+      $flag = false;
+  if (mysqli_num_rows($clubs) == 0){ ?>
+  <?php }
+  else{ $flag = true; ?>
+      <h2>Clubs</h2>
 
 <table>
 <tr>
@@ -371,8 +357,56 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				</td>
 			</tr>
 		<?php } ?>
-</table>
   
+</table>
+      <?php }?>
+      <?php
+  if (mysqli_num_rows($players) == 0){ ?>
+  <?php }
+  else{ $flag = true;?>
+    <h2>Players</h2>
+
+<table>
+<tr>
+	<th>Name</th>
+    <th>Age</th>
+    <th>Position</th>
+	<th>Nationality</th>
+</tr>
+  <?php while ($row = mysqli_fetch_assoc($players)){ ?>
+			<tr>
+				<td><?php echo $row['name'].' '.$row['surname']; ?></td>
+				<td><?php echo $row['age']; ?></td>
+				<td><?php echo $row['position']; ?></td>
+				<td><?php echo $row['nationality']; ?></td>
+			</tr>
+		<?php } ?>
+</table>
+  <?php } ?>
+      <?php
+  if (mysqli_num_rows($coaches) == 0){ ?>
+  <?php }
+  else{ $flag = true;?>
+    <h2>Coaches</h2>
+
+<table>
+<tr>
+	<th>Name</th>
+    <th>Age</th>
+	<th>Nationality</th>
+</tr>
+  <?php while ($row = mysqli_fetch_assoc($coaches)){ ?>
+			<tr>
+				<td><?php echo $row['name'].' '.$row['surname']; ?></td>
+				<td><?php echo $row['age']; ?></td>
+				<td><?php echo $row['nationality']; ?></td>
+			</tr>
+		<?php } ?>
+</table>
+    <?php } if (!$flag){ ?>
+        <p>No results found...</p>
+    <?php } ?>
+ 
 </div>
  
   <div class="leftcolumn">

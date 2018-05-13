@@ -12,7 +12,15 @@
 	if (isset($_POST['cancel'])){
 		header("Location: FanHomePage.php");
 	}
-	
+        
+	if(isset($_POST['search'])){
+        $searchtext = $_POST['searchtext'];
+        $_SESSION['searchtext'] = $searchtext;
+        header("Location: Search.php");
+        }
+        
+        
+
 	if (isset($_POST['save'])){
 		if (empty($_POST['name']) || empty ($_POST['surname']) || empty ($_POST['username']) || empty ($_POST['password']) || empty ($_POST['favoriteteam'])){
 			?>
