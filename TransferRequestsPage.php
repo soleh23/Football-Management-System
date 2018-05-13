@@ -14,67 +14,55 @@
 		header("Location: login.php");
 		exit();
 	}
-	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan')
-  {
-		$homeLink = "FanHomePage.php";
-		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
-		
-		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
-		$players = mysqli_query($connection, $playersQuery);
+	
+	if (isset($_POST['cancelRequest'])){
+		$playerID = $_POST['id1'];
+		$fromDirectorID = $_POST['id2'];
+		$toDirectorID = $_POST['id3'];
+
+		$updateQuery = "DELETE FROM Transfer_Offer WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."'";
+		mysqli_query($connection, $updateQuery);
 	}
-<<<<<<< HEAD
-        
-        else if ($_SESSION['type'] == 'guest'){
-		$homeLink = "Matches.php";
+	
+	$myClubID = $_SESSION['myClubID'];
+	$curDirectorID = $_SESSION['id'];
+	
+	$transfersQuery = "SELECT fromDirectorID, toDirectorID, price, status, playerID FROM Transfer_Offer WHERE fromDirectorID = '".$curDirectorID."'";
+	$transfers = mysqli_query($connection, $transfersQuery);
+	
+	$names = array();
+	$prices = array();
+	$statuses = array();
+	$playerIDs = array();
+	$fromDirectorIDs = array();
+	$toDirectorIDs = array();
+	$elementsNo = 0;
+	while ($row = mysqli_fetch_assoc($transfers)){ 
+		$curPlayerNameQuery = "SELECT name, surname FROM Player WHERE ID = '".$row['playerID']."'";
+		$curPlayerName = mysqli_query($connection, $curPlayerNameQuery)->fetch_object();
+		array_push($names, $curPlayerName->name." ".$curPlayerName->surname);
 		
-		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player, Plays WHERE Player.ID = Plays.playerID AND Plays.clubID";
-		$players = mysqli_query($connection, $playersQuery);
-	}
-=======
-
-	else if ($_SESSION['type'] == 'director'){
-		$homeLink = "DirectorHomePage.php";
+		array_push($prices, $row['price']);
+		array_push($playerIDs, $row['playerID']);
+		array_push($fromDirectorIDs, $row['fromDirectorID']);
+		array_push($toDirectorIDs, $row['toDirectorID']);
 		
-		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player ORDER BY position, age ASC";
-		$players = mysqli_query($connection, $playersQuery);
-	}
-	else if ($_SESSION['type'] == 'admin'){
-		$homeLink = "AdminCreateLeague.php";
+		if ($row['status'] == '0'){
+			$curStatus = "Requested";
+		}
+		else if ($row['status'] == '1'){
+			$curStatus = "Agent Accepted";
+		}
+		else if ($row['status'] == '2'){
+			$curStatus = "Director Accepted";
+		}
+		else {
+			$curStatus = "Transfer Completed";
+		}
+		array_push($statuses, $curStatus);
 		
-		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player ORDER BY position, age ASC";
-		$players = mysqli_query($connection, $playersQuery);
+		$elementsNo = $elementsNo + 1;
 	}
-	else if ($_SESSION['type'] == 'agent'){
-		$homeLink = "AgentHomePage.php";
-		
-		$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player ORDER BY position, age ASC";
-		$players = mysqli_query($connection, $playersQuery);
-	}
-
-  else if ($_SESSION['type'] == 'coach'  )
-  {
-     $homeLink = "CoachHomePage.php";
-   
-     $sql = "SELECT DISTINCT name, surname, nationality, position, age FROM Player";
-
-     $players = mysqli_query($connection, $sql);
-  }
-  else if ( $_SESSION['type'] == 'player' )
-  {
-     $homeLink = "PlayersHomePage.php";
-
-     $player_id = $_SESSION['id'];
-
-     $sql = "SELECT DISTINCT name, surname, nationality, position, age FROM Player WHERE ID != '$player_id' ";
-
-     $players = mysqli_query($connection, $sql);
-  }
-
-  
->>>>>>> 896515fb7312ab7632d8330cab83ba09ce1a5676
 ?>
 <!DOCTYPE html>
 <html>
@@ -88,6 +76,18 @@ table {
     border-collapse: collapse;
     width: 100%;
 }
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
+
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
@@ -130,17 +130,7 @@ body {
     padding: 14px 16px;
     text-decoration: none;
 }
-.logoutbutton {
-    background-color: #f44336; /* Red */
-    border: none;
-    color: white;
-    padding: 14px 31px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-	float: right;
-}
+
 /* Change color on hover */
 .topnav a:hover {
     background-color: #ddd;
@@ -207,7 +197,30 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
    color: white;
 
 }
+.btn-group button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
 
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #7e4e41;
+}
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
@@ -220,8 +233,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-  float: none;
-  width: 100%;
+	float: none;
+	width: 100%;
 }
 
 
@@ -247,10 +260,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href=<?php echo $homeLink; ?> >Home       </a>
-  <?php if ($_SESSION['type'] == 'fan') { ?>
-  <a href="EditProfile.php">Settings</a>
-  <?php } ?>
+  <a href="DirectorHomePage.php">Home </a>
 
 	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
@@ -258,61 +268,70 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
   <a href="#" style="float:right">Search</a>
 
   <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
-
 </div>
 
-<div class="row">
-  <div class ="rightcolumn">
-  <h2>Players</h2>
-
+<div class="rightcolumn">
+  
+  <h2>Transfer Request</h2>
+<div class="btn-group">
+    <a href="TransferOffersPage.php" target="_self">
+        <button>Offers</button>
+    </a>
+    <a href="TransferRequestsPage.php" target="_self">
+        <button>Requests</button>
+    </a>
+    <a href="MakeTransferRequest.php" target="_self">
+        <button>Create Transfer Requests</button>
+    </a>
+</div>
 <table>
 <tr>
-	<th>Name</th>
-    <th>Age</th>
-    <th>Position</th>
-	<th>Nationality</th>
+  <th>Name</th>
+    <th>Price</th>
+    <th>Status</th>
+	<th>Action</th>
 </tr>
-  <?php while ($row = mysqli_fetch_assoc($players)){ ?>
-			<tr>
-				<td><?php echo $row['name'].' '.$row['surname']; ?></td>
-				<td><?php echo $row['age']; ?></td>
-				<td><?php echo $row['position']; ?></td>
-				<td><?php echo $row['nationality']; ?></td>
-			</tr>
-		<?php } ?>
+		    <?php 
+			  $cnt = 0;
+			  while ($cnt < $elementsNo){ ?>
+						<tr>
+							<td><?php echo $names[$cnt]; ?></td>
+							<td><?php echo $prices[$cnt]; ?>$</td>
+							<td><?php echo $statuses[$cnt]; ?></td>
+							<td>
+								<?php
+									$curPlayerID = $playerIDs[$cnt];
+									$curFromDirectorID = $fromDirectorIDs[$cnt];
+									$curToDirectorID = $toDirectorIDs[$cnt];
+									if ($statuses[$cnt] == 'Requested') { ?>
+										<form action = "#" method = "POST">
+											<input type = "hidden" name = "id1" value = "<?=$curPlayerID?>" >
+											<input type = "hidden" name = "id2" value = "<?=$curFromDirectorID?>" >
+											<input type = "hidden" name = "id3" value = "<?=$curToDirectorID?>">
+											<input type = "submit" value = "Cancel" name = "cancelRequest"/>
+										</form
+									<?php } ?>
+									<?php if ($statuses[$cnt] == 'Director Accepted' || $statuses[$cnt] == 'Transfer Completed' || $statuses[$cnt] == 'Agent Accepted') { 
+											echo "N/A";
+									} ?>
+							</td>
+						</tr>
+					<?php $cnt = $cnt + 1;} ?>
 </table>
   
 </div>
- 
+
   <div class="leftcolumn">
-  <!--<div class="card">
-      <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-    </div>-->
-    
 
 		 <ul id="sideBarStyle">
-
 		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
 			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
 			 <li><a href="Leagues.php">Leagues</a></li>
 		 <?php } ?>
-
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-<<<<<<< HEAD
-         <?php 
-          if ($_SESSION['type'] == 'fan'){?>
-         <li><a href="Subscriptions.php">Subscriptions</a></li>
-         <?php
-	}
-         ?>
-         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
-=======
-
 		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
 		 <?php } ?>
@@ -320,28 +339,10 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
 				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
-		 <?php if ($_SESSION['type'] == 'agent') {?>
-				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
-				<li><a href="AgentContracts.php">Manage Contracts</a></li>
-		 <?php } ?>
-
-
-     <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) { ?>
-        <li><a href="playersTransfer.php"> Players Transfer</a></li>
-     
-     <?php } ?>
-
->>>>>>> 896515fb7312ab7632d8330cab83ba09ce1a5676
 		 </ul>
 
-    
 
 
   </div>
-
-
-
- 
-
 </body>
 </html>

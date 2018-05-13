@@ -9,9 +9,14 @@
 		header("Location: login.php");
 		exit();
 	}
-	
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
+	if ($_SESSION['type'] == 'fan')
+  {
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
@@ -57,6 +62,15 @@
 		$transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
 							FROM Transfer_Offer, Director
 							WHERE (Transfer_Offer.fromDirectorID = Director.ID OR Transfer_Offer.toDirectorID = Director.ID) AND Transfer_Offer.status = '3' AND Director.club_ID";
+
+	else if ($_SESSION['type'] == 'director'){
+		$homeLink = "DirectorHomePage.php";
+		
+		$transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
+							FROM Transfer_Offer
+							WHERE Transfer_Offer.status = '3'
+							ORDER BY Transfer_Offer.transferDate DESC";
+
 		$transfers = mysqli_query($connection, $transfersQuery);
 		
 		$fromTeams = array();
@@ -84,6 +98,119 @@
 			$elementsNo = $elementsNo + 1;
 		} 
 	}
+	else if ($_SESSION['type'] == 'admin'){
+		$homeLink = "AdminCreateLeague.php";
+		
+		$transfersQuery = "SELECT DISTINCT price, status, playerID, fromDirectorID, toDirectorID
+							FROM Transfer_Offer
+							ORDER BY Transfer_Offer.transferDate DESC";
+		$transfers = mysqli_query($connection, $transfersQuery);
+		
+		$fromTeams = array();
+		$names = array();
+		$toTeams = array();
+		$prices = array();
+		$statuses = array();
+		$elementsNo = 0;
+		while ($row = mysqli_fetch_assoc($transfers)){
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
+			array_push($fromTeams, $fromTeam->name);
+			
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
+			array_push($toTeams, $toTeam->name);
+			
+			$nameQuery = "SELECT name, surname FROM Player WHERE Player.ID = '".$row['playerID']."'";
+			$name = mysqli_query($connection, $nameQuery)->fetch_object();
+			array_push($names, $name->name." ".$name->surname);
+			
+			array_push($prices, $row['price']);
+			array_push($statuses, $row['status']);
+			
+			$elementsNo = $elementsNo + 1;
+		}
+	}
+	else if ($_SESSION['type'] == 'agent'){
+		$homeLink = "AgentHomePage.php";
+		
+		$transfersQuery = "SELECT DISTINCT price, status, playerID, fromDirectorID, toDirectorID
+							FROM Transfer_Offer
+							WHERE Transfer_Offer.status = '3'
+							ORDER BY Transfer_Offer.transferDate DESC";
+		$transfers = mysqli_query($connection, $transfersQuery);
+		
+		$fromTeams = array();
+		$names = array();
+		$toTeams = array();
+		$prices = array();
+		$statuses = array();
+		$elementsNo = 0;
+		while ($row = mysqli_fetch_assoc($transfers)){
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
+			array_push($fromTeams, $fromTeam->name);
+			
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
+			array_push($toTeams, $toTeam->name);
+			
+			$nameQuery = "SELECT name, surname FROM Player WHERE Player.ID = '".$row['playerID']."'";
+			$name = mysqli_query($connection, $nameQuery)->fetch_object();
+			array_push($names, $name->name." ".$name->surname);
+			
+			array_push($prices, $row['price']);
+			array_push($statuses, $row['status']);
+			
+			$elementsNo = $elementsNo + 1;
+		}
+	}
+
+  else if($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' )
+  {
+      if($_SESSION['type'] == 'coach')
+      {  
+        $homeLink = "CoachHomePage.php";
+      }
+      else
+      {
+        $homeLink = "PlayersHomePage.php";
+      }
+
+      $transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
+              FROM Transfer_Offer WHERE status = '3'";
+
+      $transfers = mysqli_query($connection, $transfersQuery);
+
+      $fromTeams = array();
+      $names = array();
+      $toTeams = array();
+      $prices = array();
+      $transferDates = array();
+      $elementsNo = 0;
+
+      while ($row = mysqli_fetch_assoc($transfers))
+      {
+        $fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+        $fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
+        array_push($fromTeams, $fromTeam->name);
+        
+        $toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+        $toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
+        array_push($toTeams, $toTeam->name);
+        
+        $nameQuery = "SELECT name, surname FROM Player WHERE Player.ID = '".$row['playerID']."'";
+        $name = mysqli_query($connection, $nameQuery)->fetch_object();
+        array_push($names, $name->name." ".$name->surname);
+        
+        array_push($prices, $row['price']);
+        array_push($transferDates, $row['transferDate']);
+        
+        $elementsNo = $elementsNo + 1;
+    } 
+
+  }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -96,6 +223,17 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+}
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
 }
 td, th {
     border: 1px solid #dddddd;
@@ -247,11 +385,16 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href=<?php echo $homeLink; ?> >Home</a>
-  <a href="EditProfile.php">Settings</a>
+  <?php if ($_SESSION['type'] == 'fan') { ?>
+	  <a href="EditProfile.php">Settings</a>
+  <?php } ?>
 
+	<form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 
@@ -265,7 +408,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     <th>From Club</th>
     <th>To Club</th>
 	<th>Price</th>
-	<th>Transfer Date</th>
+	<th>Status</th>
 </tr>
   <?php 
   $cnt = 0;
@@ -275,7 +418,19 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<td><?php echo $fromTeams[$cnt]; ?></td>
 				<td><?php echo $toTeams[$cnt]; ?></td>
 				<td><?php echo $prices[$cnt]; ?></td>
-				<td><?php echo $transferDates[$cnt]; ?></td>
+				<td>
+					<?php 
+					if ($statuses[$cnt] == '3'){
+						echo "Completed"; 
+					}
+					else if ($statuses[$cnt] == '4'){
+						echo "Failed"; 
+					}
+					else {
+						echo "Pending"; 
+					}
+					?>
+				</td>
 			</tr>
 		<?php $cnt = $cnt + 1;} ?>
 </table>
@@ -291,21 +446,34 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
+
+		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
+			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
+			 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php } ?>
+
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-         <?php 
-          if ($_SESSION['type'] == 'fan'){?>
-         <li><a href="Subscriptions.php">Subscriptions</a></li>
-         <?php
-	}
-         ?>
-         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
-		 </ul>
 
+     <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player') {?>
+        <li><a href="playersTransfer.php">Players Transfer </a></li>
+     </ul>
+     <?php } ?>
+
+		 <?php if ($_SESSION['type'] == 'fan') {?>
+				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'director') {?>
+				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'agent') {?>
+				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
+				<li><a href="AgentContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 </ul>
 
   </div>
 

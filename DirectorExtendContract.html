@@ -155,8 +155,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-  float: none;
-  width: 100%;
+    float: none;
+    width: 100%;
 }
 
 
@@ -182,8 +182,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="#">Home       </a>
-  <a href="#">Settings</a>
+    <a href="Admin'sMainPage.html">Home </a>
+    <a href="EditProfile.html">Settings</a>
 
 
   <a href="#" style="float:right">Search</a>
@@ -193,29 +193,79 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="row">
-  
-  <h2>Menage Contracts</h2>
-<div class="btn-group">
-  <button>Offers</button>
-  <button>Requests</button>
-</div>
-
-<select>
-  <option value="Player Name">Player</option>
-</select>
-
-<div class="form-group">
-  <div class="input-group">
+    <div class="leftcolumn">
+    <!--<div class="card">
+      <h2>About Me</h2>
+      <div class="fakeimg" style="height:100px;">Image</div>
+      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+    </div>-->
     
-    <form action="/action_page.php">
-      <strong>  New Contract End Date:     </strong>
-      <input type="date" name="date">           
-    </form>
+
+         <ul id="sideBarStyle">
+        <ul id="sideBarStyle">
+         <li><a class="active" href="CountriesPage.html">Countries</a></li>
+         <li><a href="CountriesLeaguePage.html">League</a></li>
+         <li><a href="ClubsPage.html">Clubs</a></li>
+         <li><a href="TransferNewsPage.html">Transfer News</a></li>
+         <li><a href="GuestPage.html">Matches</a></li>
+         <li><a href="playersPage.html">Players</a></li>
+         <li><a href="TransferRequest.html">Transfer</a></li>
+         <li><a href="DirectorContractHandlePage.html">Menage Contracts</a></li>
+         
+         </ul>
+
+
   </div>
-</div>
-</div>
+  <div class="rightcolumn">
+  
+ 
+        <strong>  Player     </strong>
+
 <div class="form-group">
-   <input type="submit" class="btn btn-lg btn-primary btn-block" value="Extend Contract">
+<div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+<input class="form-control" placeholder="Name" name="name" type="text" autofocus>
+</div>
+</div>
+
+<div class="form-group">
+<div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+<input class="form-control" placeholder="Surname" name="Surname" type="text" autofocus>
+</div>
+</div>
+
+
+<div class="form-group">
+<div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+        </span> 
+<input class="form-control" placeholder="Bonus" name="Bonus" type="text" autofocus>
+</div>
+</div>
+           
+            
+
+
+    <div class="form-group">
+        <div class="input-group">
+           
+           <form action="/action_page.php">
+            <strong> Expirition Date:     </strong>
+           <input type="date" name="date">           
+         </form>
+        </div>
+    </div>
+
+    <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Done">
+    </div>
+  </div>
 </div>
 </body>
 </html>

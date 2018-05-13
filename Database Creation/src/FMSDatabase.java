@@ -124,6 +124,7 @@ public class FMSDatabase {
 					"(username, password, name, surname, age, salary, nationality, position, birthdate, agent_ID)" +
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			String[][] tuples = new String[][]{{"cr7", "cr7", "Cristiano", "Ronaldo", "33", "80000000", "Portugal", "Forward", "1985-10-10", "1"},
+
 				{"messi", "messi", "Lionel", "Messi", "30", "79000000", "Argentina", "Forward", "1987-10-10", "2"},
 				{"grizman", "grizman", "Antuan", "Grizman", "27", "1000000", "France", "Forward", "1990-08-10", "1"},
 				{"salah", "salah", "Muhammed", "Salah", "25", "2000000", "Egypt", "Forward", "1992-08-10", "3"},
@@ -138,6 +139,7 @@ public class FMSDatabase {
 				{"bale", "bale", "Gareth", "Bale", "28", "888000000", "Wales", "Forward", "1990-08-10", "1"},
 				{"karim", "karim", "Karim", "Benzama", "27", "55000000", "France", "Forward", "1992-08-10", "4"},
 				{"kovacic", "kovacic", "Mateo", "Kovacic", "22", "333000000", "Crotia", "Forward", "1991-08-10", "4"}};
+
 
 				for (int i = 0; i < tuples.length; i++){
 					preparedStatement = connection.prepareStatement(sql);

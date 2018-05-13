@@ -1,3 +1,25 @@
+<?php
+	session_start();
+	$host = "dijkstra.ug.bcc.bilkent.edu.tr";
+	$myUser = "mehmet.turanboy";
+	$myPassword = "1ky0yl0r";
+	$myDB = "mehmet_turanboy";
+	$connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
+	if ($_SESSION['loggedIn'] != true){
+		header("Location: login.php");
+		exit();
+	}
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
+
+	$agentID = $_SESSION['id'];
+	
+	$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player WHERE Player.agent_ID = '".$agentID."'";
+	$players = mysqli_query($connection, $playersQuery);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +74,17 @@ body {
     padding: 14px 16px;
     text-decoration: none;
 }
-
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 /* Change color on hover */
 .topnav a:hover {
     background-color: #ddd;
@@ -132,8 +164,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+  float: none;
+  width: 100%;
 }
 
 
@@ -160,62 +192,71 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href="#">Home       </a>
-  <a href="#">Settings</a>
+  <?php if ($_SESSION['type'] == 'fan') { ?>
+  <a href="EditProfile.php">Settings</a>
+  <?php } ?>
 
+	<form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 
 <div class="row">
   <div class ="rightcolumn">
-  <h2>League Table</h2>
-  
+  <h2>My Clients</h2>
 
 <table>
 <tr>
-    <th>Rank</th>
-    <th>Team</th>
-    <th>Point</th>
-    <th>Played Mathches</th>
-    <th>Average</th>
+	<th>Name</th>
+    <th>Age</th>
+    <th>Position</th>
+	<th>Nationality</th>
 </tr>
-  <tr>
-    <td>1</td>
-    <td>Real Madrid</td>
-    <td>44</td>
-    <td>20</td>
-    <td>40</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Galatasaray</td>
-    <td>43</td>
-    <td>20</td>
-    <td>60</td>
-  </tr>
-  
+  <?php while ($row = mysqli_fetch_assoc($players)){ ?>
+			<tr>
+				<td><?php echo $row['name'].' '.$row['surname']; ?></td>
+				<td><?php echo $row['age']; ?></td>
+				<td><?php echo $row['position']; ?></td>
+				<td><?php echo $row['nationality']; ?></td>
+			</tr>
+		<?php } ?>
 </table>
   
 </div>
  
   <div class="leftcolumn">
-	<!--<div class="card">
+  <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-    	 <ul id="sideBarStyle">
-         <li><a class="active" href="CountriesPage.html">Countries</a></li>
-         <li><a href="CountriesLeaguePage.html">League</a></li>
-         <li><a href="ClubsPage.html">Clubs</a></li>
-         <li><a href="TransferNewsPage.html">Transfer News</a></li>
-         <li><a href="GuestPage.html">Matches</a></li>
-         <li><a href="playersPage.html">Players</a></li>
-       </ul>
+		 <ul id="sideBarStyle">
+		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
+			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
+			 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php } ?>
+		 <li><a href="Clubs.php">Clubs</a></li>
+		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
+		 <li><a href="Matches.php">Matches</a></li>
+		 <li><a href="playersPage.php">Players</a></li>
+		 <?php if ($_SESSION['type'] == 'fan') {?>
+				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'director') {?>
+				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'agent') {?>
+				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
+				<li><a href="AgentContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 </ul>
 
 
   </div>

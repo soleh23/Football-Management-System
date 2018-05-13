@@ -9,7 +9,11 @@
 		header("Location: login.php");
 		exit();
 	}
-	
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
 	$homeLink = "#";
 	if ($_SESSION['type'] == 'fan'){
 		$homeLink = "FanHomePage.php"; 
@@ -26,6 +30,10 @@
 		
 		$fanID = $_SESSION['id'];
 		$favTeamID = $_SESSION['favTeamID'];
+
+	else if ($_SESSION['type'] == 'admin'){
+		$homeLink = "AdminCreateLeague.php";
+
 		
 		$leaguesQuery = "SELECT DISTINCT name FROM League";
 		$leagues = mysqli_query($connection, $leaguesQuery);
@@ -65,7 +73,17 @@ body {
     text-align: center;
     background: white;
 }
-
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 .header h1 {
     font-size: 50px;
 }
@@ -193,11 +211,16 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href=<?php echo $homeLink; ?> >Home</a>
+  <?php if ($_SESSION['type'] == 'fan') { ?>
   <a href="EditProfile.php">Settings</a>
+  <?php } ?>
 
+  <form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 
@@ -230,15 +253,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
-                 <li><a href="playersPage.php">Players</a></li>
-		 
-         <?php 
-          if ($_SESSION['type'] == 'fan'){?>
-         <li><a href="Subscriptions.php">Subscriptions</a></li>
-         <?php
-	}
-         ?>
-         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
+
+		 <li><a href="playersPage.php">Players</a></li>
+		 <?php if ($_SESSION['type'] == 'fan') { ?>
+				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+			<?php } ?>
+
 		 </ul>
 
 

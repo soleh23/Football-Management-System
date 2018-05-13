@@ -9,8 +9,27 @@
 		header("Location: login.php");
 		exit();
 	}
-	
-	$myImage = '<img src="images/'.$_SESSION['username'].'"'.'style="height:200px; width: 280px">';
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
+
+
+	//image holds users's image
+	$myImage = '<img src="images/'.$_SESSION['username'].'.jpg"'.'style="height:200px; width: 280px">';
+  $sql = "SELECT * FROM Player WHERE ID = '".$_SESSION['id']."'";
+  $player  = mysqli_query($connection, $sql)->fetch_object();
+
+
+  //get player agent
+  $sql = "SELECT * FROM Agent WHERE ID = '$player->agent_ID'";
+  $agent = mysqli_query($connection, $sql)->fetch_object();
+
+  //get player club
+  $sql = "SELECT * FROM Plays,Club WHERE Plays.clubID = Club.ID AND Plays.playerID = '$player->ID'";
+  $club = mysqli_query($connection, $sql)->fetch_object();
+ 
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,7 +55,17 @@ body {
 .header h1 {
     font-size: 50px;
 }
-
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 /* Style the top navigation bar */
 .topnav {
     overflow: hidden;
@@ -77,7 +106,8 @@ body {
     float: right;
     width: 35%;
     background-color: #f1f1f1;
-    padding-left: 20px;
+    padding-left: 50px;
+    padding-right: 100px;
 }
 
 /* Fake image */
@@ -170,13 +200,14 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="#">Home       </a>
-  <a href="#">Settings</a>
+  <a href="PlayersHomePage.php">Home       </a>
 
-
+    <form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 
@@ -189,19 +220,13 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
-
     	 <ul id="sideBarStyle">
          <ul id="sideBarStyle">
-         <li><a class="active" href="CountriesPage.html">Countries</a></li>
-         <li><a href="CountriesLeaguePage.html">League</a></li>
-         <li><a href="ClubsPage.html">Clubs</a></li>
-         <li><a href="TransferNewsPage.html">Transfer News</a></li>
-         <li><a href="GuestPage.html">Matches</a></li>
-         <li><a href="playersPage.html">Players</a></li>
-         <li><a href="TransferNewsPage.html">Transfers</a></li>
-         <li><a href="#">Train</a></li>
-         <li><a href="#">Players Transfer</a></li>
-         <li><a href="#">My Transfers</a></li>
+         <li><a href="Clubs.php">Clubs</a></li>
+         <li><a href="TransferNewsPage.php">Transfer News</a></li>
+         <li><a href="Matches.php">Matches</a></li>
+         <li><a href="playersPage.php">Players</a></li>
+         <li><a href="playersTransfer.php">Players Transfer</a></li>
     	 </ul>
 
 
@@ -212,21 +237,24 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
     <div class="card">
 
-      <h2>Favorite Team</h2>
       <div class="rightcolumn2">
-        <p>Name:<br>Surname:<br>Club :<br>City :<br>Salaray:<br> Salary :<br>Price :<br> </p>
+          <p>Name: <?php   echo $player->name ?>
+           <br>Surname: <?php   echo $player->surname ?>
+           <br>Age: <?php   echo $player->age ?>
+           <br>Salary: <?php   echo $player->salary ?>
+           <br>Nationality: <?php   echo $player->nationality ?>
+           <br>Position: <?php   echo $player->position ?>
+           <br>Agent: <?php   echo $agent->name ?>
+           <br>Club: <?php   echo $club->name ?>
+           <br> 
+          </p>
       </div>
-      <div >
+      <div  >
 		  <?php
 			echo $myImage;
 		  ?>
 	  </div>
-      <div class="inf" style="height:200px; width: 350px">
-
-      <p>Info:</p>
-      <p>Players: <br> Player1</p>
-
-    </div>
+      
   </div>
 
 </div>

@@ -9,9 +9,14 @@
 		header("Location: login.php");
 		exit();
 	}
-	
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
+	if ($_SESSION['type'] == 'fan')
+  {
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
@@ -30,13 +35,47 @@
 		$clubsQuery = "SELECT * FROM Club";
 		$clubs = mysqli_query($connection, $clubsQuery);
 	}
+
         
         else if ($_SESSION['type'] == 'guest'){
 		$homeLink = "Matches.php"; // ???
+
+
+	else if ($_SESSION['type'] == 'director'){
+		$homeLink = "DirectorHomePage.php";
 		
 		$clubsQuery = "SELECT * FROM Club";
 		$clubs = mysqli_query($connection, $clubsQuery);
 	}
+
+	else if ($_SESSION['type'] == 'admin'){
+		$homeLink = "AdminCreateLeague.php";
+		
+		$clubsQuery = "SELECT * FROM Club";
+		$clubs = mysqli_query($connection, $clubsQuery);
+	}
+	else if ($_SESSION['type'] == 'agent'){
+		$homeLink = "AgentHomePage.php";
+		
+		$clubsQuery = "SELECT * FROM Club";
+		$clubs = mysqli_query($connection, $clubsQuery);
+	}
+
+  else if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' )
+  { 
+     if($_SESSION['type'] == 'coach')
+     {
+        $homeLink = "CoachHomePage.php";
+     }
+     else
+     {
+        $homeLink = "PlayersHomePage.php";
+     }
+    
+     $clubsQuery = "SELECT * FROM Club";
+     $clubs = mysqli_query($connection, $clubsQuery);
+  }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,7 +104,17 @@ body {
     padding: 10px;
     background: #f1f1f1;
 }
-
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 /* Header/Blog Title */
 .header {
     padding: 30px;
@@ -200,12 +249,17 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href=<?php echo $homeLink; ?> >Home</a>
+  <?php if ($_SESSION['type'] == 'fan') { ?>
   <a href="EditProfile.php">Settings</a>
-
+  <?php } ?>
+	
+	<form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
 
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 
@@ -218,7 +272,9 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 	<th>Name</th>
     <th>City</th>
     <th>Value</th>
+	<?php if ($_SESSION['type'] == 'fan'){ ?>
 	<th></th>
+	<?php } ?>
 </tr>
   <?php 
   if ($_SESSION['type'] != 'guest')
@@ -227,8 +283,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<td><?php echo $row['name'] ?></td>
 				<td><?php echo $row['city']; ?></td>
 				<td><?php echo $row['value']; ?>$</td>
+				<?php
+				if ($_SESSION['type'] == 'fan'){?>
 				<td>
 					<?php
+            if($_SESSION['type'] == 'fan')
+            {
 						$curTeamID = $row['ID'];
 						$curTeamName = "subscribe".$curTeamID;
 						$curTeamQuery = "SELECT * FROM Subscribe S WHERE S.fanID = '".$fanID."' AND S.clubID = '".$curTeamID."'";
@@ -248,8 +308,10 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 						else { ?>
 							<input type = "submit" value = "Favorite Team" name = "favoriteteam" disabled/>
 						<?php }
-					?>
+					
+          }?>
 				</td>
+				<?php } ?>
 			</tr>
 		<?php } ?>
 
@@ -290,27 +352,36 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
  
   <div class="leftcolumn">
-  <!--<div class="card">
-      <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-    </div>-->
-    
 
 		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
+
+		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
+			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
+			 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php } ?>
+
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-         <?php 
-          if ($_SESSION['type'] == 'fan'){?>
-         <li><a href="Subscriptions.php">Subscriptions</a></li>
-         <?php
-	}
-         ?>
-         <!--<li><a href="Subscriptions.php">Subscriptions</a></li>-->
+
+      <?php if ( $_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) { ?>
+        <li><a href="playersTransfer.php"> Players Transfer </a></li>
+      </ul>
+      <?php }  ?>
+
+		 <?php if ($_SESSION['type'] == 'fan') { ?>
+				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'director') {?>
+				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'agent') {?>
+				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
+				<li><a href="AgentContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+
 		 </ul>
 
 
