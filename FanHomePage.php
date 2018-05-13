@@ -9,6 +9,11 @@
 		header("Location: login.php");
 		exit();
 	}
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
 	$teamID = $_SESSION['favTeamID'];
 	
 	$clubQuery = "SELECT * FROM Club WHERE ID = '".$teamID."'";
@@ -24,7 +29,7 @@
 	$leaguesQuery = "SELECT League.name FROM League, League_Club WHERE League.ID = League_Club.leagueID AND League_Club.clubID = '".$club->ID."'";
 	$leagues = mysqli_query($connection, $leaguesQuery);
 
-	$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game WHERE Game.home_teamID = '".$club->ID."' OR Game.away_teamID = '".$club->ID."' ORDER BY Game.game_date ASC";
+	$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game WHERE Game.home_teamID = '".$club->ID."' OR Game.away_teamID = '".$club->ID."' ORDER BY Game.game_date DESC";
 	$clubs = mysqli_query($connection, $clubsQuery);
 	
 	$names = array();
@@ -112,6 +117,17 @@ body {
     width: 75%;
     background-color: #f1f1f1;
     padding-left: 20px;
+}
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
 }
 .rightcolumn2 {
     float: right;
@@ -210,13 +226,15 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href="#">Home </a>
+  <a href="#">Home</a>
   <a href="EditProfile.php">Settings</a>
 
-
+  <form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 

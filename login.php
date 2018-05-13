@@ -48,7 +48,7 @@
 				$_SESSION['username'] = $value->username;
 				$_SESSION['type'] = "agent";
 				$_SESSION['loggedIn'] = true;
-				header("Location: PlayersHomePage.php");
+				header("Location: AgentHomePage.php");
 			}
 			
 			$sql = "SELECT * FROM Fan WHERE username = '".$username."' AND password = '".$password."' LIMIT 1";
@@ -68,6 +68,7 @@
 			if (mysqli_num_rows($query) == 1){
 				$value = mysqli_fetch_object($query);
 				$_SESSION['id'] = $value->ID;
+				$_SESSION['myClubID'] = $value->club_ID;
 				$_SESSION['username'] = $value->username;
 				$_SESSION['type'] = "director";
 				$_SESSION['loggedIn'] = true;

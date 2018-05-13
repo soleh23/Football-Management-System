@@ -14,43 +14,54 @@
 		header("Location: login.php");
 		exit();
 	}
-	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
-		$homeLink = "FanHomePage.php";
+	
+	if (isset($_POST['cancelRequest'])){
+		$playerID = $_POST['id1'];
+		$fromDirectorID = $_POST['id2'];
+		$toDirectorID = $_POST['id3'];
+
+		$updateQuery = "DELETE FROM Transfer_Offer WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."'";
+		mysqli_query($connection, $updateQuery);
+	}
+	
+	$myClubID = $_SESSION['myClubID'];
+	$curDirectorID = $_SESSION['id'];
+	
+	$transfersQuery = "SELECT fromDirectorID, toDirectorID, price, status, playerID FROM Transfer_Offer WHERE fromDirectorID = '".$curDirectorID."'";
+	$transfers = mysqli_query($connection, $transfersQuery);
+	
+	$names = array();
+	$prices = array();
+	$statuses = array();
+	$playerIDs = array();
+	$fromDirectorIDs = array();
+	$toDirectorIDs = array();
+	$elementsNo = 0;
+	while ($row = mysqli_fetch_assoc($transfers)){ 
+		$curPlayerNameQuery = "SELECT name, surname FROM Player WHERE ID = '".$row['playerID']."'";
+		$curPlayerName = mysqli_query($connection, $curPlayerNameQuery)->fetch_object();
+		array_push($names, $curPlayerName->name." ".$curPlayerName->surname);
 		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
+		array_push($prices, $row['price']);
+		array_push($playerIDs, $row['playerID']);
+		array_push($fromDirectorIDs, $row['fromDirectorID']);
+		array_push($toDirectorIDs, $row['toDirectorID']);
 		
-		if (isset($_POST['subscribe'])){
-			$subscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID."', '".$_POST['id']."')";
-			mysqli_query($connection, $subscribeQuery);
+		if ($row['status'] == '0'){
+			$curStatus = "Requested";
 		}
-		
-		if (isset($_POST['subscribed'])){
-			$unsubscribeQuery = "DELETE FROM Subscribe WHERE Subscribe.fanID = '".$fanID."' AND Subscribe.clubID = '".$_POST['id']."'";
-			mysqli_query($connection, $unsubscribeQuery);
+		else if ($row['status'] == '1'){
+			$curStatus = "Agent Accepted";
 		}
+		else if ($row['status'] == '2'){
+			$curStatus = "Director Accepted";
+		}
+		else {
+			$curStatus = "Transfer Completed";
+		}
+		array_push($statuses, $curStatus);
 		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-	else if ($_SESSION['type'] == 'director'){
-		$homeLink = "DirectorHomePage.php";
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-	else if ($_SESSION['type'] == 'admin'){
-		$homeLink = "AdminCreateLeague.php";
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
-	}
-	else if ($_SESSION['type'] == 'agent'){
-		$homeLink = "AgentHomePage.php";
-		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
+		$elementsNo = $elementsNo + 1;
 	}
 ?>
 <!DOCTYPE html>
@@ -65,6 +76,18 @@ table {
     border-collapse: collapse;
     width: 100%;
 }
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
+
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
@@ -80,17 +103,7 @@ body {
     padding: 10px;
     background: #f1f1f1;
 }
-.logoutbutton {
-    background-color: #f44336; /* Red */
-    border: none;
-    color: white;
-    padding: 14px 31px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-	float: right;
-}
+
 /* Header/Blog Title */
 .header {
     padding: 30px;
@@ -184,7 +197,30 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
    color: white;
 
 }
+.btn-group button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
 
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #7e4e41;
+}
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
@@ -197,8 +233,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-  float: none;
-  width: 100%;
+	float: none;
+	width: 100%;
 }
 
 
@@ -224,71 +260,67 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href=<?php echo $homeLink; ?> >Home</a>
-  <?php if ($_SESSION['type'] == 'fan') { ?>
-  <a href="EditProfile.php">Settings</a>
-  <?php } ?>
-	
+  <a href="DirectorHomePage.php">Home </a>
+
 	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
-
   <a href="#" style="float:right">Search</a>
 
   <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
-
 </div>
 
-<div class="row">
-  <div class ="rightcolumn">
-  <h2>Clubs</h2>
-
+<div class="rightcolumn">
+  
+  <h2>Transfer Request</h2>
+<div class="btn-group">
+    <a href="TransferOffersPage.php" target="_self">
+        <button>Offers</button>
+    </a>
+    <a href="TransferRequestsPage.php" target="_self">
+        <button>Requests</button>
+    </a>
+    <a href="MakeTransferRequest.php" target="_self">
+        <button>Create Transfer Requests</button>
+    </a>
+</div>
 <table>
 <tr>
-	<th>Name</th>
-    <th>City</th>
-    <th>Value</th>
-	<?php if ($_SESSION['type'] == 'fan'){ ?>
-	<th></th>
-	<?php } ?>
+  <th>Name</th>
+    <th>Price</th>
+    <th>Status</th>
+	<th>Action</th>
 </tr>
-  <?php while ($row = mysqli_fetch_assoc($clubs)){ ?>
-			<tr>
-				<td><?php echo $row['name'] ?></td>
-				<td><?php echo $row['city']; ?></td>
-				<td><?php echo $row['value']; ?>$</td>
-				<?php
-				if ($_SESSION['type'] == 'fan'){?>
-				<td>
-					<?php
-						$curTeamID = $row['ID'];
-						$curTeamName = "subscribe".$curTeamID;
-						$curTeamQuery = "SELECT * FROM Subscribe S WHERE S.fanID = '".$fanID."' AND S.clubID = '".$curTeamID."'";
-						$curTeam = mysqli_query($connection, $curTeamQuery);
-						if (mysqli_num_rows($curTeam) == 0){ ?>
-							<form action = "#" method = "POST">
-								<input type = "hidden" name = "id" value = "<?=$curTeamID?>">
-								<input type = "submit" value = "Subscribe" name = "subscribe"/>
-							</form>
-						<?php }
-						else if ($curTeamID != $favTeamID){ ?>
-							<form action = "#" method = "POST">
-								<input type = "hidden" name = "id" value = "<?=$curTeamID?>">
-								<input type = "submit" value = "Subscribed" name = "subscribed"/>
-							</form>
-						<?php }
-						else { ?>
-							<input type = "submit" value = "Favorite Team" name = "favoriteteam" disabled/>
-						<?php }
-					?>
-				</td>
-				<?php } ?>
-			</tr>
-		<?php } ?>
+		    <?php 
+			  $cnt = 0;
+			  while ($cnt < $elementsNo){ ?>
+						<tr>
+							<td><?php echo $names[$cnt]; ?></td>
+							<td><?php echo $prices[$cnt]; ?>$</td>
+							<td><?php echo $statuses[$cnt]; ?></td>
+							<td>
+								<?php
+									$curPlayerID = $playerIDs[$cnt];
+									$curFromDirectorID = $fromDirectorIDs[$cnt];
+									$curToDirectorID = $toDirectorIDs[$cnt];
+									if ($statuses[$cnt] == 'Requested') { ?>
+										<form action = "#" method = "POST">
+											<input type = "hidden" name = "id1" value = "<?=$curPlayerID?>" >
+											<input type = "hidden" name = "id2" value = "<?=$curFromDirectorID?>" >
+											<input type = "hidden" name = "id3" value = "<?=$curToDirectorID?>">
+											<input type = "submit" value = "Cancel" name = "cancelRequest"/>
+										</form
+									<?php } ?>
+									<?php if ($statuses[$cnt] == 'Director Accepted' || $statuses[$cnt] == 'Transfer Completed' || $statuses[$cnt] == 'Agent Accepted') { 
+											echo "N/A";
+									} ?>
+							</td>
+						</tr>
+					<?php $cnt = $cnt + 1;} ?>
 </table>
   
 </div>
- 
+
   <div class="leftcolumn">
 
 		 <ul id="sideBarStyle">
@@ -307,19 +339,10 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
 				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
-		 <?php if ($_SESSION['type'] == 'agent') {?>
-				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
-				<li><a href="AgentContracts.php">Manage Contracts</a></li>
-		 <?php } ?>
 		 </ul>
 
 
 
   </div>
-
-
-
- 
-
 </body>
 </html>

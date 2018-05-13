@@ -14,22 +14,11 @@
 		header("Location: login.php");
 		exit();
 	}
-	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
-		$homeLink = "FanHomePage.php";
-		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
-		
-		$leaguesQuery = "SELECT DISTINCT name FROM League, League_Club WHERE League_Club.leagueID = League.ID AND League_Club.clubID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
-		$leagues = mysqli_query($connection, $leaguesQuery);
-	}
-	else if ($_SESSION['type'] == 'admin'){
-		$homeLink = "AdminCreateLeague.php";
-		
-		$leaguesQuery = "SELECT DISTINCT name FROM League";
-		$leagues = mysqli_query($connection, $leaguesQuery);
-	}
+
+	$agentID = $_SESSION['id'];
+	
+	$playersQuery = "SELECT DISTINCT name, surname, nationality, position, age FROM Player WHERE Player.agent_ID = '".$agentID."'";
+	$players = mysqli_query($connection, $playersQuery);
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,17 +54,7 @@ body {
     text-align: center;
     background: white;
 }
-.logoutbutton {
-    background-color: #f44336; /* Red */
-    border: none;
-    color: white;
-    padding: 14px 31px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-	float: right;
-}
+
 .header h1 {
     font-size: 50px;
 }
@@ -95,7 +74,17 @@ body {
     padding: 14px 16px;
     text-decoration: none;
 }
-
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
 /* Change color on hover */
 .topnav a:hover {
     background-color: #ddd;
@@ -175,8 +164,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-	float: none;
-	width: 100%;
+  float: none;
+  width: 100%;
 }
 
 
@@ -202,12 +191,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-  <a href=<?php echo $homeLink; ?> >Home</a>
+  <a href="#">Home       </a>
   <?php if ($_SESSION['type'] == 'fan') { ?>
   <a href="EditProfile.php">Settings</a>
   <?php } ?>
 
-  <form action = "#" method = "POST">
+	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
   <a href="#" style="float:right">Search</a>
@@ -218,21 +207,29 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="row">
   <div class ="rightcolumn">
-  <h2>Leagues</h2>
+  <h2>My Clients</h2>
 
 <table>
-<?php while ($row = mysqli_fetch_assoc($leagues)){ ?>
+<tr>
+	<th>Name</th>
+    <th>Age</th>
+    <th>Position</th>
+	<th>Nationality</th>
+</tr>
+  <?php while ($row = mysqli_fetch_assoc($players)){ ?>
 			<tr>
-				<td><?php echo $row['name']; ?></td>
+				<td><?php echo $row['name'].' '.$row['surname']; ?></td>
+				<td><?php echo $row['age']; ?></td>
+				<td><?php echo $row['position']; ?></td>
+				<td><?php echo $row['nationality']; ?></td>
 			</tr>
 		<?php } ?>
-  
 </table>
   
 </div>
  
   <div class="leftcolumn">
-	<!--<div class="card">
+  <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
@@ -240,15 +237,25 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
+			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
+			 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php } ?>
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan') { ?>
+		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
-			<?php } ?>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'director') {?>
+				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'agent') {?>
+				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
+				<li><a href="AgentContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
 		 </ul>
 
 

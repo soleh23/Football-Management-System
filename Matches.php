@@ -9,7 +9,11 @@
 		header("Location: login.php");
 		exit();
 	}
-	
+	if (isset($_POST['logout'])){
+		$_SESSION['loggedIn'] = false;
+		header("Location: login.php");
+		exit();
+	}
 	$matchesQuery = "SELECT * FROM Player";
 	$matches = mysqli_query($connection, $matchesQuery);
 	
@@ -23,7 +27,10 @@
 		$clubQuery = "SELECT * FROM Club WHERE ID = '".$teamID."'";
 		$club = mysqli_query($connection, $clubQuery)->fetch_object();
 		
-		$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game WHERE Game.home_teamID = '".$club->ID."' OR Game.away_teamID = '".$club->ID."' UNION SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game, Subscribe S WHERE S.fanID = '".$fanID."' AND (Game.home_teamID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."') OR Game.away_teamID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."'))";
+		$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 
+						FROM Game
+						WHERE Game.home_teamID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."') OR Game.away_teamID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')
+						ORDER BY Game.game_date DESC";
 		$clubs = mysqli_query($connection, $clubsQuery);
 		
 		$homeTeams = array();
@@ -51,7 +58,105 @@
 			$elementsNo = $elementsNo + 1;
 		}
 	}
-
+	else if ($_SESSION['type'] == 'director'){
+		$homeLink = "DirectorHomePage.php";
+		
+		$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 
+						FROM Game
+						ORDER BY Game.game_date DESC";
+		$clubs = mysqli_query($connection, $clubsQuery);
+		
+		$homeTeams = array();
+		$homeScores = array();
+		$awayTeams = array();
+		$awayScores = array();
+		$elementsNo = 0;
+		while ($row = mysqli_fetch_assoc($clubs)){ 
+			$curHomeNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID1']."'";
+			$curHomeName = mysqli_query($connection, $curHomeNameQuery)->fetch_object();
+			array_push($homeTeams, $curHomeName->name);
+			
+			$curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+			$curHomeGoals = mysqli_query($connection, $curHomeGoalsQuery)->fetch_object();
+			array_push($homeScores, $curHomeGoals->goals);
+			
+			$curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+			$curAwayGoals = mysqli_query($connection, $curAwayGoalsQuery)->fetch_object();
+			array_push($awayScores, $curAwayGoals->goals);
+			
+			$curAwayNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID2']."'";
+			$curAwayName = mysqli_query($connection, $curAwayNameQuery)->fetch_object();
+			array_push($awayTeams, $curAwayName->name);
+			
+			$elementsNo = $elementsNo + 1;
+		}
+	}
+	else if ($_SESSION['type'] == 'admin'){
+		$homeLink = "AdminCreateLeague.php";
+		
+		$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 
+						FROM Game
+						ORDER BY Game.game_date DESC";
+		$clubs = mysqli_query($connection, $clubsQuery);
+		
+		$homeTeams = array();
+		$homeScores = array();
+		$awayTeams = array();
+		$awayScores = array();
+		$elementsNo = 0;
+		while ($row = mysqli_fetch_assoc($clubs)){ 
+			$curHomeNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID1']."'";
+			$curHomeName = mysqli_query($connection, $curHomeNameQuery)->fetch_object();
+			array_push($homeTeams, $curHomeName->name);
+			
+			$curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+			$curHomeGoals = mysqli_query($connection, $curHomeGoalsQuery)->fetch_object();
+			array_push($homeScores, $curHomeGoals->goals);
+			
+			$curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+			$curAwayGoals = mysqli_query($connection, $curAwayGoalsQuery)->fetch_object();
+			array_push($awayScores, $curAwayGoals->goals);
+			
+			$curAwayNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID2']."'";
+			$curAwayName = mysqli_query($connection, $curAwayNameQuery)->fetch_object();
+			array_push($awayTeams, $curAwayName->name);
+			
+			$elementsNo = $elementsNo + 1;
+		}
+	}
+	else if ($_SESSION['type'] == 'agent'){
+		$homeLink = "AgentHomePage.php";
+		
+		$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 
+						FROM Game
+						ORDER BY Game.game_date DESC";
+		$clubs = mysqli_query($connection, $clubsQuery);
+		
+		$homeTeams = array();
+		$homeScores = array();
+		$awayTeams = array();
+		$awayScores = array();
+		$elementsNo = 0;
+		while ($row = mysqli_fetch_assoc($clubs)){ 
+			$curHomeNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID1']."'";
+			$curHomeName = mysqli_query($connection, $curHomeNameQuery)->fetch_object();
+			array_push($homeTeams, $curHomeName->name);
+			
+			$curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+			$curHomeGoals = mysqli_query($connection, $curHomeGoalsQuery)->fetch_object();
+			array_push($homeScores, $curHomeGoals->goals);
+			
+			$curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+			$curAwayGoals = mysqli_query($connection, $curAwayGoalsQuery)->fetch_object();
+			array_push($awayScores, $curAwayGoals->goals);
+			
+			$curAwayNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID2']."'";
+			$curAwayName = mysqli_query($connection, $curAwayNameQuery)->fetch_object();
+			array_push($awayTeams, $curAwayName->name);
+			
+			$elementsNo = $elementsNo + 1;
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -112,6 +217,17 @@ body {
 .topnav a:hover {
     background-color: #ddd;
     color: black;
+}
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
 }
 
 /* Create two unequal columns that floats next to each other */
@@ -215,12 +331,16 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="topnav">
   <a href=<?php echo $homeLink; ?> >Home</a>
+  <?php if ($_SESSION['type'] == 'fan') { ?>
   <a href="EditProfile.php">Settings</a>
-
+	<?php } ?>
+	<form action = "#" method = "POST">
+		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
+  </form>
 
   <a href="#" style="float:right">Search</a>
 
-  <input type ="text" placeholder="Search..." style ="float:right">
+  <input type ="text" placeholder="Search..." style ="float:right; height:30px; margin-top:8px">
 
 </div>
 
@@ -258,14 +378,25 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
+			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
+			 <li><a href="Leagues.php">Leagues</a></li>
+		 <?php } ?>
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan')?>
+		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'director') {?>
+				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'agent') {?>
+				<li><a href="AgentTransferOffersPage.php">Manage Transfers</a></li>
+				<li><a href="AgentContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
 		 </ul>
 
 
