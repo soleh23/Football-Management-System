@@ -11,7 +11,8 @@
 	}
 	
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
+	if ($_SESSION['type'] == 'fan')
+  {
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
@@ -30,6 +31,21 @@
 		$clubsQuery = "SELECT * FROM Club";
 		$clubs = mysqli_query($connection, $clubsQuery);
 	}
+  else if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' )
+  { 
+     if($_SESSION['type'] == 'coach')
+     {
+        $homeLink = "CoachHomePage.php";
+     }
+     else
+     {
+        $homeLink = "PlayersHomePage.php";
+     }
+    
+     $clubsQuery = "SELECT * FROM Club";
+     $clubs = mysqli_query($connection, $clubsQuery);
+  }
+ 
 ?>
 <!DOCTYPE html>
 <html>
@@ -220,6 +236,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<td><?php echo $row['value']; ?>$</td>
 				<td>
 					<?php
+            if($_SESSION['type'] == 'fan')
+            {
 						$curTeamID = $row['ID'];
 						$curTeamName = "subscribe".$curTeamID;
 						$curTeamQuery = "SELECT * FROM Subscribe S WHERE S.fanID = '".$fanID."' AND S.clubID = '".$curTeamID."'";
@@ -239,7 +257,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 						else { ?>
 							<input type = "submit" value = "Favorite Team" name = "favoriteteam" disabled/>
 						<?php }
-					?>
+					
+          }?>
 				</td>
 			</tr>
 		<?php } ?>
@@ -256,15 +275,26 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
+      <?php if ($_SESSION['type'] == 'fan') { ?>
+          <li><a class="active" href="CountriesPage.php">Countries</a></li>
+          <li><a href="Leagues.php">Leagues</a></li>
+      <?php }  ?>
+
+		 
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan')?>
+
+      <?php if ( $_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) { ?>
+        <li><a href="playersTransfer.php"> Players Transfer </a></li>
+      </ul>
+      <?php }  ?>
+
+		 <?php if ($_SESSION['type'] == 'fan') { ?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
 		 </ul>
+     <?php }  ?>
 
 
 

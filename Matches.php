@@ -14,7 +14,8 @@
 	$matches = mysqli_query($connection, $matchesQuery);
 	
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan'){
+	if ($_SESSION['type'] == 'fan')
+  {
 		$homeLink = "FanHomePage.php";
 	
 		$fanID = $_SESSION['id'];
@@ -51,7 +52,52 @@
 			$elementsNo = $elementsNo + 1;
 		}
 	}
+  else if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player')
+  {
+    if($_SESSION['type'] == 'coach')
+    {
+       $homeLink = "CoachHomePage.php";
+    }
+    else
+    {
+       $homeLink = "PlayersHomePage.php";
 
+    }
+    
+
+    // get all clubs
+    $clubQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game";
+
+    $clubs = mysqli_query($connection,$clubQuery);
+
+    $homeTeams = array();
+    $homeScores = array();
+    $awayTeams = array();
+    $awayScores = array();
+    $elementsNo = 0;
+    while ($row = mysqli_fetch_assoc($clubs))
+    { 
+        $curHomeNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID1']."'";
+        $curHomeName = mysqli_query($connection, $curHomeNameQuery)->fetch_object();
+        array_push($homeTeams, $curHomeName->name);
+        
+        $curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+        $curHomeGoals = mysqli_query($connection, $curHomeGoalsQuery)->fetch_object();
+        array_push($homeScores, $curHomeGoals->goals);
+        
+        $curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+        $curAwayGoals = mysqli_query($connection, $curAwayGoalsQuery)->fetch_object();
+        array_push($awayScores, $curAwayGoals->goals);
+        
+        $curAwayNameQuery = "SELECT Club.name FROM Club WHERE Club.ID = '".$row['ID2']."'";
+        $curAwayName = mysqli_query($connection, $curAwayNameQuery)->fetch_object();
+        array_push($awayTeams, $curAwayName->name);
+        
+        $elementsNo = $elementsNo + 1;
+    }
+  }
+
+  
 ?>
 <!DOCTYPE html>
 <html>
@@ -258,17 +304,27 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
     
 
 		 <ul id="sideBarStyle">
-		 <li><a class="active" href="CountriesPage.php">Countries</a></li>
-		 <li><a href="Leagues.php">Leagues</a></li>
+
+
+     <?php if ($_SESSION['type'] == 'fan') {?>
+        <li><a class="active" href="CountriesPage.php">Countries</a></li>
+        <li><a href="Leagues.php">Leagues</a></li>
+      <?php } ?>
+		 
+		
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
-		 <?php if ($_SESSION['type'] == 'fan')?>
+
+     <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) {?>
+        <li><a class="active" href="playersTransfer.php">Players Transfer</a></li>
+      <?php } ?>
+
+		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
+        <?php } ?>
 		 </ul>
-
-
 
   </div>
 

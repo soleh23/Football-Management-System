@@ -4,6 +4,6 @@
   
   //include('AdminCreateClub.php');
 
-  include('AdminCreateGame.php');
+  include('playersTransfer.php');
   
 ?>
