@@ -29,7 +29,9 @@
 	$leaguesQuery = "SELECT League.name FROM League, League_Club WHERE League.ID = League_Club.leagueID AND League_Club.clubID = '".$club->ID."'";
 	$leagues = mysqli_query($connection, $leaguesQuery);
 
-	$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 FROM Game WHERE Game.home_teamID = '".$club->ID."' OR Game.away_teamID = '".$club->ID."' ORDER BY Game.game_date DESC";
+	$clubsQuery = "SELECT Game.ID AS ID, Game.home_teamID AS ID1, Game.away_teamID AS ID2 
+				   FROM Game 
+				   WHERE Game.home_teamID = '".$club->ID."' OR Game.away_teamID = '".$club->ID."' ORDER BY Game.game_date DESC";
 	$clubs = mysqli_query($connection, $clubsQuery);
 	
 	$names = array();
@@ -38,11 +40,17 @@
 		$curHomeName = mysqli_query($connection, $curHomeNameQuery)->fetch_object();
 		$curPair = $curHomeName->name;
 		
-		$curHomeGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
+		$curHomeGoalsQuery = "SELECT COUNT(*) AS goals 
+							  FROM Stats, Plays 
+							  WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID 
+									AND Plays.clubID = '".$row['ID1']."' AND Stats.action = '0'";
 		$curHomeGoals = mysqli_query($connection, $curHomeGoalsQuery)->fetch_object();
 		$curPair = $curPair." ".$curHomeGoals->goals." -";
 		
-		$curAwayGoalsQuery = "SELECT COUNT(*) AS goals FROM Stats, Plays WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
+		$curAwayGoalsQuery = "SELECT COUNT(*) AS goals 
+							  FROM Stats, Plays 
+							  WHERE Stats.gameID = '".$row['ID']."' AND Stats.playerID = Plays.playerID 
+									AND Plays.clubID = '".$row['ID2']."' AND Stats.action = '0'";
 		$curAwayGoals = mysqli_query($connection, $curAwayGoalsQuery)->fetch_object();
 		$curPair = $curPair." ".$curAwayGoals->goals;
 		

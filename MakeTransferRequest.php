@@ -62,16 +62,25 @@
 							<?php
 						}
 						else{
-							$getToDirectorIDQuery = "SELECT Director.ID AS ID 
-													 FROM Plays, Director 
-													 WHERE Plays.playerID = '".$curPlayerID->ID."' AND Plays.clubID = Director.club_ID";
-							$getToDirectorID = mysqli_query($connection, $getToDirectorIDQuery)->fetch_object();
-							$updateQuery = "INSERT INTO Transfer_Offer(price, transferDate, status, playerID, fromDirectorID, toDirectorID) 
-											VALUES('".$price."', '".$date."', '0', '".$curPlayerID->ID."', '".$_SESSION['id']."', '".$getToDirectorID->ID."')";
-							mysqli_query($connection, $updateQuery);
-							?>
-							<script>alert("Transfer Request Successful"); </script>
-							<?php
+							$getBudgetQuery = "SELECT Club.transfer_budget FROM Director, Club WHERE Director.ID = '".$_SESSION['id']."' AND Director.club_ID = Club.ID";
+							$getBudget = mysqli_query($connection, $getBudgetQuery)->fetch_object();
+							if ($getBudget->transfer_budget < $price){
+								?>
+								<script>alert("The offered price exceeds your transfer budget"); </script>
+								<?php
+							}
+							else{
+								$getToDirectorIDQuery = "SELECT Director.ID AS ID 
+														 FROM Plays, Director 
+														 WHERE Plays.playerID = '".$curPlayerID->ID."' AND Plays.clubID = Director.club_ID";
+								$getToDirectorID = mysqli_query($connection, $getToDirectorIDQuery)->fetch_object();
+								$updateQuery = "INSERT INTO Transfer_Offer(price, transferDate, status, playerID, fromDirectorID, toDirectorID) 
+												VALUES('".$price."', '".$date."', '0', '".$curPlayerID->ID."', '".$_SESSION['id']."', '".$getToDirectorID->ID."')";
+								mysqli_query($connection, $updateQuery);
+								?>
+								<script>alert("Transfer Request Successful"); </script>
+								<?php
+							}
 						}
 					}
 				}

@@ -22,8 +22,7 @@
         }
 
 	$homeLink = "#";
-	if ($_SESSION['type'] == 'fan')
-  {
+	if ($_SESSION['type'] == 'fan'){
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
@@ -31,7 +30,8 @@
 		
 		$transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
 							FROM Transfer_Offer, Director
-							WHERE (Transfer_Offer.fromDirectorID = Director.ID OR Transfer_Offer.toDirectorID = Director.ID) AND Transfer_Offer.status = '3' AND Director.club_ID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
+							WHERE (Transfer_Offer.fromDirectorID = Director.ID OR Transfer_Offer.toDirectorID = Director.ID) 
+							AND Transfer_Offer.status = '3' AND Director.club_ID IN (SELECT clubID FROM Subscribe WHERE Subscribe.fanID = '".$fanID."')";
 		$transfers = mysqli_query($connection, $transfersQuery);
 		
 		$fromTeams = array();

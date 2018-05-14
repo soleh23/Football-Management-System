@@ -38,9 +38,26 @@
 			
 			$updatePlaysQuery = "UPDATE Plays SET clubID = '".$newClub->ID."' WHERE playerID = '".$playerID."'";
 			mysqli_query($connection, $updatePlaysQuery);
+			
+			/*$getFromBudgetQuery = "SELECT Club.transfer_budget, Club.ID as ID FROM Director, Club WHERE Director.ID = '".$fromDirectorID."' AND Director.club_ID = Club.ID";
+			$getFromBudget = mysqli_query($connection, $getFromBudgetQuery)->fetch_object();
+			
+			$getToBudgetQuery = "SELECT Club.transfer_budget, Club.ID as ID FROM Director, Club WHERE Director.ID = '".$toDirectorID."' AND Director.club_ID = Club.ID";
+			$getToBudget = mysqli_query($connection, $getToBudgetQuery)->fetch_object();
+			
+			$getPriceQuery = "SELECT price FROM Transfer_Offer WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."'";
+			$getPrice = mysqli_query($connection, $getPriceQuery)->fetch_object();
+			
+			$newFromBudget = $getFromBudget->transfer_budget - $getPrice->price;
+			$newToBudget = $getToBudget->transfer_budget + $getPrice->price;
+			
+			$updateFromQuery = "UPDATE Club SET transfer_budget = '".$newFromBudget."' WHERE ID = '".$getFromBudgetQuery->ID."'";
+			mysqli_query($connection, $updateFromQuery);
+			$updateToQuery = "UPDATE Club SET transfer_budget = '".$newToBudget."' WHERE ID = '".$getToBudget->ID."'";
+			mysqli_query($connection, $updateToQuery);*/
 		}
 
-		$updateQuery = "UPDATE Transfer_Offer SET status = '".$status."' WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."'";
+		$updateQuery = "UPDATE Transfer_Offer SET status = '".$status."' WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."' AND status <> '3'";
 		mysqli_query($connection, $updateQuery);
 	}
 	if (isset($_POST['rejectOffer'])){
