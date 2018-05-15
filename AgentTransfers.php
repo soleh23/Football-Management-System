@@ -32,19 +32,23 @@
 		}
 		else{
 			$status = '3';
+
 			$contractDeleteQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."'";
 			mysqli_query($connection, $contractDeleteQuery);
 			
-			$newClubQuery = "SELECT Club.ID FROM Director, Club WHERE Director.club_ID = Club.ID AND Director.ID = '".$toDirectorID."'";
+			$newClubQuery = "SELECT Club.ID FROM Director, Club WHERE Director.club_ID = Club.ID AND Director.ID = '".$fromDirectorID."'";
 			$newClub = mysqli_query($connection, $newClubQuery)->fetch_object();
-			
+
 			$updatePlaysQuery = "UPDATE Plays SET clubID = '".$newClub->ID."' WHERE playerID = '".$playerID."'";
 			mysqli_query($connection, $updatePlaysQuery);
 			
-			/*$getFromBudgetQuery = "SELECT Club.transfer_budget, Club.ID as ID FROM Director, Club WHERE Director.ID = '".$fromDirectorID."' AND Director.club_ID = Club.ID";
+			$transferOfferDeleteQuery = "DELETE FROM Transfer_Offer WHERE playerID = '".$playerID."' AND status <> 3 AND fromDirectorID <> '".$fromDirectorID."'";
+			mysqli_query($connection, $transferOfferDeleteQuery);
+			
+			$getFromBudgetQuery = "SELECT Club.transfer_budget, Club.ID AS ID FROM Director, Club WHERE Director.ID = '".$fromDirectorID."' AND Director.club_ID = Club.ID";
 			$getFromBudget = mysqli_query($connection, $getFromBudgetQuery)->fetch_object();
 			
-			$getToBudgetQuery = "SELECT Club.transfer_budget, Club.ID as ID FROM Director, Club WHERE Director.ID = '".$toDirectorID."' AND Director.club_ID = Club.ID";
+			$getToBudgetQuery = "SELECT Club.transfer_budget, Club.ID AS ID FROM Director, Club WHERE Director.ID = '".$toDirectorID."' AND Director.club_ID = Club.ID";
 			$getToBudget = mysqli_query($connection, $getToBudgetQuery)->fetch_object();
 			
 			$getPriceQuery = "SELECT price FROM Transfer_Offer WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."'";
@@ -53,13 +57,15 @@
 			$newFromBudget = $getFromBudget->transfer_budget - $getPrice->price;
 			$newToBudget = $getToBudget->transfer_budget + $getPrice->price;
 			
-			$updateFromQuery = "UPDATE Club SET transfer_budget = '".$newFromBudget."' WHERE ID = '".$getFromBudgetQuery->ID."'";
+			$updateFromQuery = "UPDATE Club SET transfer_budget = '".$newFromBudget."' WHERE ID = '".$getFromBudget->ID."'";
 			mysqli_query($connection, $updateFromQuery);
 			$updateToQuery = "UPDATE Club SET transfer_budget = '".$newToBudget."' WHERE ID = '".$getToBudget->ID."'";
-			mysqli_query($connection, $updateToQuery);*/
+			mysqli_query($connection, $updateToQuery);
+			
+			$transferOfferBudgetDeleteQuery = "DELETE FROM Transfer_Offer WHERE fromDirectorID = '".$fromDirectorID."' AND price > '".$newFromBudget."' AND playerID <> '".$playerID."' AND status <> '3'";
+			mysqli_query($connection, $transferOfferBudgetDeleteQuery);
 		}
-
-		$updateQuery = "UPDATE Transfer_Offer SET status = '".$status."' WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."' AND AND status <> '3'";
+		$updateQuery = "UPDATE Transfer_Offer SET status = '".$status."' WHERE playerID = '".$playerID."' AND fromDirectorID = '".$fromDirectorID."' AND toDirectorID = '".$toDirectorID."' AND status <> '3'";
 		mysqli_query($connection, $updateQuery);
 	}
 	if (isset($_POST['rejectOffer'])){
@@ -84,11 +90,21 @@
 	$playerIDs = array();
 	$fromDirectorIDs = array();
 	$toDirectorIDs = array();
+	$fromClubs = array();
+	$toClubs = array();
 	$elementsNo = 0;
 	while ($row = mysqli_fetch_assoc($transfers)){ 
 		$curPlayerNameQuery = "SELECT name, surname FROM Player WHERE ID = '".$row['playerID']."'";
 		$curPlayerName = mysqli_query($connection, $curPlayerNameQuery)->fetch_object();
 		array_push($names, $curPlayerName->name." ".$curPlayerName->surname);
+		
+		$fromClubQuery = "SELECT name FROM Club WHERE ID = '".$row['fromDirectorID']."'";
+		$curFromClub = mysqli_query($connection, $fromClubQuery)->fetch_object();
+		array_push($fromClubs, $curFromClub->name);
+		
+		$toClubQuery = "SELECT name FROM Club WHERE ID = '".$row['toDirectorID']."'";
+		$curToClub = mysqli_query($connection, $toClubQuery)->fetch_object();
+		array_push($toClubs, $curToClub->name);
 		
 		array_push($prices, $row['price']);
 		array_push($playerIDs, $row['playerID']);
@@ -341,6 +357,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 <tr>
   <th>Name</th>
     <th>Price</th>
+	<th>From</th>
+	<th>To</th>
     <th>Status</th>
 	<th>Action</th>
 </tr>
@@ -350,6 +368,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 						<tr>
 							<td><?php echo $names[$cnt]; ?></td>
 							<td><?php echo $prices[$cnt]; ?>$</td>
+							<td><?php echo $toClubs[$cnt]; ?></td>
+							<td><?php echo $fromClubs[$cnt]; ?></td>
 							<td><?php echo $statuses[$cnt]; ?></td>
 							<td>
 								<?php

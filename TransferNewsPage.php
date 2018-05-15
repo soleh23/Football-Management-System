@@ -41,11 +41,11 @@
 		$transferDates = array();
 		$elementsNo = 0;
 		while ($row = mysqli_fetch_assoc($transfers)){
-			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
 			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
 			array_push($fromTeams, $fromTeam->name);
 			
-			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
 			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
 			array_push($toTeams, $toTeam->name);
 			
@@ -63,9 +63,6 @@
         else if ($_SESSION['type'] == 'guest'){
 		$homeLink = "Matches.php"; // ????
 		
-		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
-		
 		$transfersQuery = "SELECT DISTINCT price, transferDate, playerID, fromDirectorID, toDirectorID
 							FROM Transfer_Offer, Director
 							WHERE (Transfer_Offer.fromDirectorID = Director.ID OR Transfer_Offer.toDirectorID = Director.ID) AND Transfer_Offer.status = '3' AND Director.club_ID";
@@ -78,11 +75,11 @@
 		$transferDates = array();
 		$elementsNo = 0;
 		while ($row = mysqli_fetch_assoc($transfers)){
-			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
 			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
 			array_push($fromTeams, $fromTeam->name);
 			
-			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
 			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
 			array_push($toTeams, $toTeam->name);
 			
@@ -113,11 +110,11 @@
 		$transferDates = array();
 		$elementsNo = 0;
 		while ($row = mysqli_fetch_assoc($transfers)){
-			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
 			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
 			array_push($fromTeams, $fromTeam->name);
 			
-			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
 			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
 			array_push($toTeams, $toTeam->name);
 			
@@ -146,11 +143,11 @@
 		$statuses = array();
 		$elementsNo = 0;
 		while ($row = mysqli_fetch_assoc($transfers)){
-			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
 			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
 			array_push($fromTeams, $fromTeam->name);
 			
-			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
 			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
 			array_push($toTeams, $toTeam->name);
 			
@@ -180,11 +177,11 @@
 		$statuses = array();
 		$elementsNo = 0;
 		while ($row = mysqli_fetch_assoc($transfers)){
-			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+			$fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
 			$fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
 			array_push($fromTeams, $fromTeam->name);
 			
-			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+			$toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
 			$toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
 			array_push($toTeams, $toTeam->name);
 			
@@ -224,11 +221,11 @@
 
       while ($row = mysqli_fetch_assoc($transfers))
       {
-        $fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
+        $fromTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
         $fromTeam = mysqli_query($connection, $fromTeamQuery)->fetch_object();
         array_push($fromTeams, $fromTeam->name);
         
-        $toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['toDirectorID']."'";
+        $toTeamQuery = "SELECT Club.name FROM Club, Director WHERE Director.club_ID = Club.ID AND Director.ID = '".$row['fromDirectorID']."'";
         $toTeam = mysqli_query($connection, $toTeamQuery)->fetch_object();
         array_push($toTeams, $toTeam->name);
         
@@ -465,7 +462,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<td><?php echo $names[$cnt]; ?></td>
 				<td><?php echo $fromTeams[$cnt]; ?></td>
 				<td><?php echo $toTeams[$cnt]; ?></td>
-				<td><?php echo $prices[$cnt]; ?></td>
+				<td><?php echo $prices[$cnt]; ?>$</td>
 				<?php if ($_SESSION['type'] == 'admin') { ?>
 				<td>
 					<?php 

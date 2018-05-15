@@ -318,7 +318,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
         <button>Requests</button>
     </a>
     <a href="MakeTransferRequest.php" target="_self">
-        <button>Create Transfer Requests</button>
+        <button>Create Transfer Request</button>
     </a>
 </div>
 

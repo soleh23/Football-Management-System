@@ -27,7 +27,16 @@
 		$homeLink = "FanHomePage.php";
 		
 		$fanID = $_SESSION['id'];
-		$favTeamID = $_SESSION['favTeamID'];
+		//$favTeamID = $_SESSION['favTeamID'];
+		
+		$clubsQuery = "SELECT * FROM Club";
+		$clubs = mysqli_query($connection, $clubsQuery);
+		
+		$favTeamIDProcedureQuery = "CALL favoriteTeamID('".$fanID."')";
+		$favTeamProcedure = mysqli_query($connection, $favTeamIDProcedureQuery)->fetch_object();
+		$favTeamID = $favTeamProcedure->favTeamID;
+
+		$connection = mysqli_connect($host, $myUser, $myPassword, $myDB);
 		
 		if (isset($_POST['subscribe'])){
 			$subscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID."', '".$_POST['id']."')";
@@ -39,8 +48,7 @@
 			mysqli_query($connection, $unsubscribeQuery);
 		}
 		
-		$clubsQuery = "SELECT * FROM Club";
-		$clubs = mysqli_query($connection, $clubsQuery);
+		
 	}
 
         

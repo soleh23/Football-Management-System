@@ -1,4 +1,4 @@
-<?php 
+<?php
 	session_start();
 	$host = "dijkstra.ug.bcc.bilkent.edu.tr";
 	$myUser = "mehmet.turanboy";
@@ -14,67 +14,19 @@
 		header("Location: login.php");
 		exit();
 	}
-        
+        $homeLink = "#";
         if(isset($_POST['search'])){
-        $searchtext = $_POST['searchtext'];
-        $_SESSION['searchtext'] = $searchtext;
-        header("Location: Search.php");
+            $searchtext = $_POST['searchtext'];
+            $_SESSION['searchtext'] = $searchtext;
+            header("Location: Search.php");
         }
-        
-	if (isset($_POST['request'])){
-		if (empty($_POST['name']) || empty ($_POST['surname']) || empty ($_POST['bonus']) || empty ($_POST['date'])){
-			?>
-			<script>alert("Please fill out all the fields"); </script>
-			<?php
-		}
-		else{
-			$name = $_POST['name'];
-			$surname = $_POST['surname'];
-			$bonus = $_POST['bonus'];
-			$date = $_POST['date'];
-			$getPlayerIDQuery = "SELECT ID, agent_ID FROM Player WHERE name = '".$name."' AND surname = '".$surname."'";
-			$getPlayerID = mysqli_query($connection, $getPlayerIDQuery);
-			if (mysqli_num_rows($getPlayerID) == 0){
-				?>
-				<script>alert("No Such Player"); </script>
-				<?php
-			}
-			else {
-				$curPlayerID = $getPlayerID->fetch_object();
-				$checkNameQuery = "SELECT clubID FROM Plays WHERE Plays.playerID = '".$curPlayerID->ID."'";
-				$checkName = mysqli_query($connection, $checkNameQuery)->fetch_object();
-				if ($checkName->clubID != $_SESSION['myClubID']){
-					?>
-					<script>alert("Choose players from YOUR club"); </script>
-					<?php
-				}
-				else{
-					if (!is_numeric($bonus)){
-						?>
-						<script>alert("Enter Numeric Value in Bonus"); </script>
-						<?php
-					}
-					else{
-						$existQuery = "SELECT * FROM Contract WHERE playerID = '".$curPlayerID->ID."' AND agentID = '".$curPlayerID->agent_ID."' AND status <> '2'";
-						$exist = mysqli_query($connection, $existQuery);
-						if (mysqli_num_rows($exist) > 0){
-							?>
-							<script>alert("Player already has a contract extension request"); </script>
-							<?php
-						}
-						else{
-							$updateQuery = "INSERT INTO Contract(playerID, directorID, agentID, bonus, expirationDate, status) 
-											VALUES('".$curPlayerID->ID."', '".$_SESSION['id']."', '".$curPlayerID->agent_ID."', '".$bonus."', '".$date."', '1')";
-							mysqli_query($connection, $updateQuery);
-							?>
-							<script>alert("Contract Extension Request Successful"); </script>
-							<?php
-						}
-					}
-				}
-			}
-		}
-	}
+
+	$topScoringPlayersQuery = "SELECT Player.name, Player.surname, count(*) AS goalsNO
+					  FROM Player, Stats
+					  WHERE Stats.playerID = Player.ID AND Stats.action = '0'
+					  GROUP BY Player.name, Player.surname
+					  ORDER BY goalsNo DESC";
+	$topScoringPlayers = mysqli_query($connection, $topScoringPlayersQuery);
 ?>
 <!DOCTYPE html>
 <html>
@@ -130,6 +82,7 @@ body {
     padding: 14px 16px;
     text-decoration: none;
 }
+
 .searchbutton {
     background-color: #4CAF50; /* Red */
     border: none;
@@ -138,6 +91,17 @@ body {
     text-align: center;
     text-decoration: none;
     margin-right: 20px;
+    display: inline-block;
+    font-size: 16px;
+	float: right;
+}
+.logoutbutton {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 14px 31px;
+    text-align: center;
+    text-decoration: none;
     display: inline-block;
     font-size: 16px;
 	float: right;
@@ -163,17 +127,7 @@ body {
     padding-left: 20px;
 }
 
-.logoutbutton {
-    background-color: #f44336; /* Red */
-    border: none;
-    color: white;
-    padding: 14px 31px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-	float: right;
-}
+
 
 /* Add a card effect for articles */
 .card {
@@ -218,30 +172,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
    color: white;
 
 }
-.btn-group button {
-    background-color: #4CAF50; /* Green background */
-    border: 1px solid green; /* Green border */
-    color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
-    float: left; /* Float the buttons side by side */
-}
 
-.btn-group button:not(:last-child) {
-    border-right: none; /* Prevent double borders */
-}
-
-/* Clear floats (clearfix hack) */
-.btn-group:after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-/* Add a background color on hover */
-.btn-group button:hover {
-    background-color: #7e4e41;
-}
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
@@ -254,8 +185,8 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
 @media screen and (max-width: 400px) {
 .topnav a {
-    float: none;
-    width: 100%;
+  float: none;
+  width: 100%;
 }
 
 
@@ -281,8 +212,12 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="topnav">
-<a href="DirectorHomePage.php">Home </a>
-    <form action = "#" method = "POST">
+  <a href=<?php echo $homeLink; ?> >Home       </a>
+  <?php if ($_SESSION['type'] == 'fan') { ?>
+  <a href="EditProfile.php">Settings</a>
+  <?php } ?>
+
+	<form action = "#" method = "POST">
 		<input type = "submit" class="logoutbutton" value = "Logout" name = "logout" />
   </form>
  <form action = "#" method = "POST">
@@ -293,23 +228,44 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 </div>
 
 <div class="row">
-    <div class="leftcolumn">
-    <!--<div class="card">
+  <div class ="rightcolumn">
+  <h2>Top Scoring Players</h2>
+
+<table>
+<tr>
+	<th>Name</th>
+    <th>Total Goals</th>
+</tr>
+  <?php while ($row = mysqli_fetch_assoc($topScoringPlayers)){ ?>
+			<tr>
+				<td><?php echo $row['name'].' '.$row['surname']; ?></td>
+				<td><?php echo $row['goalsNO']; ?></td>
+			</tr>
+		<?php } ?>
+</table>
+  
+</div>
+ 
+  <div class="leftcolumn">
+  <!--<div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>-->
     
 
-         <ul id="sideBarStyle">
+		 <ul id="sideBarStyle">
+
 		 <?php if ($_SESSION['type'] == 'fan' || $_SESSION['type'] == 'admin') {?>
 			 <li><a class="active" href="CountriesPage.php">Countries</a></li>
 			 <li><a href="Leagues.php">Leagues</a></li>
 		 <?php } ?>
+
 		 <li><a href="Clubs.php">Clubs</a></li>
 		 <li><a href="TransferNewsPage.php">Transfer News</a></li>
 		 <li><a href="Matches.php">Matches</a></li>
 		 <li><a href="playersPage.php">Players</a></li>
+
 		 <?php if ($_SESSION['type'] == 'fan') {?>
 				<li><a href="Subscriptions.php"><?php echo "Subscriptions"; ?></a></li>
 		 <?php } ?>
@@ -317,59 +273,27 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<li><a href="TransferOffersPage.php">Manage Transfers</a></li>
 				<li><a href="DirectorContracts.php">Manage Contracts</a></li>
 		 <?php } ?>
+		 <?php if ($_SESSION['type'] == 'agent') {?>
+				<li><a href="AgentTransfers.php">Manage Transfers</a></li>
+				<li><a href="AgentContracts.php">Manage Contracts</a></li>
+		 <?php } ?>
+
+
+     <?php if ($_SESSION['type'] == 'coach' || $_SESSION['type'] == 'player' ) { ?>
+        <li><a href="playersTransfer.php"> Players Transfer</a></li>
+     
+     <?php } ?>
+
 		 </ul>
 
+    
+
 
   </div>
-  <div class="rightcolumn">
-  
+
+
+
  
 
-           
-            
-
-	<form action="#" method="POST">
-	        <strong>  Player     </strong>
-
-			<div class="form-group">
-			<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-user"></i>
-					</span> 
-			<input class="form-control" placeholder="Name" name="name" type="text" autofocus>
-			</div>
-			</div>
-
-			<div class="form-group">
-			<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-user"></i>
-					</span> 
-			<input class="form-control" placeholder="Surname" name="surname" type="text" autofocus>
-			</div>
-			</div>
-
-
-			<div class="form-group">
-			<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-user"></i>
-					</span> 
-			<input class="form-control" placeholder="Bonus" name="bonus" type="text" autofocus>
-			</div>
-			</div>
-			<div class="form-group">
-				<div class="input-group">
-					<strong> Expiration Date:     </strong>
-				   <input type="date" name="date">           
-				</div>
-			</div>
-
-			<div class="form-group">
-				<input type="submit" class="btn btn-lg btn-primary btn-block" value="Request" name = "request">
-			</div>
-	</form>
-  </div>
-</div>
 </body>
 </html>

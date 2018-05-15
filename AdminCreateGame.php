@@ -110,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
        $game_ID = $row['ID'];
 
-       echo $game_ID;
+       //echo $game_ID;
 
 
        //get league ID
@@ -122,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
        $league_ID = $row['ID'];
 
-       echo $league_ID;
+       //echo $league_ID;
 
 
 

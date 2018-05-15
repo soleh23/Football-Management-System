@@ -100,7 +100,7 @@
                      // put agent id to variable
                      $agent_ID = $row['ID'];
 
-                     echo $agent_ID;
+                     //echo $agent_ID;
 
                      //check the agent in table
                      $count = mysqli_num_rows($result);
@@ -120,7 +120,7 @@
                     $club_ID = $row['ID'];
 
                    
-                    echo $myType;
+                    //echo $myType;
                     
                     if ( $myType == 'Player')
                      {
@@ -142,7 +142,7 @@
 
                        $player_ID = $row['ID'];
 
-                       echo $player_ID;
+                       //echo $player_ID;
 
                        //get current date
                        $current_date =  date('Y-m-d');

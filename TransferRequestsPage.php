@@ -41,11 +41,16 @@
 	$playerIDs = array();
 	$fromDirectorIDs = array();
 	$toDirectorIDs = array();
+	$toClubs = array();
 	$elementsNo = 0;
 	while ($row = mysqli_fetch_assoc($transfers)){ 
 		$curPlayerNameQuery = "SELECT name, surname FROM Player WHERE ID = '".$row['playerID']."'";
 		$curPlayerName = mysqli_query($connection, $curPlayerNameQuery)->fetch_object();
 		array_push($names, $curPlayerName->name." ".$curPlayerName->surname);
+		
+		$toClubQuery = "SELECT name FROM Club WHERE ID = '".$row['toDirectorID']."'";
+		$curToClub = mysqli_query($connection, $toClubQuery)->fetch_object();
+		array_push($toClubs, $curToClub->name);
 		
 		array_push($prices, $row['price']);
 		array_push($playerIDs, $row['playerID']);
@@ -290,7 +295,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 <div class="rightcolumn">
   
-  <h2>Transfer Request</h2>
+  <h2>Transfer Requests</h2>
 <div class="btn-group">
     <a href="TransferOffersPage.php" target="_self">
         <button>Offers</button>
@@ -299,13 +304,14 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
         <button>Requests</button>
     </a>
     <a href="MakeTransferRequest.php" target="_self">
-        <button>Create Transfer Requests</button>
+        <button>Create Transfer Request</button>
     </a>
 </div>
 <table>
 <tr>
   <th>Name</th>
     <th>Price</th>
+	<th>To</th>
     <th>Status</th>
 	<th>Action</th>
 </tr>
@@ -315,6 +321,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 						<tr>
 							<td><?php echo $names[$cnt]; ?></td>
 							<td><?php echo $prices[$cnt]; ?>$</td>
+							<td><?php echo $toClubs[$cnt]; ?></td>
 							<td><?php echo $statuses[$cnt]; ?></td>
 							<td>
 								<?php

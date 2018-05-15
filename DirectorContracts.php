@@ -33,7 +33,7 @@
 		$playerID = $_POST['id1'];
 		$agentID = $_POST['id2'];
 		//echo $playerID." ".$agentID;
-		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$agentID."'";
+		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$agentID."' AND status <> '2'";
 		mysqli_query($connection, $updateQuery);
 	}
 	
@@ -41,7 +41,7 @@
 		$playerID = $_POST['id1'];
 		$agentID = $_POST['id2'];
 		//echo $playerID." ".$agentID;
-		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$agentID."'";
+		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$agentID."' AND status <> '2'";
 		mysqli_query($connection, $updateQuery);
 	}
 	
@@ -335,7 +335,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 		<div class="btn-group">
 			<a href="DirectorExtendContractRequest.php" target="_self">
-				<button style="margin-top: 10px">Extend Contracts</button>
+				<button style="margin-top: 10px">Extend Contract</button>
 			</a>
 		</div>
         <h2>Contract Information Table</h2>

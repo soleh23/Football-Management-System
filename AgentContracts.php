@@ -29,13 +29,13 @@
 	
 	if (isset($_POST['cancel'])){
 		$playerID = $_POST['id1'];
-		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$curAgentID."'";
+		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$curAgentID."' AND status <> '2'";
 		mysqli_query($connection, $updateQuery);
 	}
 	
 	if (isset($_POST['reject'])){
 		$playerID = $_POST['id1'];
-		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$curAgentID."'";
+		$updateQuery = "DELETE FROM Contract WHERE playerID = '".$playerID."' AND agentID = '".$curAgentID."' AND status <> '2'";
 		mysqli_query($connection, $updateQuery);
 	}
 	
@@ -341,7 +341,7 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 
 		<div class="btn-group">
 			<a href="AgentExtendContractRequest.php" target="_self">
-				<button style="margin-top: 10px">Extend Contracts</button>
+				<button style="margin-top: 10px">Extend Contract</button>
 			</a>
 		</div>
         <h2>Contract Information Table</h2>

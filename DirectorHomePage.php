@@ -290,6 +290,9 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 			<br>Leagues: <?php while ($row = mysqli_fetch_assoc($leagues)){ ?>
 						 <?php echo $row['name'].', '; ?>
 						 <?php } ?>
+			<br>Budget:   <?php echo ($club->annual_wage_budget + $club->transfer_budget)."$";?>
+			<br>Annual Wage Budget: <?php echo $club->annual_wage_budget."$";?>
+			<br>Transfer Budget:    <?php echo $club->transfer_budget."$";?>
 			
 		</p>
       </div>
@@ -317,14 +320,6 @@ ul#sideBarStyle li a:hover,ul#sideBarStyle li.active a
 				<br> <?php echo $row['name'].' '.$row['surname']; ?>
 			<?php } ?>
 		  </p>
-      </div>
-	  <div class="rightcolumn2">
-        <p>
-				Budget:   <?php echo ($club->annual_wage_budget + $club->transfer_budget)."$";?>
-			<br>Annual Wage Budget: <?php echo $club->annual_wage_budget."$";?>
-			<br>Transfer Budget:    <?php echo $club->transfer_budget."$";?>
-			
-		</p>
       </div>
     </div>
   </div>

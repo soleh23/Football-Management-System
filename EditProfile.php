@@ -44,6 +44,7 @@
 				$favTeamID = $favTeamID->fetch_object();
 				$updateFanQuery = "UPDATE Fan SET username = '".$username."', password = '".$password."', name = '".$name."', surname = '".$surname."', favTeamID = '".$favTeamID->ID."' WHERE ID = '".$fanID."'";
 				mysqli_query($connection, $updateFanQuery);
+				$updateSubscribeQuery = "INSERT INTO Subscribe(fanID, clubID) VALUES ('".$fanID."', '".$favTeamID->ID."')";
 				?>
 				<script>alert("Update Successful");</script>
 				<?php

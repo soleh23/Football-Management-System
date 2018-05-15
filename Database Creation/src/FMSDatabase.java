@@ -242,28 +242,28 @@ public class FMSDatabase {
 					"(name, transfer_budget, annual_wage_budget, city, establishment_date, value, stadium)" +
 					"VALUES (?, ?, ?, ?, ? , ?, ? );";
 			String[][] tuples = new String[][]
-				{{"Real Madrid", "1000000", "500000", "Madrid", "1902-03-06", "10000000", "Santiago Bernabeu"},
-				{"Barcelona", "30000000", "553000","Barcelona", "1912-12-06", "15000000", "Camp Nou"},
-				{"Atletico Madrid", "500000", "13000","Madrid", "1945-12-06", "12000000", "	Metropolitano"},
-				{"Galatasaray", "200000", "13000","Istanbul", "1905-12-06", "15000000", "Turk Telekom"},
-				{"Fenerbahce", "300000", "14000", "Istanbul", "1906-12-06", "16000000", "Sukru Saracoglu"},
-				{"Akhisar", "200000", "15000","Manisa", "1907-12-06", "17000000", "19 Mayis"},
-				{"Ankaragucu", "200000", "16000","Ankara", "1908-12-06", "18000000", "Ankara 19 mayis"},
-				{"Valencia", "200000", "17000","Valencia", "1909-12-06", "19000000", "Mestalle"},
-				{"Villarreal", "200000", "18000","Castellon", "1910-12-06", "11000000", "La Ceramica"},
-				{"Sevilla", "200000", "19000", "Sevilla", "1911-12-06", "12000000", "Ramon Sanchez"},
-				{"Getafe", "200000", "20000","Madrid", "1912-12-06", "13000000", "Coliseum Alfonso"},
-				{"Manchester United", "200000", "21000", "Manchester", "1913-12-06", "20000000", "Old Trafford"},
-				{"Manchester City", "200000", "22000","Manchester", "1914-12-06", "21000000", "Etihad"},
-				{"Tottenham", "200000", "23000","Tottenham", "1915-12-06", "22000000", "Wembley"},
-				{"Chelsea", "200000", "24000","London", "1916-12-06", "23000000", "Stamford Bridge"},
-				{"Liverpool", "200000", "25000","Liverpool", "1917-12-06", "24000000", "Anfield"},
-				{"Arsenal", "200000", "26000","London", "1918-12-06", "25000000", "Emirates"},
-				{"Bayern Munich", "200000", "26000","London", "1918-12-06", "25000000", "Allianz Arena"},
-				{"Juventus", "200000", "26000","London", "1918-12-06", "25000000", "Allianz"},
-				{"Neftci", "200000", "26000", "Baku", "1918-12-06", "25000000", "Tofig Bahramov"},
-				{"Ajax", "200000", "26000", "Amsterdam", "1918-12-06", "25000000", "Johan Cruyff"},
-				{"Marseille", "200000", "26000", "Marseille", "1918-12-06", "25000000", "Stade Velodrome"}
+				{{"Real Madrid", "100000000", "500000", "Madrid", "1902-03-06", "10000000", "Santiago Bernabeu"},
+				{"Barcelona", "300000000", "553000","Barcelona", "1912-12-06", "15000000", "Camp Nou"},
+				{"Atletico Madrid", "5000000", "13000","Madrid", "1945-12-06", "12000000", "	Metropolitano"},
+				{"Galatasaray", "2000000", "13000","Istanbul", "1905-12-06", "15000000", "Turk Telekom"},
+				{"Fenerbahce", "3000000", "14000", "Istanbul", "1906-12-06", "16000000", "Sukru Saracoglu"},
+				{"Akhisar", "2000000", "15000","Manisa", "1907-12-06", "17000000", "19 Mayis"},
+				{"Ankaragucu", "2000000", "16000","Ankara", "1908-12-06", "18000000", "Ankara 19 mayis"},
+				{"Valencia", "2000000", "17000","Valencia", "1909-12-06", "19000000", "Mestalle"},
+				{"Villarreal", "2000000", "18000","Castellon", "1910-12-06", "11000000", "La Ceramica"},
+				{"Sevilla", "2000000", "19000", "Sevilla", "1911-12-06", "12000000", "Ramon Sanchez"},
+				{"Getafe", "2000000", "20000","Madrid", "1912-12-06", "13000000", "Coliseum Alfonso"},
+				{"Manchester United", "20000000", "21000", "Manchester", "1913-12-06", "20000000", "Old Trafford"},
+				{"Manchester City", "20000000", "22000","Manchester", "1914-12-06", "21000000", "Etihad"},
+				{"Tottenham", "20000000", "23000","Tottenham", "1915-12-06", "22000000", "Wembley"},
+				{"Chelsea", "20000000", "24000","London", "1916-12-06", "23000000", "Stamford Bridge"},
+				{"Liverpool", "20000000", "25000","Liverpool", "1917-12-06", "24000000", "Anfield"},
+				{"Arsenal", "20000000", "26000","London", "1918-12-06", "25000000", "Emirates"},
+				{"Bayern Munich", "20000000", "26000","London", "1918-12-06", "25000000", "Allianz Arena"},
+				{"Juventus", "20000000", "26000","London", "1918-12-06", "25000000", "Allianz"},
+				{"Neftci", "2000000", "26000", "Baku", "1918-12-06", "25000000", "Tofig Bahramov"},
+				{"Ajax", "2000000", "26000", "Amsterdam", "1918-12-06", "25000000", "Johan Cruyff"},
+				{"Marseille", "2000000", "26000", "Marseille", "1918-12-06", "25000000", "Stade Velodrome"}
 			};
 
 			for (int i = 0; i < tuples.length; i++){
@@ -861,7 +861,10 @@ public class FMSDatabase {
 				{"4", "2"},
 				{"4", "12"},
 				{"5", "2"},
-				{"1", "7"}
+				{"1", "7"},
+				{"2", "3"},
+				{"4", "4"},
+				{"5", "5"}
 			};
 
 			for (int i = 0; i < tuples.length; i++)
@@ -1011,6 +1014,21 @@ public class FMSDatabase {
 			System.out.println(e);
 		}
 		System.out.println("Tuples into Country table inserted");
+		
+		// stored procedure for retrieving favorite team id of a fan
+		try{
+			System.out.println("Creating Procedure");
+			statement = connection.createStatement();
+			String user = "CREATE PROCEDURE favoriteTeamID(IN fanID INT) " +
+					" BEGIN " +
+					" SELECT favTeamID FROM Fan WHERE ID = fanID; " +
+					" END ";
+			statement.executeUpdate(user);
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		System.out.println("Procedure Created");
 	}
 	public static void deletingTables ()
 	{
